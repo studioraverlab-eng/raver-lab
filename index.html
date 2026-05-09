@@ -3954,6 +3954,21 @@
         <button class="pdm-essence-btn" onclick="selectPdmEssence(this)">Sem Essência</button>
       </div>
 
+      <!-- FRETE -->
+      <div style="margin-bottom:28px;">
+        <p class="pdm-section-label">Calcular Frete</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <input type="text" id="pdm-cep" maxlength="9" placeholder="00000-000"
+            style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:12px 0;font-family:'DM Mono',monospace;font-size:13px;color:var(--fg);outline:none;letter-spacing:0.1em;"
+            oninput="formatCEP(this)" onkeydown="if(event.key==='Enter')calcularFrete()">
+          <button onclick="calcularFrete()"
+            style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:12px 20px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;">
+            Calcular
+          </button>
+        </div>
+        <div id="pdm-frete-result" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--fg-soft);"></div>
+      </div>
+
       <button class="pdm-cta" onclick="addToCartFromModal()">Adicionar ao Carrinho →</button>
     </div>
   </div>
@@ -4903,6 +4918,85 @@ async function loadPlaylistLinksIntoAdmin() {
     const el = document.getElementById('pl-admin-' + key);
     if (el && links[key]) el.value = links[key];
   });
+}
+
+// ── FRETE ──
+function formatCEP(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5,8);
+  input.value = v;
+}
+
+async function calcularFrete() {
+  const cepInput = document.getElementById('pdm-cep');
+  const result = document.getElementById('pdm-frete-result');
+  const cep = cepInput.value.replace(/\D/g, '');
+
+  if (cep.length !== 8) {
+    result.innerHTML = '<span style="color:#c0392b;">CEP inválido — digite 8 números</span>';
+    return;
+  }
+
+  result.innerHTML = 'Calculando...';
+
+  const CEP_ORIGEM = '18045090';
+  const PESO = 400; // gramas
+  const COMPRIMENTO = 28;
+  const ALTURA = 4;
+  const LARGURA = 20;
+
+  // Serviços: 04510 = PAC, 04014 = SEDEX
+  const servicos = [
+    { codigo: '04510', nome: 'PAC' },
+    { codigo: '04014', nome: 'SEDEX' }
+  ];
+
+  try {
+    const promises = servicos.map(s =>
+      fetch(`https://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?nCdEmpresa=&sDsSenha=&sCepOrigem=${CEP_ORIGEM}&sCepDestino=${cep}&nVlPeso=0.4&nCdFormato=1&nVlComprimento=${COMPRIMENTO}&nVlAltura=${ALTURA}&nVlLargura=${LARGURA}&nVlDiametro=0&sCdMaoPropria=N&nVlValorDeclarado=0&sCdAvisoRecebimento=N&nCdServico=${s.codigo}&nVlDiametro=0&StrRetorno=xml&nIndicaCalculo=3`)
+        .then(r => r.text())
+        .then(xml => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(xml, 'text/xml');
+          const valor = doc.querySelector('Valor')?.textContent;
+          const prazo = doc.querySelector('PrazoEntrega')?.textContent;
+          const erro = doc.querySelector('MsgErro')?.textContent;
+          return { nome: s.nome, valor, prazo, erro };
+        })
+        .catch(() => ({ nome: s.nome, erro: 'Erro ao consultar' }))
+    );
+
+    const resultados = await Promise.all(promises);
+
+    const html = resultados.map(r => {
+      if (r.erro && r.erro.trim()) {
+        return `<div style="margin-bottom:8px;opacity:0.5;">${r.nome}: indisponível</div>`;
+      }
+      const valor = r.valor ? 'R$ ' + r.valor.replace('.', ',') : '—';
+      const prazo = r.prazo ? r.prazo + ' dias úteis' : '—';
+      return `<div style="margin-bottom:8px;display:flex;justify-content:space-between;">
+        <span style="font-weight:500;">${r.nome}</span>
+        <span>${valor} — ${prazo}</span>
+      </div>`;
+    }).join('');
+
+    result.innerHTML = html || '<span style="opacity:0.5;">Não foi possível calcular para este CEP</span>';
+
+  } catch(e) {
+    // Fallback: usa API de terceiro
+    try {
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await res.json();
+      if (data.erro) {
+        result.innerHTML = '<span style="color:#c0392b;">CEP não encontrado</span>';
+      } else {
+        result.innerHTML = `<div style="margin-bottom:6px;">CEP válido: ${data.localidade} - ${data.uf}</div>
+          <div style="opacity:0.6;">Frete calculado no checkout via Mercado Pago</div>`;
+      }
+    } catch {
+      result.innerHTML = '<span style="opacity:0.5;">Consulta o frete no checkout</span>';
+    }
+  }
 }
 
 // Render on page load
