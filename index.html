@@ -4616,11 +4616,14 @@ async function saveProduct_db(product) {
     image_back: product.imageBack || null,
     image_fit: product.imageFit || 'cover'
   };
-  await sbFetch('/rest/v1/products', {
+  console.log('Salvando produto:', row.name);
+  const result = await sbFetch('/rest/v1/products', {
     method: 'POST',
     prefer: 'resolution=merge-duplicates',
     body: JSON.stringify(row)
   });
+  console.log('Resultado:', result);
+  return result;
 }
 
 async function deleteProduct_db(id) {
@@ -4788,9 +4791,17 @@ async function saveProduct() {
     imageFit: currentImageFit
   };
 
-  await saveProduct_db(product);
-  closeProductModal();
-  await renderAdminDashboard();
+  try {
+    const btn = document.querySelector('.admin-btn.primary[onclick="saveProduct()"]');
+    if (btn) btn.textContent = 'Salvando...';
+    await saveProduct_db(product);
+    closeProductModal();
+    await renderAdminDashboard();
+    alert('Produto salvo com sucesso!');
+  } catch(e) {
+    console.error('Erro ao salvar:', e);
+    alert('Erro ao salvar: ' + e.message);
+  }
 }
 
 // ── DELETE ──
