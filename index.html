@@ -5578,7 +5578,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     var email = document.getElementById('ck-email').value.trim();
     var itens = cart.map(function(i){ return i.name + ' (' + i.size + ')'; }).join(', ');
     ckEnviarPedido('Mercado Pago');
-    fetch('/.netlify/functions/criar-preferencia', {
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-preferencia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: nome, email: email, descricao: itens, valor: total })
@@ -5622,7 +5622,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     pixCode.textContent = 'Aguardando...';
     var msg = encodeURIComponent('Oi! Paguei R$ ' + total.toFixed(2).replace('.', ',') + ' via Pix no pedido Raver Lab. Segue o comprovante!');
     wppLink.href = 'https://wa.me/5515991375380?text=' + msg;
-    fetch('/.netlify/functions/criar-pagamento', {
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-pagamento', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: nome, email: email, descricao: itens, valor: total })
@@ -5665,7 +5665,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (pollingEl) pollingEl.style.display = 'none';
         return;
       }
-      fetch('/.netlify/functions/status-pagamento?id=' + paymentId)
+      fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/status-pagamento?id=' + paymentId)
         .then(function(r) { return r.json(); })
         .then(function(data) {
           if (data.status === 'approved') {
@@ -5901,7 +5901,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     var loadMsg = '<p style="font-family:monospace;font-size:9px;color:#999;padding:60px 0">Gerando QR Code...</p>';
     if (container) container.innerHTML = loadMsg;
 
-    fetch('/.netlify/functions/criar-pagamento', {
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-pagamento', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: nomeLab, email: emailLab, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
@@ -6117,7 +6117,7 @@ window.pvAddToCart = function() {
     if (window._labPixGerado) return;
     window._labPixGerado = true;
     container.innerHTML = '<p style="font-family:monospace;font-size:9px;color:#999;padding:20px 0">Gerando QR Code...</p>';
-    fetch('/.netlify/functions/criar-pagamento', {
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-pagamento', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: nome, email: email, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
@@ -6156,7 +6156,7 @@ window.pvAddToCart = function() {
       if (emailEl) emailEl.value = email;
     }
     var nome = email.split('@')[0] || 'Cliente';
-    fetch('/.netlify/functions/criar-preferencia', {
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-preferencia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: nome, email: email, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
@@ -6182,7 +6182,7 @@ window.pvAddToCart = function() {
     _labPollingTimer = setInterval(function() {
       attempts++;
       if (attempts > 60) { clearInterval(_labPollingTimer); return; }
-      fetch('/.netlify/functions/status-pagamento?id=' + paymentId)
+      fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/status-pagamento?id=' + paymentId)
         .then(function(r) { return r.json(); })
         .then(function(data) {
           if (data.status === 'approved') {
