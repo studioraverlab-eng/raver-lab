@@ -2976,6 +2976,55 @@
     .ficha-grid { grid-template-columns: repeat(2, 1fr); }
     .special-card { padding: 40px 24px !important; }
   }
+
+  /* PAGAMENTO APROVADO */
+  #ck-aprovado {
+    display: none;
+    text-align: center;
+    padding: 40px 28px;
+    animation: fadeUp .5s ease;
+  }
+  #ck-aprovado.show { display: block; }
+  .ck-check {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: #27ae60;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    animation: popIn .5s cubic-bezier(0.4,0,0.2,1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .ck-aprovado-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300;
+    color: var(--fg); margin-bottom: 12px;
+  }
+  .ck-aprovado-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: .2em;
+    color: var(--fg-muted); text-transform: uppercase;
+    line-height: 1.8; margin-bottom: 28px;
+  }
+  .ck-polling-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px; letter-spacing: .2em;
+    color: var(--fg-muted); text-transform: uppercase;
+    text-align: center; padding: 8px 0;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .ck-polling-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--fg-muted);
+    animation: blink 1.2s ease infinite;
+  }
+  .ck-polling-dot:nth-child(2) { animation-delay: .2s; }
+  .ck-polling-dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink {
+    0%,100% { opacity: .2; } 50% { opacity: 1; }
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
@@ -5209,6 +5258,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         <input class="ck-inp" id="ck-num" placeholder="Numero" style="margin-bottom:0">
       </div>
       <input class="ck-inp" id="ck-rua" placeholder="Rua">
+      <input class="ck-inp" id="ck-complemento" placeholder="Complemento (apto, bloco, casa...)">
       <div class="ck-g2">
         <input class="ck-inp" id="ck-cidade" placeholder="Cidade" style="margin-bottom:0">
         <input class="ck-inp" id="ck-uf" placeholder="UF" maxlength="2" style="margin-bottom:0">
@@ -5243,7 +5293,23 @@ window.addEventListener('DOMContentLoaded', async () => {
         </a>
       </div>
 
-      <p class="ck-note">Pagamento seguro · Pedido confirmado por WhatsApp</p>
+              <!-- Status polling -->
+        <div class="ck-polling-status" id="ck-polling-status" style="display:none;">
+          <div class="ck-polling-dot"></div>
+          <div class="ck-polling-dot"></div>
+          <div class="ck-polling-dot"></div>
+          <span>Aguardando confirmacao do pagamento...</span>
+        </div>
+        <!-- Aprovado -->
+        <div id="ck-aprovado">
+          <div class="ck-check">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 class="ck-aprovado-titulo">Pagamento<br>Aprovado!</h3>
+          <p class="ck-aprovado-sub">Seu pedido foi confirmado.<br>Em breve entraremos em contato<br>pelo WhatsApp para acompanhar o envio.</p>
+          <a id="ck-wpp-aprovado" href="https://wa.me/5515991375380" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;background:#25D366;color:#fff;text-decoration:none;margin-bottom:16px;">Falar com a Raver Lab</a>
+        </div>
+        <p class="ck-note">Pagamento seguro · Pedido confirmado por WhatsApp</p>
     </div>
   </div>
 </div>
@@ -5462,8 +5528,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     var on   = 'RL.ORDER.' + (Math.floor(Math.random() * 9000) + 1000);
     var itens = cart.map(function (i) { return i.name + ' (' + i.size + ') - ' + i.price; }).join(', ');
     var fr   = _frSel ? (_frSel.tipo + ' R$ ' + _frSel.v.toFixed(2)) : 'A definir';
-    var end  = document.getElementById('ck-rua').value + ', ' + document.getElementById('ck-num').value +
-               ' - ' + document.getElementById('ck-cidade').value + '/' + document.getElementById('ck-uf').value;
+    var comp = document.getElementById('ck-complemento') ? document.getElementById('ck-complemento').value.trim() : '';
+      var end  = document.getElementById('ck-rua').value + ', ' + document.getElementById('ck-num').value + (comp ? ', ' + comp : '') + ' - ' + document.getElementById('ck-cidade').value + '/' + document.getElementById('ck-uf').value;
     var clientEmail = document.getElementById('ck-email').value;
     var clientNome  = document.getElementById('ck-nome').value;
     // Notificação interna via Formspree
@@ -5564,10 +5630,66 @@ window.addEventListener('DOMContentLoaded', async () => {
       }
       window._ckPaymentId = data.id;
       ckEnviarPedido('PIX - R$ ' + total.toFixed(2));
+      // Iniciar polling de status
+      ckStartPolling(data.id);
     })
     .catch(function() {
       qrWrap.innerHTML = '<p style="color:#c0392b;font-family:monospace;font-size:9px;padding:20px 0">Erro de conexao. Tente novamente.</p>';
     });
+  };
+
+  var _ckPollingTimer = null;
+
+  window.ckStartPolling = function(paymentId) {
+    if (_ckPollingTimer) clearInterval(_ckPollingTimer);
+    var pollingEl = document.getElementById('ck-polling-status');
+    if (pollingEl) pollingEl.style.display = 'flex';
+    var attempts = 0;
+    var maxAttempts = 60; // 5 minutos (60 x 5s)
+    _ckPollingTimer = setInterval(function() {
+      attempts++;
+      if (attempts > maxAttempts) {
+        clearInterval(_ckPollingTimer);
+        if (pollingEl) pollingEl.style.display = 'none';
+        return;
+      }
+      fetch('/.netlify/functions/status-pagamento?id=' + paymentId)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.status === 'approved') {
+            clearInterval(_ckPollingTimer);
+            ckShowAprovado();
+          }
+        })
+        .catch(function() {});
+    }, 5000);
+  };
+
+  window.ckShowAprovado = function() {
+    // Esconder QR e botões
+    var pixPanel = document.getElementById('ck-pix-panel');
+    if (pixPanel) {
+      var children = pixPanel.children;
+      for (var i = 0; i < children.length; i++) {
+        if (children[i].id !== 'ck-aprovado') {
+          children[i].style.display = 'none';
+        }
+      }
+    }
+    var pollingEl = document.getElementById('ck-polling-status');
+    if (pollingEl) pollingEl.style.display = 'none';
+    // Mostrar tela de aprovado
+    var aprovado = document.getElementById('ck-aprovado');
+    if (aprovado) aprovado.classList.add('show');
+    // Limpar carrinho
+    cart = [];
+    if (typeof saveCart === 'function') saveCart();
+    updateCartBadge();
+    // Atualizar link WPP
+    var wppEl = document.getElementById('ck-wpp-aprovado');
+    var nome = document.getElementById('ck-nome') ? document.getElementById('ck-nome').value : '';
+    var msg = encodeURIComponent('Oi! Sou ' + nome + ' e acabei de pagar meu pedido Raver Lab via Pix. Aguardo confirmacao!');
+    if (wppEl) wppEl.href = 'https://wa.me/5515991375380?text=' + msg;
   };
 
   window.ckCopyPix = function () {
@@ -5925,12 +6047,20 @@ window.pvClose = function() {
 };
 
 window.pvAddToCart = function() {
+  if (!_pvSelSize) {
+    alert('Selecione um tamanho antes de continuar.');
+    return;
+  }
+  if (!_pvEssence) {
+    alert('Escolha a opção de essência antes de continuar.');
+    return;
+  }
   cart.push({
     id: Date.now(),
     name: _pvName,
     price: _pvPrice,
-    size: _pvSelSize || '—',
-    essence: _pvEssence || '—',
+    size: _pvSelSize,
+    essence: _pvEssence,
     img: _pvImages[0] || null
   });
   if (typeof saveCart === 'function') saveCart();
