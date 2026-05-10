@@ -4411,17 +4411,15 @@
     document.getElementById('cartCountBadge').textContent = cart.length;
   }
   function renderCart() {
-    const list = document.getElementById('cartItemsList');
-    const empty = document.getElementById('cartEmpty');
-    const footer = document.getElementById('cartFooter');
+    var list = document.getElementById('cartItemsList');
+    var footer = document.getElementById('cartFooter');
+    if (!list) return;
     if (!cart.length) {
-      empty.style.display = 'block';
-      footer.style.display = 'none';
       list.innerHTML = '<div class="cart-empty" id="cartEmpty"><p>Nenhuma peça no carrinho.</p></div>';
+      if (footer) footer.style.display = 'none';
       return;
     }
-    empty.style.display = 'none';
-    footer.style.display = 'block';
+    if (footer) footer.style.display = 'block';
     let total = 0;
     list.innerHTML = cart.map(item => {
       const priceNum = parseFloat(item.price.replace('R$','').replace(/\./g,'').replace(',','.').trim()) || 0;
@@ -5495,11 +5493,20 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
 
   function ckValidate() {
+    // Frete obrigatório
+    if (!_frSel) {
+      var errEl = document.getElementById('ck-err');
+      if (errEl) { errEl.textContent = 'Calcule e selecione uma opção de frete antes de continuar.'; errEl.classList.add('show'); }
+      var cepEl = document.getElementById('ck-cep');
+      if (cepEl) cepEl.focus();
+      return false;
+    }
     var ids = ['ck-nome','ck-email','ck-rua','ck-num','ck-cidade','ck-uf'];
     for (var i = 0; i < ids.length; i++) {
       var el = document.getElementById(ids[i]);
       if (!el || !el.value.trim()) {
-        document.getElementById('ck-err').classList.add('show');
+        var errEl = document.getElementById('ck-err');
+        if (errEl) { errEl.textContent = 'Preencha todos os campos obrigatórios.'; errEl.classList.add('show'); }
         if (el) el.focus();
         return false;
       }
@@ -5821,13 +5828,14 @@ window.addEventListener('DOMContentLoaded', async () => {
         → substitua EMAILJS_PUBLIC_KEY abaixo
      6. Substitua os IDs abaixo pelos seus
   ────────────────────────────────────────── */
-  var EMAILJS_PUBLIC_KEY    = 'wzenITlJUqEnPE-JB';
-  var EMAILJS_SERVICE_ID    = 'service_j20zhfo';
+  var EMAILJS_PUBLIC_KEY      = 'wzenITlJUqEnPE-JB';
+  var EMAILJS_SERVICE_ID      = 'service_j20zhfo';
   var EMAILJS_TPL_BOAS_VINDAS = '1yof3hu';
   var EMAILJS_TPL_PEDIDO      = 'aj713l4';
+  var EMAILJS_TPL_STATUS      = 'aj713l4'; // Reusa template de pedido para status
 
   function ejsInit() {
-    if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'SEU_PUBLIC_KEY_AQUI') {
+    if (window.emailjs && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY.length > 10) {
       emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
       return true;
     }
@@ -6202,10 +6210,21 @@ window.pvAddToCart = function() {
 
 
   /* ── ADMIN PEDIDOS ── */
+  var STATUS_OPTIONS = [
+    'Aguardando confirmacao',
+    'Pagamento confirmado',
+    'Em producao',
+    'Enviado',
+    'Entregue',
+    'Cancelado'
+  ];
+
+  // Mapa global de pedidos para atualização
+  window._allOrdersMap = {};
+
   window.adminLoadPedidos = function() {
     var container = document.getElementById('admin-pedidos-list');
     if (!container) return;
-    // Carregar todos os pedidos salvos no localStorage de todos os usuários
     var users = [];
     try { users = JSON.parse(localStorage.getItem('rl_users') || '[]'); } catch(e) {}
     var allOrders = [];
@@ -6213,24 +6232,93 @@ window.pvAddToCart = function() {
       var ords = [];
       try { ords = JSON.parse(localStorage.getItem('rl_orders_' + u.id) || '[]'); } catch(e) {}
       ords.forEach(function(o) {
-        allOrders.push(Object.assign({}, o, { cliente: u.nome, email: u.email }));
+        var order = Object.assign({}, o, { cliente: u.nome, email: u.email, userId: u.id });
+        allOrders.push(order);
+        window._allOrdersMap[o.id] = { order: order, userId: u.id };
       });
     });
     if (!allOrders.length) {
       container.innerHTML = '<div class="admin-empty"><p class="admin-empty-text">Nenhum pedido encontrado ainda.</p></div>';
       return;
     }
-    // Ordenar por data (mais recente primeiro)
     allOrders.sort(function(a, b) { return b.id > a.id ? 1 : -1; });
+
+    var statusColors = {
+      'Aguardando confirmacao': '#e67e22',
+      'Pagamento confirmado': '#2980b9',
+      'Em producao': '#8e44ad',
+      'Enviado': '#27ae60',
+      'Entregue': '#1A1714',
+      'Cancelado': '#c0392b'
+    };
+
     container.innerHTML = allOrders.map(function(o) {
-      return '<div class="admin-product-row" style="grid-template-columns:1fr 1fr 1fr 120px 100px">' +
-        '<div><div class="admin-product-name">' + (o.id || '—') + '</div><div class="admin-product-col" style="margin-top:4px">' + (o.date || '—') + '</div></div>' +
-        '<div><div class="admin-product-col">' + (o.cliente || '—') + '</div><div class="admin-product-col">' + (o.email || '—') + '</div></div>' +
-        '<div class="admin-product-col" style="color:#aaa">' + (o.items || '—') + '</div>' +
-        '<div class="admin-product-price">' + (o.total || '—') + '</div>' +
-        '<div><span style="font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:4px 10px;border:1px solid #333;color:#888">' + (o.status || 'Pendente') + '</span></div>' +
-      '</div>';
+      var sc = statusColors[o.status] || '#9B8E80';
+      var opts = STATUS_OPTIONS.map(function(s) {
+        return '<option value="' + s + '"' + (o.status === s ? ' selected' : '') + '>' + s + '</option>';
+      }).join('');
+      return (
+        '<div class="admin-product-row" style="grid-template-columns:180px 1fr 1fr 100px 180px;gap:16px;padding:16px 20px;">' +
+        '<div>' +
+          '<div class="admin-product-name" style="font-size:12px">' + (o.id || '-') + '</div>' +
+          '<div class="admin-product-col" style="margin-top:4px">' + (o.date || '-') + '</div>' +
+        '</div>' +
+        '<div>' +
+          '<div class="admin-product-col" style="color:#1A1714;font-weight:600">' + (o.cliente || '-') + '</div>' +
+          '<div class="admin-product-col">' + (o.email || '-') + '</div>' +
+        '</div>' +
+        '<div class="admin-product-col">' + (o.items || '-') + '</div>' +
+        '<div class="admin-product-price" style="font-size:16px">' + (o.total || '-') + '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:6px">' +
+          '<select data-oid="' + o.id + '" onchange="adminAtualizarStatus(this.getAttribute(\'data-oid\'), this.value)" style="font-family:monospace;font-size:9px;letter-spacing:.1em;padding:7px 10px;border:1px solid #E8E3DB;background:#fff;cursor:pointer;width:100%;outline:none;">' + opts + '</select>' +
+        '</div>' +
+        '</div>'
+      );
     }).join('');
+  };
+
+  window.adminAtualizarStatus = function(orderId, novoStatus) {
+    var entry = window._allOrdersMap[orderId];
+    if (!entry) return;
+    var userId = entry.userId;
+    var key = 'rl_orders_' + userId;
+    var orders = [];
+    try { orders = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+    var updated = false;
+    var clientEmail = entry.order.email;
+    var clientNome = entry.order.cliente;
+    orders = orders.map(function(o) {
+      if (o.id === orderId) {
+        updated = true;
+        return Object.assign({}, o, { status: novoStatus });
+      }
+      return o;
+    });
+    if (updated) {
+      localStorage.setItem(key, JSON.stringify(orders));
+      // Atualizar mapa local
+      entry.order.status = novoStatus;
+      // Enviar email para o cliente
+      adminEnviarEmailStatus(clientNome, clientEmail, orderId, novoStatus, entry.order.items, entry.order.total);
+    }
+  };
+
+  window.adminEnviarEmailStatus = function(nome, email, pedidoId, status, items, total) {
+    if (!email || !nome) return;
+    // EmailJS — email bonito para o cliente
+    if (typeof ejsInit === 'function' && ejsInit()) {
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_PEDIDO, {
+        nome        : nome,
+        email       : email,
+        to_email    : email,
+        pedido_id   : pedidoId + ' — ' + status,
+        itens       : items || '-',
+        frete       : '-',
+        endereco    : '-',
+        pagamento   : 'Atualizacao de status: ' + status,
+        reply_to    : 'studioraverlab@gmail.com'
+      }).catch(function() {});
+    }
   };
 
 }());
