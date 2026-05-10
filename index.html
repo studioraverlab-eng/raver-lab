@@ -4412,17 +4412,17 @@
   }
   function renderCart() {
     var list = document.getElementById('cartItemsList');
-    var footer = document.getElementById('cartFooter');
     if (!list) return;
-    if (!cart.length) {
-      list.innerHTML = '<div class="cart-empty" id="cartEmpty"><p>Nenhuma peça no carrinho.</p></div>';
+    var footer = document.getElementById('cartFooter');
+    if (!cart || !cart.length) {
+      list.innerHTML = '<div class="cart-empty"><p>Nenhuma peça no carrinho.</p></div>';
       if (footer) footer.style.display = 'none';
       return;
     }
     if (footer) footer.style.display = 'block';
-    let total = 0;
-    list.innerHTML = cart.map(item => {
-      const priceNum = parseFloat(item.price.replace('R$','').replace(/\./g,'').replace(',','.').trim()) || 0;
+    var total = 0;
+    list.innerHTML = cart.map(function(item) {
+      var priceNum = parseFloat(item.price.replace('R$','').replace(/\./g,'').replace(',','.').trim()) || 0;
       total += priceNum;
       return `
         <div class="cart-item">
