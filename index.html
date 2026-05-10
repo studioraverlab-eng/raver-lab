@@ -3036,6 +3036,7 @@
 <!-- HEADER -->
 <header id="site-header">
   <nav class="nav-left">
+    <a href="#" class="nav-link" onclick="showSection('home')">Início</a>
     <a href="#" class="nav-link" onclick="showSection('shop')">Coleção</a>
     <a href="#" class="nav-link" onclick="showSection('lab')">Lab</a>
     <a href="#" class="nav-link" onclick="showSection('special')">Projetos Especiais</a>
@@ -3253,8 +3254,9 @@
       <div>
         <p class="footer-col-title">Contato</p>
         <div class="footer-links">
-          <a href="#" class="footer-link">Instagram</a>
-          <a href="#" class="footer-link">studio@raverlab.com</a>
+          <a href="https://instagram.com/lab.raver" target="_blank" class="footer-link">@lab.raver</a>
+          <a href="mailto:studioraverlab@gmail.com" class="footer-link">studioraverlab@gmail.com</a>
+          <a href="https://wa.me/5515991375380" target="_blank" class="footer-link">WhatsApp</a>
           <a href="#" class="footer-link">Brasil</a>
         </div>
       </div>
@@ -3376,7 +3378,7 @@
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">Cultura eletrônica<br>traduzida em forma.</p></div>
       <div><p class="footer-col-title">Navegar</p><div class="footer-links"><a href="#" class="footer-link" onclick="showSection('home')">Início</a><a href="#" class="footer-link" onclick="showSection('lab')">Lab</a><a href="#" class="footer-link" onclick="showSection('archive')">Arquivo</a></div></div>
-      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="#" class="footer-link">Instagram</a><a href="#" class="footer-link">studio@raverlab.com</a></div></div>
+      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="https://instagram.com/lab.raver" target="_blank" class="footer-link">@lab.raver</a><a href="mailto:studioraverlab@gmail.com" class="footer-link">studioraverlab@gmail.com</a></div></div>
     </footer>
     <div class="footer-bottom"><span class="footer-copy">© 2026 Raver Lab</span><span class="footer-system-id">RL.SHOP — 9 objetos ativos</span></div>
   </div>
@@ -3394,75 +3396,32 @@
         </div>
         <div>
           <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:20px;">Do som ao objeto</p>
-          <p class="lab-intro-text">Um espaço para transformar memória, atmosfera e linguagem sonora em forma física. Você envia referências emocionais, visuais e musicais. Nós desenvolvemos uma proposta original em até 48–72 horas.</p>
+          <p class="lab-intro-text">Você nos envia suas referências — musicais, visuais e emocionais. Nós desenvolvemos uma arte exclusiva para sua camiseta em até 48–72 horas. Para iniciar, é necessário o pagamento de R$15.</p>
         </div>
       </div>
-
-      <!-- ATIVAÇÃO -->
-      <div style="max-width:900px;margin:0 auto;padding:80px 48px;">
-
-        <div style="border:1px solid var(--border);padding:56px;text-align:center;margin-bottom:0;">
-          <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:28px;">Ativação do Lab</p>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,80px);font-weight:300;letter-spacing:-0.02em;color:var(--fg);line-height:1;margin-bottom:24px;">R$10</p>
-          <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);max-width:380px;margin:0 auto 40px;line-height:1.8;">Valor de entrada para iniciar o desenvolvimento criativo.</p>
-          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;align-items:center;">
-            <a href="https://link.mercadopago.com.br/raverlab" target="_blank" class="btn-primary" style="text-decoration:none;">Ativar Lab</a>
-            <button onclick="unlockLab()" class="btn-outline" style="cursor:pointer;">Já paguei — Continuar</button>
-          </div>
-          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;color:var(--fg-muted);text-transform:uppercase;margin-top:32px;opacity:0.6;">pagamento via link seguro · confirmação por e-mail</p>
-        </div>
-
+      <div style="padding:80px 48px;text-align:center;border-top:1px solid var(--border);">
+        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:32px;">R$15 para enviar sua proposta de arte</p>
+        <button onclick="unlockLab()" class="btn-primary" style="cursor:pointer;font-size:10px;letter-spacing:0.3em;">Iniciar Lab →</button>
       </div>
     </div>
 
     <!-- FORM (aparece após confirmação de pagamento) -->
     <div class="lab-form" id="labFormContainer" style="display:none;">
 
-      <!-- Cabeçalho do formulário -->
+      <!-- Cabeçalho -->
       <div style="margin-bottom:64px;padding-bottom:32px;border-bottom:1px solid var(--border);">
         <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">RL.LAB — Criação Ativa</p>
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:300;letter-spacing:-0.02em;color:var(--fg);line-height:1.05;margin-bottom:20px;">Iniciar criação</h2>
-        <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);max-width:520px;line-height:1.8;">Agora envie sua matéria-prima — referências emocionais, sonoras e visuais que irão orientar a construção da peça.</p>
+        <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);max-width:520px;line-height:1.8;">Envie suas referências — sonoras, visuais e emocionais — para desenvolvermos sua arte exclusiva.</p>
       </div>
 
-      <!-- Step 01 -->
+      <!-- ETAPA 01 — Referência Sonora -->
       <div class="lab-step active" id="step-1">
         <div class="step-header">
-          <span class="step-num">Etapa 01 / 05</span>
-          <h3 class="step-name">Atmosfera</h3>
-        </div>
-        <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);margin-bottom:32px;line-height:1.8;">Selecione a direção emocional do seu objeto.</p>
-        <div class="atmosphere-grid">
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Hipnótico</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Emocional</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Industrial</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Amanhecer</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Dark Room</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Tribal</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Eufórico</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Cinemático</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Cru</button>
-          <button class="atm-btn" onclick="selectOption(this, 'atm')">Orgânico</button>
-        </div>
-        <div class="step-nav">
-          <div class="step-progress">
-            <div class="progress-dot active"></div>
-            <div class="progress-dot"></div>
-            <div class="progress-dot"></div>
-            <div class="progress-dot"></div>
-            <div class="progress-dot"></div>
-          </div>
-          <button class="transmit-btn" onclick="nextStep(2)"><span>Próximo Signal →</span></button>
-        </div>
-      </div>
-
-      <!-- Step 02 -->
-      <div class="lab-step" id="step-2">
-        <div class="step-header">
-          <span class="step-num">Etapa 02 / 05</span>
+          <span class="step-num">Etapa 01 / 04</span>
           <h3 class="step-name">Referência Sonora</h3>
         </div>
-        <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);margin-bottom:40px;line-height:1.8;">Qual som, momento ou memória formou esse objeto?</p>
+        <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);margin-bottom:40px;line-height:1.8;">Qual som, momento ou memória deu origem a essa peça?</p>
         <div class="lab-input-group">
           <label class="lab-label">Artista ou track</label>
           <input type="text" class="lab-input" placeholder="Ben Böhmer, Monolink, Sara Landry...">
@@ -3476,23 +3435,21 @@
           <input type="text" class="lab-input" placeholder="Descreva o sentimento, o momento, a memória...">
         </div>
         <div class="step-nav">
-          <button class="btn-outline" onclick="nextStep(1)" style="padding:12px 28px;font-size:10px;">← Voltar</button>
           <div class="step-progress">
-            <div class="progress-dot"></div>
             <div class="progress-dot active"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
           </div>
-          <button class="transmit-btn" onclick="nextStep(3)"><span>Próximo Signal →</span></button>
+          <button class="transmit-btn" onclick="nextStep(2)"><span>Próximo →</span></button>
         </div>
       </div>
 
-      <!-- Step 03 -->
-      <div class="lab-step" id="step-3">
+      <!-- ETAPA 02 — Material Visual -->
+      <div class="lab-step" id="step-2">
         <div class="step-header">
-          <span class="step-num">Etapa 03 / 05</span>
-          <h3 class="step-name">Referências Visuais</h3>
+          <span class="step-num">Etapa 02 / 04</span>
+          <h3 class="step-name">Material Visual</h3>
         </div>
         <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);margin-bottom:40px;line-height:1.8;">Qual material visual deve dar forma ao objeto?</p>
         <div class="lab-input-group">
@@ -3500,12 +3457,12 @@
           <input type="text" class="lab-input" placeholder="-23.5505°, 46.6333° / Berlin / 07.03.2024 / SIGNAL...">
         </div>
         <div class="lab-input-group">
-          <label class="lab-label">Formas arquitetônicas ou conceitos visuais</label>
-          <input type="text" class="lab-input" placeholder="Concreto brutalista / grade industrial / geometria minimal...">
+          <label class="lab-label">Elementos visuais</label>
+          <input type="text" class="lab-input" placeholder="Figura, símbolo, paisagem, abstrato, só tipografia...">
         </div>
         <div class="lab-input-group">
-          <label class="lab-label">Referências tipográficas</label>
-          <input type="text" class="lab-input" placeholder="Modernismo suíço / monoespaçado / editorial...">
+          <label class="lab-label">Estilo de letra</label>
+          <input type="text" class="lab-input" placeholder="Manuscrita, grunge, geométrica, clássica, moderna...">
         </div>
         <div class="upload-area" id="labDropZone"
           ondragover="event.preventDefault(); this.classList.add('drag-over');"
@@ -3520,22 +3477,21 @@
           <img id="labDropPreview" style="max-width:100%;max-height:200px;display:none;margin-top:12px;object-fit:contain;" src="" alt="preview">
         </div>
         <div class="step-nav">
-          <button class="btn-outline" onclick="nextStep(2)" style="padding:12px 28px;font-size:10px;">← Voltar</button>
+          <button class="btn-outline" onclick="nextStep(1)" style="padding:12px 28px;font-size:10px;">← Voltar</button>
           <div class="step-progress">
-            <div class="progress-dot"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot active"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
           </div>
-          <button class="transmit-btn" onclick="nextStep(4)"><span>Próximo Signal →</span></button>
+          <button class="transmit-btn" onclick="nextStep(3)"><span>Próximo →</span></button>
         </div>
       </div>
 
-      <!-- Step 04 -->
-      <div class="lab-step" id="step-4">
+      <!-- ETAPA 03 — Tipo de Objeto -->
+      <div class="lab-step" id="step-3">
         <div class="step-header">
-          <span class="step-num">Etapa 04 / 05</span>
+          <span class="step-num">Etapa 03 / 04</span>
           <h3 class="step-name">Tipo de Objeto</h3>
         </div>
         <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);margin-bottom:40px;line-height:1.8;">Qual forma física deve carregar esse signal?</p>
@@ -3550,49 +3506,56 @@
           </button>
         </div>
         <div class="step-nav">
-          <button class="btn-outline" onclick="nextStep(3)" style="padding:12px 28px;font-size:10px;">← Voltar</button>
+          <button class="btn-outline" onclick="nextStep(2)" style="padding:12px 28px;font-size:10px;">← Voltar</button>
           <div class="step-progress">
-            <div class="progress-dot"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot active"></div>
             <div class="progress-dot"></div>
           </div>
-          <button class="transmit-btn" onclick="nextStep(5)"><span>Próximo Signal →</span></button>
+          <button class="transmit-btn" onclick="nextStep(4)"><span>Próximo →</span></button>
         </div>
       </div>
 
-      <!-- Step 05 -->
-      <div class="lab-step" id="step-5">
+      <!-- ETAPA 04 — Intenção de Design -->
+      <div class="lab-step" id="step-4">
         <div class="step-header">
-          <span class="step-num">Etapa 05 / 05</span>
+          <span class="step-num">Etapa 04 / 04</span>
           <h3 class="step-name">Intenção de Design</h3>
         </div>
         <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);margin-bottom:40px;line-height:1.8;">Como o design deve ser sentido?</p>
-        <div class="intention-grid">
+        <div class="intention-grid" style="grid-template-columns:repeat(2,1fr);">
           <button class="int-btn" onclick="selectOption(this, 'int')">
-            <p class="int-name">Minimal</p>
-            <p class="int-desc">Redução à essência.<br>Silêncio como design.</p>
+            <p class="int-name">Pesado</p>
+            <p class="int-desc">Grosso. Sem espaço pra dúvida.</p>
           </button>
           <button class="int-btn" onclick="selectOption(this, 'int')">
-            <p class="int-name">Técnico</p>
-            <p class="int-desc">Linguagem de sistemas.<br>Precisão acima da emoção.</p>
+            <p class="int-name">Suave</p>
+            <p class="int-desc">Leveza. Fluidez nas formas.</p>
           </button>
           <button class="int-btn" onclick="selectOption(this, 'int')">
-            <p class="int-name">Brutal</p>
-            <p class="int-desc">Direto. Pesado.<br>Sem suavizações.</p>
+            <p class="int-name">Agressivo</p>
+            <p class="int-desc">Tensão visual. Impacto imediato.</p>
           </button>
           <button class="int-btn" onclick="selectOption(this, 'int')">
-            <p class="int-name">Poético</p>
-            <p class="int-desc">Emoção através<br>da abstração.</p>
+            <p class="int-name">Delicado</p>
+            <p class="int-desc">Refinado. Detalhes que falam baixo.</p>
           </button>
           <button class="int-btn" onclick="selectOption(this, 'int')">
-            <p class="int-name">Abstrato</p>
-            <p class="int-desc">Não-literal.<br>Signal, não símbolo.</p>
+            <p class="int-name">Caótico</p>
+            <p class="int-desc">Sem regra. Energia crua.</p>
           </button>
           <button class="int-btn" onclick="selectOption(this, 'int')">
-            <p class="int-name">Arquivo</p>
-            <p class="int-desc">Documental.<br>Estrutura atemporal.</p>
+            <p class="int-name">Minimalista</p>
+            <p class="int-desc">Só o essencial. Nada a mais.</p>
+          </button>
+          <button class="int-btn" onclick="selectOption(this, 'int')">
+            <p class="int-name">Intenso</p>
+            <p class="int-desc">Tudo no limite.</p>
+          </button>
+          <button class="int-btn" onclick="selectOption(this, 'int')">
+            <p class="int-name">Sombrio</p>
+            <p class="int-desc">Escuro. Peso emocional.</p>
           </button>
         </div>
         <div class="lab-input-group">
@@ -3604,9 +3567,8 @@
           <input type="tel" class="lab-input" id="labWhatsappInput" placeholder="(11) 99999-9999" oninput="maskWhatsapp(this)">
         </div>
         <div class="step-nav">
-          <button class="btn-outline" onclick="nextStep(4)" style="padding:12px 28px;font-size:10px;">← Voltar</button>
+          <button class="btn-outline" onclick="nextStep(3)" style="padding:12px 28px;font-size:10px;">← Voltar</button>
           <div class="step-progress">
-            <div class="progress-dot"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
@@ -3624,9 +3586,13 @@
 
         <!-- PIX PAYMENT -->
         <div style="margin:48px auto;max-width:400px;border:1px solid var(--border);padding:40px;text-align:center;">
-          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:24px;">Pagamento via Pix</p>
+          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:24px;">Finalizar Pagamento</p>
           <p style="font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:var(--fg);line-height:1;margin-bottom:8px;">R$15</p>
-          <p style="font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-muted);margin-bottom:32px;">Ativação do Lab — desenvolvimento criativo</p>
+          <p style="font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-muted);margin-bottom:24px;">Ativação do Lab — desenvolvimento criativo</p>
+          <div style="display:flex;gap:8px;margin-bottom:28px;justify-content:center;">
+            <button onclick="labMostrarPix()" style="flex:1;max-width:160px;padding:12px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--fg)';this.style.color='var(--fg)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--fg-soft)'">⚡ Pix</button>
+            <button onclick="labPagarMP()" style="flex:1;max-width:160px;padding:12px;border:1px solid var(--fg);background:var(--fg);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--bg);cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">💳 Cartão</button>
+          </div>
 
           <!-- QR Code via API gratuita -->
           <div id="pix-qr-container" style="margin:0 auto 24px;width:180px;height:180px;background:white;padding:8px;display:flex;align-items:center;justify-content:center;">
@@ -3748,7 +3714,7 @@
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">18 objetos arquivados.<br>Cada um carrega uma memória.</p></div>
       <div><p class="footer-col-title">Navegar</p><div class="footer-links"><a href="#" class="footer-link" onclick="showSection('home')">Início</a><a href="#" class="footer-link" onclick="showSection('shop')">Coleção</a><a href="#" class="footer-link" onclick="showSection('lab')">Lab</a></div></div>
-      <div><p class="footer-col-title">Sistema</p><div class="footer-links"><a href="#" class="footer-link">studio@raverlab.com</a><a href="#" class="footer-link">Instagram</a></div></div>
+      <div><p class="footer-col-title">Sistema</p><div class="footer-links"><a href="mailto:studioraverlab@gmail.com" class="footer-link">studioraverlab@gmail.com</a><a href="https://instagram.com/lab.raver" target="_blank" class="footer-link">@lab.raver</a></div></div>
     </footer>
     <div class="footer-bottom"><span class="footer-copy">© 2026 Raver Lab</span><span class="footer-system-id">RL.ARQUIVO — 18 objetos indexados</span></div>
   </div>
@@ -3842,7 +3808,7 @@
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">Curated cultural radar.<br>Sound moves cities.</p></div>
       <div><p class="footer-col-title">Navegar</p><div class="footer-links"><a href="#" class="footer-link" onclick="showSection('home')">Início</a><a href="#" class="footer-link" onclick="showSection('lab')">The Lab</a><a href="#" class="footer-link" onclick="showSection('archive')">Archive</a></div></div>
-      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="#" class="footer-link">Instagram</a><a href="#" class="footer-link">studio@raverlab.com</a></div></div>
+      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="https://instagram.com/lab.raver" target="_blank" class="footer-link">@lab.raver</a><a href="mailto:studioraverlab@gmail.com" class="footer-link">studioraverlab@gmail.com</a></div></div>
     </footer>
     <div class="footer-bottom"><span class="footer-copy">© 2026 Raver Lab</span><span class="footer-system-id">RL.SIGNALS — 9 events indexed</span></div>
   </div>
@@ -3957,7 +3923,7 @@
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">Frequências curadas.<br>Do som ao objeto.</p></div>
       <div><p class="footer-col-title">Navegar</p><div class="footer-links"><a href="#" class="footer-link" onclick="showSection('home')">Início</a><a href="#" class="footer-link" onclick="showSection('shop')">Coleção</a><a href="#" class="footer-link" onclick="showSection('archive')">Archive</a></div></div>
-      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="#" class="footer-link">Instagram</a><a href="#" class="footer-link">studio@raverlab.com</a></div></div>
+      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="https://instagram.com/lab.raver" target="_blank" class="footer-link">@lab.raver</a><a href="mailto:studioraverlab@gmail.com" class="footer-link">studioraverlab@gmail.com</a></div></div>
     </footer>
     <div class="footer-bottom"><span class="footer-copy">© 2026 Raver Lab</span><span class="footer-system-id">RL.PLAYLISTS — 4 coleções</span></div>
   </div>
@@ -3979,7 +3945,7 @@
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">Objetos fora do catálogo.<br>Criação sem formato fixo.</p></div>
       <div><p class="footer-col-title">Navegar</p><div class="footer-links"><a href="#" class="footer-link" onclick="showSection('home')">Início</a><a href="#" class="footer-link" onclick="showSection('shop')">Coleção</a><a href="#" class="footer-link" onclick="showSection('lab')">Lab</a></div></div>
-      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="#" class="footer-link">Instagram</a><a href="#" class="footer-link">studio@raverlab.com</a></div></div>
+      <div><p class="footer-col-title">Contato</p><div class="footer-links"><a href="https://instagram.com/lab.raver" target="_blank" class="footer-link">@lab.raver</a><a href="mailto:studioraverlab@gmail.com" class="footer-link">studioraverlab@gmail.com</a></div></div>
     </footer>
     <div class="footer-bottom"><span class="footer-copy">© 2026 Raver Lab</span><span class="footer-system-id">RL.ESPECIAL — projetos sob consulta</span></div>
   </div>
@@ -4225,7 +4191,7 @@
     const success = document.getElementById('transmission-success');
     success.classList.add('active');
     document.getElementById('protoId').textContent = protoId;
-    if (typeof carregarQRCode === 'function') carregarQRCode();
+    window._labPixGerado = false; // reset para nova geração
   }
 
   function resetLab() {
@@ -6068,6 +6034,103 @@ window.pvAddToCart = function() {
   pvClose();
   setTimeout(openCart, 350);
 };
+
+
+  /* ── LAB PAYMENT ── */
+  window.labMostrarPix = function () {
+    // Mostrar o container do QR já existente
+    var container = document.getElementById('pix-qr-container');
+    if (!container) return;
+    // Pegar email do lab
+    var email = document.getElementById('labEmailInput') ? document.getElementById('labEmailInput').value.trim() : '';
+    var nome  = email ? email.split('@')[0] : 'Cliente';
+    if (!email) { alert('Preencha seu e-mail antes de gerar o Pix.'); return; }
+    // Já foi gerado?
+    if (window._labPixGerado) return;
+    window._labPixGerado = true;
+    container.innerHTML = '<p style="font-family:monospace;font-size:9px;color:#999;padding:20px 0">Gerando QR Code...</p>';
+    fetch('/.netlify/functions/criar-pagamento', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: nome, email: email, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) {
+        container.innerHTML = '<p style="color:#c0392b;font-family:monospace;font-size:9px;padding:20px 0">Erro ao gerar Pix. Tente novamente.</p>';
+        window._labPixGerado = false;
+        return;
+      }
+      if (data.qr_code_base64) {
+        container.innerHTML = '<img src="data:image/png;base64,' + data.qr_code_base64 + '" style="width:164px;height:164px;display:block;margin:0 auto" alt="QR Code Pix">';
+      }
+      var keyEl = document.getElementById('pix-key');
+      if (keyEl && data.qr_code) keyEl.textContent = data.qr_code;
+      window._labPaymentId = data.id;
+      // Iniciar polling
+      labStartPolling(data.id);
+    })
+    .catch(function() {
+      container.innerHTML = '<p style="color:#c0392b;font-family:monospace;font-size:9px;padding:20px 0">Erro de conexao. Tente novamente.</p>';
+      window._labPixGerado = false;
+    });
+  };
+
+  window.labPagarMP = function () {
+    var email = document.getElementById('labEmailInput') ? document.getElementById('labEmailInput').value.trim() : '';
+    var nome  = email ? email.split('@')[0] : 'Cliente';
+    if (!email) { alert('Preencha seu e-mail antes de continuar.'); return; }
+    fetch('/.netlify/functions/criar-preferencia', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: nome, email: email, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.init_point) {
+        window.open(data.init_point, '_blank');
+      } else {
+        window.open('https://link.mercadopago.com.br/raverlab', '_blank');
+      }
+    })
+    .catch(function() {
+      window.open('https://link.mercadopago.com.br/raverlab', '_blank');
+    });
+  };
+
+  var _labPollingTimer = null;
+
+  window.labStartPolling = function(paymentId) {
+    if (_labPollingTimer) clearInterval(_labPollingTimer);
+    var attempts = 0;
+    _labPollingTimer = setInterval(function() {
+      attempts++;
+      if (attempts > 60) { clearInterval(_labPollingTimer); return; }
+      fetch('/.netlify/functions/status-pagamento?id=' + paymentId)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.status === 'approved') {
+            clearInterval(_labPollingTimer);
+            labShowAprovado();
+          }
+        })
+        .catch(function() {});
+    }, 5000);
+  };
+
+  window.labShowAprovado = function() {
+    var payBlock = document.querySelector('.transmission-success > div[style*="border"]');
+    if (payBlock) payBlock.style.display = 'none';
+    var aprovado = document.createElement('div');
+    aprovado.style.cssText = 'text-align:center;padding:40px 0;animation:fadeUp .5s ease';
+    aprovado.innerHTML =
+      '<div class="ck-check" style="margin:0 auto 24px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+      '<h3 class="ck-aprovado-titulo">Pagamento Aprovado!</h3>' +
+      '<p class="ck-aprovado-sub">Sua proposta foi recebida.<br>Em 48-72h entramos em contato<br>com a arte pelo WhatsApp.</p>' +
+      '<a href="https://wa.me/5515991375380" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;background:#25D366;color:#fff;text-decoration:none;">Falar com a Raver Lab</a>';
+    var success = document.getElementById('transmission-success');
+    if (success) success.appendChild(aprovado);
+  };
 
 }());
 
