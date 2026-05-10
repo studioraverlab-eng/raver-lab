@@ -1031,12 +1031,12 @@
     opacity: 0.7;
   }
 
-  /* ─── ADMIN PANEL ─── */
+  /* ─── ADMIN PANEL — INTERFACE CLARA ─── */
   #admin-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: #0F0E0C;
+    background: #F5F4F2;
     z-index: 2000;
     overflow-y: auto;
   }
@@ -1048,13 +1048,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0;
+    background: #F5F4F2;
   }
   .admin-login-label {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.35em;
-    color: #333;
+    color: #9B8E80;
     text-transform: uppercase;
     margin-bottom: 48px;
   }
@@ -1062,7 +1062,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 48px;
     font-weight: 300;
-    color: #EDE9E2;
+    color: #1A1714;
     letter-spacing: -0.02em;
     margin-bottom: 48px;
     text-align: center;
@@ -1071,33 +1071,33 @@
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.25em;
-    color: #6B6158;
+    color: #9B8E80;
     text-transform: uppercase;
     margin-bottom: 20px;
   }
   .admin-pw-input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid #2E2820;
+    border-bottom: 1px solid #C8C0B4;
     padding: 14px 0;
     font-family: 'DM Mono', monospace;
     font-size: 14px;
-    color: #EDE9E2;
+    color: #1A1714;
     letter-spacing: 0.3em;
     outline: none;
     width: 260px;
     text-align: center;
     margin-bottom: 32px;
   }
-  .admin-pw-input:focus { border-color: #EDE9E2; }
+  .admin-pw-input:focus { border-color: #1A1714; }
   .admin-login-btn {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     padding: 16px 48px;
-    background: #EDE9E2;
-    color: #0F0E0C;
+    background: #1A1714;
+    color: #F5F4F2;
     border: none;
     cursor: pointer;
     transition: opacity 0.3s;
@@ -1115,74 +1115,76 @@
   }
   .admin-login-error.show { opacity: 1; }
 
-  /* ADMIN DASHBOARD */
-  .admin-dashboard { display: none; min-height: 100vh; background: #080808; }
+  /* DASHBOARD */
+  .admin-dashboard { display: none; min-height: 100vh; background: #F5F4F2; }
   .admin-dashboard.open { display: block; }
 
   .admin-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 48px;
-    border-bottom: 1px solid #1a1a1a;
+    padding: 20px 48px;
+    border-bottom: 1px solid #E0D9D0;
     position: sticky;
     top: 0;
-    background: #080808;
+    background: #FFFFFF;
     z-index: 10;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
   }
   .admin-logo {
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Mono', monospace;
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.35em;
+    font-weight: 500;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: #EDE9E2;
+    color: #1A1714;
   }
   .admin-logo span {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     font-weight: 400;
     letter-spacing: 0.2em;
-    color: #6B6158;
+    color: #9B8E80;
     margin-left: 16px;
   }
-  .admin-header-actions { display: flex; gap: 12px; align-items: center; }
+  .admin-header-actions { display: flex; gap: 10px; align-items: center; }
   .admin-btn {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    padding: 10px 20px;
-    border: 1px solid #2E2820;
-    background: transparent;
-    color: #888;
+    padding: 9px 18px;
+    border: 1px solid #C8C0B4;
+    background: #FFFFFF;
+    color: #4A4238;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s ease;
   }
-  .admin-btn:hover { border-color: #EDE9E2; color: #EDE9E2; }
-  .admin-btn.primary { background: #EDE9E2; color: #0F0E0C; border-color: #EDE9E2; }
+  .admin-btn:hover { border-color: #1A1714; color: #1A1714; }
+  .admin-btn.primary { background: #1A1714; color: #F5F4F2; border-color: #1A1714; }
   .admin-btn.primary:hover { opacity: 0.85; }
-  .admin-btn.danger { border-color: #c0392b; color: #c0392b; }
+  .admin-btn.danger { border-color: #c0392b; color: #c0392b; background: #fff; }
   .admin-btn.danger:hover { background: #c0392b; color: #fff; }
 
-  .admin-body { padding: 48px; }
+  .admin-body { padding: 40px 48px; }
 
   .admin-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: #1a1a1a;
-    margin-bottom: 48px;
+    gap: 16px;
+    margin-bottom: 40px;
   }
   .admin-stat {
-    background: #080808;
-    padding: 28px 24px;
+    background: #FFFFFF;
+    padding: 24px;
+    border: 1px solid #E8E3DB;
+    border-radius: 0;
   }
   .admin-stat-num {
     font-family: 'Cormorant Garamond', serif;
     font-size: 40px;
     font-weight: 300;
-    color: #EDE9E2;
+    color: #1A1714;
     line-height: 1;
     margin-bottom: 8px;
   }
@@ -1190,7 +1192,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 8px;
     letter-spacing: 0.25em;
-    color: #6B6158;
+    color: #9B8E80;
     text-transform: uppercase;
   }
 
@@ -1198,40 +1200,42 @@
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.3em;
-    color: #6B6158;
+    color: #9B8E80;
     text-transform: uppercase;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     padding-bottom: 16px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid #E8E3DB;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  /* PRODUCT LIST IN ADMIN */
-  .admin-products-list { display: flex; flex-direction: column; gap: 1px; margin-bottom: 48px; }
+  /* PRODUCT LIST */
+  .admin-products-list { display: flex; flex-direction: column; gap: 1px; margin-bottom: 40px; }
   .admin-product-row {
     display: grid;
     grid-template-columns: 72px 1fr 1fr 120px 120px 100px;
     align-items: center;
-    gap: 24px;
-    padding: 16px 20px;
-    background: #0d0d0d;
-    border: 1px solid #1a1a1a;
-    transition: background 0.2s;
+    gap: 20px;
+    padding: 14px 20px;
+    background: #FFFFFF;
+    border: 1px solid #E8E3DB;
+    border-bottom: none;
+    transition: background 0.15s;
   }
-  .admin-product-row:hover { background: #111; }
+  .admin-product-row:last-child { border-bottom: 1px solid #E8E3DB; }
+  .admin-product-row:hover { background: #FAF8F5; }
   .admin-product-thumb {
     width: 60px;
     height: 60px;
     object-fit: cover;
-    background: #1a1a1a;
+    background: #E8E3DB;
     display: block;
   }
   .admin-product-thumb-placeholder {
     width: 60px;
     height: 60px;
-    background: #1a1a1a;
+    background: #E8E3DB;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1239,37 +1243,37 @@
   .admin-product-name {
     font-family: 'Inter', sans-serif;
     font-size: 13px;
-    font-weight: 500;
-    color: #EDE9E2;
-    letter-spacing: 0.03em;
+    font-weight: 600;
+    color: #1A1714;
+    letter-spacing: 0.02em;
   }
   .admin-product-col {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
-    letter-spacing: 0.15em;
-    color: #555;
+    letter-spacing: 0.12em;
+    color: #6B6158;
     text-transform: uppercase;
   }
   .admin-product-price {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 300;
-    color: #888;
+    color: #1A1714;
   }
-  .admin-product-actions { display: flex; gap: 8px; }
+  .admin-product-actions { display: flex; gap: 6px; }
   .admin-row-btn {
     font-family: 'DM Mono', monospace;
     font-size: 8px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    padding: 7px 12px;
-    border: 1px solid #2E2820;
-    background: transparent;
-    color: #666;
+    padding: 6px 12px;
+    border: 1px solid #C8C0B4;
+    background: #FFFFFF;
+    color: #4A4238;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s;
   }
-  .admin-row-btn:hover { border-color: #EDE9E2; color: #EDE9E2; }
+  .admin-row-btn:hover { border-color: #1A1714; color: #1A1714; }
   .admin-row-btn.del:hover { border-color: #c0392b; color: #c0392b; }
 
   /* MODAL */
@@ -1277,78 +1281,81 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(26,23,20,0.5);
     z-index: 3000;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(4px);
   }
   .admin-modal-bg.open { display: flex; }
   .admin-modal {
-    background: #0d0d0d;
-    border: 1px solid #1a1a1a;
+    background: #FFFFFF;
+    border: 1px solid #E8E3DB;
     width: 680px;
     max-width: 95vw;
     max-height: 90vh;
     overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
   }
   .admin-modal-header {
-    padding: 28px 32px 20px;
-    border-bottom: 1px solid #1a1a1a;
+    padding: 24px 32px 20px;
+    border-bottom: 1px solid #E8E3DB;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: #FAF8F5;
   }
   .admin-modal-title {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.3em;
-    color: #888;
+    color: #6B6158;
     text-transform: uppercase;
   }
   .admin-modal-close {
     background: transparent;
     border: none;
-    color: #555;
+    color: #9B8E80;
     font-size: 20px;
     cursor: pointer;
     line-height: 1;
     padding: 0 4px;
     transition: color 0.2s;
   }
-  .admin-modal-close:hover { color: #EDE9E2; }
+  .admin-modal-close:hover { color: #1A1714; }
   .admin-modal-body { padding: 32px; }
 
-  .admin-field { margin-bottom: 24px; }
+  .admin-field { margin-bottom: 20px; }
   .admin-label {
     display: block;
     font-family: 'DM Mono', monospace;
     font-size: 8px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: #6B6158;
-    margin-bottom: 10px;
+    color: #9B8E80;
+    margin-bottom: 8px;
   }
   .admin-input {
     width: 100%;
-    background: #111;
-    border: 1px solid #1d1d1d;
-    padding: 12px 14px;
+    background: #FFFFFF;
+    border: 1px solid #E8E3DB;
+    padding: 11px 14px;
     font-family: 'Inter', sans-serif;
     font-size: 14px;
-    color: #EDE9E2;
+    color: #1A1714;
     outline: none;
     transition: border-color 0.2s;
   }
-  .admin-input:focus { border-color: #555; }
+  .admin-input:focus { border-color: #1A1714; }
   .admin-select {
     width: 100%;
-    background: #111;
-    border: 1px solid #1d1d1d;
-    padding: 12px 14px;
+    background: #FFFFFF;
+    border: 1px solid #E8E3DB;
+    padding: 11px 14px;
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.1em;
-    color: #EDE9E2;
+    color: #1A1714;
     outline: none;
     cursor: pointer;
     appearance: none;
@@ -1357,14 +1364,15 @@
 
   /* IMAGE UPLOAD */
   .img-upload-area {
-    border: 1px dashed #222;
+    border: 1px dashed #C8C0B4;
     padding: 32px;
     text-align: center;
     cursor: pointer;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s, background 0.2s;
     position: relative;
+    background: #FAF8F5;
   }
-  .img-upload-area:hover { border-color: #555; }
+  .img-upload-area:hover { border-color: #1A1714; background: #F5F2EE; }
   .img-upload-area input[type="file"] {
     position: absolute;
     inset: 0;
@@ -1377,86 +1385,75 @@
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.25em;
-    color: #6B6158;
+    color: #9B8E80;
     text-transform: uppercase;
   }
-  .img-preview-container {
-    position: relative;
-    margin-top: 16px;
-    display: none;
-  }
+  .img-preview-container { position: relative; margin-top: 16px; display: none; }
   .img-preview-container.show { display: block; }
-  .img-preview {
-    width: 100%;
-    max-height: 260px;
-    object-fit: cover;
-    display: block;
-  }
+  .img-preview { width: 100%; max-height: 260px; object-fit: cover; display: block; }
 
   /* FIT OPTIONS */
-  .fit-options {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-  }
+  .fit-options { display: flex; gap: 8px; margin-top: 12px; }
   .fit-btn {
     flex: 1;
-    padding: 10px 8px;
-    border: 1px solid #2E2820;
-    background: transparent;
+    padding: 9px 8px;
+    border: 1px solid #E8E3DB;
+    background: #FFFFFF;
     font-family: 'DM Mono', monospace;
     font-size: 8px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #555;
+    color: #9B8E80;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s;
     text-align: center;
   }
-  .fit-btn:hover { border-color: #888; color: #888; }
-  .fit-btn.active { border-color: #EDE9E2; color: #EDE9E2; background: #1a1a1a; }
+  .fit-btn:hover { border-color: #1A1714; color: #1A1714; }
+  .fit-btn.active { border-color: #1A1714; color: #1A1714; background: #1A1714; color: #F5F4F2; }
 
   .admin-modal-footer {
-    padding: 20px 32px 28px;
+    padding: 20px 32px 24px;
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    border-top: 1px solid #1a1a1a;
+    gap: 10px;
+    border-top: 1px solid #E8E3DB;
+    background: #FAF8F5;
   }
 
   /* IMPORT/EXPORT */
   .admin-io-row {
     display: flex;
     gap: 12px;
-    margin-bottom: 48px;
-    padding: 24px;
-    border: 1px solid #1a1a1a;
-    background: #0F0E0C;
+    margin-bottom: 40px;
+    padding: 20px 24px;
+    border: 1px solid #E8E3DB;
+    background: #FFFFFF;
+    align-items: center;
   }
   .admin-io-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.15em;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
     color: #6B6158;
-    text-transform: uppercase;
     flex: 1;
-    line-height: 1.8;
+    line-height: 1.7;
   }
 
   .admin-empty {
     padding: 48px;
     text-align: center;
-    border: 1px dashed #1a1a1a;
+    border: 1px dashed #E8E3DB;
+    background: #FFFFFF;
   }
   .admin-empty-text {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.25em;
-    color: #333;
+    color: #9B8E80;
     text-transform: uppercase;
   }
 
-  /* MOBILE */
+/* MOBILE */
   @media (max-width: 768px) {
     header { padding: 20px 24px; }
     .nav-left { display: none; }
@@ -3273,7 +3270,7 @@
   <div class="page-section" id="section-shop">
     <div class="section-header">
       <div>
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Coleção</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Coleção</p>
         <h2 class="section-title">Raver Lab — Peças</h2>
       </div>
       <span class="section-meta">4 edições ativas</span>
@@ -3395,12 +3392,12 @@
           <h2 class="lab-intro-title">LAB</h2>
         </div>
         <div>
-          <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:20px;">Do som ao objeto</p>
+          <p style="font-family:monospace;font-size:10px;letter-spacing:0.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:20px;">Do som ao objeto</p>
           <p class="lab-intro-text">Você nos envia suas referências — musicais, visuais e emocionais. Nós desenvolvemos uma arte exclusiva para sua camiseta em até 48–72 horas. Para iniciar, é necessário o pagamento de R$15.</p>
         </div>
       </div>
       <div style="padding:80px 48px;text-align:center;border-top:1px solid var(--border);">
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:32px;">R$15 para enviar sua proposta de arte</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:32px;">R$15 para enviar sua proposta de arte</p>
         <button onclick="unlockLab()" class="btn-primary" style="cursor:pointer;font-size:10px;letter-spacing:0.3em;">Iniciar Lab →</button>
       </div>
     </div>
@@ -3410,7 +3407,7 @@
 
       <!-- Cabeçalho -->
       <div style="margin-bottom:64px;padding-bottom:32px;border-bottom:1px solid var(--border);">
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">RL.LAB — Criação Ativa</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">RL.LAB — Criação Ativa</p>
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:300;letter-spacing:-0.02em;color:var(--fg);line-height:1.05;margin-bottom:20px;">Iniciar criação</h2>
         <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);max-width:520px;line-height:1.8;">Envie suas referências — sonoras, visuais e emocionais — para desenvolvermos sua arte exclusiva.</p>
       </div>
@@ -3563,7 +3560,7 @@
           <input type="text" class="lab-input" id="labEmailInput" placeholder="seu@email.com">
         </div>
         <div class="lab-input-group">
-          <label class="lab-label">WhatsApp * <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--fg-muted);text-transform:none;letter-spacing:0;"> — Vou enviar a arte pronta por aqui</span></label>
+          <label class="lab-label">WhatsApp * <span style="font-family:monospace;font-size:8px;color:var(--fg-muted);text-transform:none;letter-spacing:0;"> — Vou enviar a arte pronta por aqui</span></label>
           <input type="tel" class="lab-input" id="labWhatsappInput" placeholder="(11) 99999-9999" oninput="maskWhatsapp(this)">
         </div>
         <div class="step-nav">
@@ -3586,37 +3583,37 @@
 
         <!-- PIX PAYMENT -->
         <div style="margin:48px auto;max-width:400px;border:1px solid var(--border);padding:40px;text-align:center;">
-          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:24px;">Finalizar Pagamento</p>
+          <p style="font-family:monospace;font-size:8px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:24px;">Finalizar Pagamento</p>
           <p style="font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:var(--fg);line-height:1;margin-bottom:8px;">R$15</p>
-          <p style="font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-muted);margin-bottom:24px;">Ativação do Lab — desenvolvimento criativo</p>
+          <p style="font-family:monospace;font-size:9px;color:var(--fg-muted);margin-bottom:24px;">Ativação do Lab — desenvolvimento criativo</p>
           <div style="display:flex;gap:8px;margin-bottom:28px;justify-content:center;">
-            <button onclick="labMostrarPix()" style="flex:1;max-width:160px;padding:12px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--fg)';this.style.color='var(--fg)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--fg-soft)'">⚡ Pix</button>
-            <button onclick="labPagarMP()" style="flex:1;max-width:160px;padding:12px;border:1px solid var(--fg);background:var(--fg);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--bg);cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">💳 Cartão</button>
+            <button onclick="labMostrarPix()" style="flex:1;max-width:160px;padding:12px;border:1px solid var(--border);background:transparent;font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--fg)';this.style.color='var(--fg)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--fg-soft)'">⚡ Pix</button>
+            <button onclick="labPagarMP()" style="flex:1;max-width:160px;padding:12px;border:1px solid var(--fg);background:var(--fg);font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--bg);cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">💳 Cartão</button>
           </div>
 
           <!-- QR Code via API gratuita -->
           <div id="pix-qr-container" style="margin:0 auto 24px;width:180px;height:180px;background:white;padding:8px;display:flex;align-items:center;justify-content:center;">
-            <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;color:#999;text-align:center;text-transform:uppercase;">Aguardando<br>geração...</p>
+            <p style="font-family:monospace;font-size:8px;letter-spacing:.15em;color:#999;text-align:center;text-transform:uppercase;">Aguardando<br>geração...</p>
           </div>
 
-          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:10px;">Ou copie a chave Pix</p>
+          <p style="font-family:monospace;font-size:8px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:10px;">Ou copie a chave Pix</p>
           <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:32px;flex-wrap:wrap;">
-            <code id="pix-key" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--fg);background:var(--border);padding:10px 16px;letter-spacing:.03em;word-break:break-all;max-width:260px;text-align:left;">Gerando chave...</code>
-            <button onclick="copiarPix()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 16px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;white-space:nowrap;" id="copy-pix-btn">Copiar</button>
+            <code id="pix-key" style="font-family:monospace;font-size:10px;color:var(--fg);background:var(--border);padding:10px 16px;letter-spacing:.03em;word-break:break-all;max-width:260px;text-align:left;">Gerando chave...</code>
+            <button onclick="copiarPix()" style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 16px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;white-space:nowrap;" id="copy-pix-btn">Copiar</button>
           </div>
 
           <a id="btn-wpp-lab" href="https://wa.me/5515991375380?text=Ol%C3%A1%2C%20paguei%20o%20Lab%20da%20Raver%20Lab%21%20Segue%20o%20comprovante." target="_blank"
-            style="display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;background:#25D366;color:#fff;text-decoration:none;margin-bottom:20px;transition:opacity .2s;"
+            style="display:inline-flex;align-items:center;gap:10px;font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;background:#25D366;color:#fff;text-decoration:none;margin-bottom:20px;transition:opacity .2s;"
             onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.571a.75.75 0 00.921.921l5.696-1.481A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.933 0-3.742-.524-5.295-1.434l-.376-.221-3.896 1.013 1.04-3.799-.244-.392A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
             Enviar comprovante no WhatsApp
           </a>
-          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--fg-muted);text-transform:uppercase;line-height:1.8;">
+          <p style="font-family:monospace;font-size:8px;letter-spacing:.15em;color:var(--fg-muted);text-transform:uppercase;line-height:1.8;">
             Clique acima para abrir o WhatsApp e enviar o comprovante
           </p>
         </div>
 
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:40px;opacity:.5;">amostra extraída → protótipo registrado → teste de material</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:40px;opacity:.5;">amostra extraída → protótipo registrado → teste de material</p>
         <button class="btn-outline" onclick="resetLab()">Enviar outro signal</button>
       </div>
 
@@ -3628,7 +3625,7 @@
   <div class="page-section" id="section-archive">
     <div class="section-header">
       <div>
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Memória Sonora</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Memória Sonora</p>
         <h2 class="section-title">Archive</h2>
       </div>
       <span class="section-meta">18 objetos registrados</span>
@@ -3636,7 +3633,7 @@
 
     <!-- ARCHIVE PHRASE -->
     <div style="padding:20px 48px;text-align:right;">
-      <p id="archivePhrase" style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;opacity:0.4;"></p>
+      <p id="archivePhrase" style="font-family:monospace;font-size:8px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;opacity:0.4;"></p>
     </div>
     <div class="archive-list">
       <div class="archive-entry">
@@ -3724,7 +3721,7 @@
   <div class="page-section" id="section-signals">
     <div class="section-header">
       <div>
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Radar Cultural</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Radar Cultural</p>
         <h2 class="section-title">Signals</h2>
       </div>
       <span class="section-meta">calendário 2026</span>
@@ -3818,7 +3815,7 @@
   <div class="page-section" id="section-playlists">
     <div class="section-header">
       <div>
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Frequências Curadas</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Frequências Curadas</p>
         <h2 class="section-title">Playlists</h2>
       </div>
       <span class="section-meta">coleções sonoras</span>
@@ -3910,7 +3907,7 @@
     </div>
 
     <div style="padding:64px 48px;border-top:1px solid var(--border);">
-      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">RL.STREAM — Set em Destaque</p>
+      <p style="font-family:monospace;font-size:9px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">RL.STREAM — Set em Destaque</p>
       <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,40px);font-weight:300;letter-spacing:-.02em;color:var(--fg);margin-bottom:28px;">Frequência Visual</h3>
       <div style="width:100%;max-width:860px;aspect-ratio:16/9;background:var(--border);border:1px solid var(--border);position:relative;overflow:hidden;">
         <!-- Cole aqui o iframe do YouTube/Vimeo quando tiver o vídeo -->
@@ -3932,15 +3929,15 @@
   <div class="page-section" id="section-special">
     <div class="section-header">
       <div>
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Fora do Catálogo</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Fora do Catálogo</p>
         <h2 class="section-title">Projetos Especiais</h2>
       </div>
       <span class="section-meta">edições únicas</span>
     </div>
     <div style="min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 48px;">
-      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:40px;opacity:.5;">RL.ESPECIAL — 2026</p>
+      <p style="font-family:monospace;font-size:9px;letter-spacing:.4em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:40px;opacity:.5;">RL.ESPECIAL — 2026</p>
       <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,96px);font-weight:300;letter-spacing:-.02em;color:var(--fg);line-height:1;margin-bottom:24px;">Novidades<br>em breve.</h2>
-      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;opacity:.4;">signal pending</p>
+      <p style="font-family:monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;opacity:.4;">signal pending</p>
     </div>
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">Objetos fora do catálogo.<br>Criação sem formato fixo.</p></div>
@@ -3954,7 +3951,7 @@
   <div class="page-section" id="section-conta">
     <div class="section-header">
       <div>
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Área do Cliente</p>
+        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Área do Cliente</p>
         <h2 class="section-title">Sua Conta</h2>
       </div>
     </div>
@@ -3976,7 +3973,7 @@
           <input type="password" class="conta-input" placeholder="· · · · · · · ·">
         </div>
         <button class="conta-btn" onclick="doLogin()">Entrar →</button>
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--fg-muted);text-transform:uppercase;margin-top:20px;text-align:center;cursor:pointer;" onclick="switchContaTab('register')">Não tem conta? Criar agora</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:0.2em;color:var(--fg-muted);text-transform:uppercase;margin-top:20px;text-align:center;cursor:pointer;" onclick="switchContaTab('register')">Não tem conta? Criar agora</p>
       </div>
 
       <!-- REGISTER -->
@@ -3999,7 +3996,7 @@
       <!-- ORDERS -->
       <div class="conta-tab-panel" id="conta-orders">
         <div id="orders-guest-msg" style="padding:40px 0;text-align:center;">
-          <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:20px;">Faça login para ver seus pedidos.</p>
+          <p style="font-family:monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:20px;">Faça login para ver seus pedidos.</p>
           <button class="conta-btn" style="width:auto;padding:14px 32px;" onclick="switchContaTab('login')">Fazer login</button>
         </div>
         <div class="conta-orders" id="orders-list" style="display:none;"></div>
@@ -4060,7 +4057,7 @@
       <p class="pdm-desc" id="pdm-desc">Cada peça carrega uma frequência específica. Um objeto traduzido da experiência eletrônica para a matéria física.</p>
 
       <p class="pdm-section-label">Essência de aroma da marca</p>
-      <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">Escolha se deseja o aroma exclusivo da Raver Lab aplicado na peça</p>
+      <p style="font-family:monospace;font-size:8px;letter-spacing:0.15em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">Escolha se deseja o aroma exclusivo da Raver Lab aplicado na peça</p>
       <div class="pdm-essence">
         <button class="pdm-essence-btn" onclick="selectPdmEssence(this)">Com Essência</button>
         <button class="pdm-essence-btn" onclick="selectPdmEssence(this)">Sem Essência</button>
@@ -4071,14 +4068,14 @@
         <p class="pdm-section-label">Calcular Frete</p>
         <div style="display:flex;gap:8px;margin-bottom:12px;">
           <input type="text" id="pdm-cep" maxlength="9" placeholder="00000-000"
-            style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:12px 0;font-family:'DM Mono',monospace;font-size:13px;color:var(--fg);outline:none;letter-spacing:0.1em;"
+            style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:12px 0;font-family:monospace;font-size:13px;color:var(--fg);outline:none;letter-spacing:0.1em;"
             oninput="formatCEP(this)" onkeydown="if(event.key==='Enter')calcularFrete()">
           <button onclick="calcularFrete()"
-            style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:12px 20px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;">
+            style="font-family:monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:12px 20px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;">
             Calcular
           </button>
         </div>
-        <div id="pdm-frete-result" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--fg-soft);"></div>
+        <div id="pdm-frete-result" style="font-family:monospace;font-size:10px;letter-spacing:0.15em;color:var(--fg-soft);"></div>
       </div>
 
       <button class="pdm-cta" onclick="addToCartFromModal()">Adicionar ao Carrinho →</button>
@@ -4397,7 +4394,8 @@
     closeProductDetail();
     openCart();
   }
-  function removeFromCart(id) {
+  function removeFromCart(elOrId) {
+    var id = typeof elOrId === 'object' ? parseInt(elOrId.dataset.id) : parseInt(elOrId);
     cart = cart.filter(i => i.id !== id);
     updateCartBadge();
     renderCart();
@@ -4439,7 +4437,7 @@
             <p class="cart-item-meta">Tamanho: ${item.size} · ${item.essence}</p>
             <p class="cart-item-price">${item.price}</p>
           </div>
-          <button class="cart-item-remove" onclick="removeFromCart(${item.id})">×</button>
+          <button class="cart-item-remove" onclick="removeFromCart(this)" data-id="${item.id}">×</button>
         </div>
       `;
     }).join('');
@@ -4548,6 +4546,15 @@ async function sbFetch(path, options = {}) {
           ↑ Import JSON
           <input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
         </label>
+      </div>
+
+      <!-- PEDIDOS DOS CLIENTES -->
+      <div class="admin-section-title" style="margin-top:48px;">
+        <span>Pedidos dos Clientes</span>
+        <button class="admin-btn" onclick="adminLoadPedidos()">Atualizar</button>
+      </div>
+      <div id="admin-pedidos-list" style="margin-bottom:48px;">
+        <div class="admin-empty"><p class="admin-empty-text">Clique em "Atualizar" para carregar os pedidos.</p></div>
       </div>
 
       <!-- PLAYLISTS CONFIG -->
@@ -5165,34 +5172,34 @@ window.addEventListener('DOMContentLoaded', async () => {
 #ck-modal{background:var(--bg);border:1px solid var(--border);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .35s cubic-bezier(.4,0,.2,1)}
 #ck-overlay.open #ck-modal{transform:translateY(0)}
 .ck-hd{padding:22px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.ck-hd-t{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--fg)}
+.ck-hd-t{font-family:monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--fg)}
 .ck-x{background:transparent;border:none;font-size:22px;color:var(--fg-muted);cursor:pointer}.ck-x:hover{color:var(--fg)}
 .ck-bd{padding:24px 28px}
-.ck-lbl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;display:block;margin:20px 0 10px}
+.ck-lbl{font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;display:block;margin:20px 0 10px}
 .ck-lbl:first-child{margin-top:0}
-.ck-inp{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;font-family:'DM Mono',monospace;font-size:12px;color:var(--fg);outline:none;transition:border-color .2s;box-sizing:border-box;margin-bottom:8px}
+.ck-inp{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;font-family:monospace;font-size:12px;color:var(--fg);outline:none;transition:border-color .2s;box-sizing:border-box;margin-bottom:8px}
 .ck-inp:focus{border-color:var(--fg)}
 .ck-g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .ck-sum{border:1px solid var(--border);padding:14px;margin-bottom:4px}
-.ck-sum-row{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:10px;color:var(--fg-soft);margin-bottom:5px}
+.ck-sum-row{display:flex;justify-content:space-between;font-family:monospace;font-size:10px;color:var(--fg-soft);margin-bottom:5px}
 .ck-tot{border-top:1px solid var(--border);padding-top:8px;margin-top:4px;color:var(--fg);font-weight:500}
 .ck-cep-row{display:flex;gap:8px;margin-bottom:8px}
-.ck-cep-i{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;font-family:'DM Mono',monospace;font-size:12px;color:var(--fg);outline:none}
-.ck-cep-b{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;background:var(--fg);color:var(--bg);border:none;cursor:pointer}
-.ck-fr-res{font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-soft);line-height:1.8;min-height:18px;margin-bottom:6px}
+.ck-cep-i{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;font-family:monospace;font-size:12px;color:var(--fg);outline:none}
+.ck-cep-b{font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;background:var(--fg);color:var(--bg);border:none;cursor:pointer}
+.ck-fr-res{font-family:monospace;font-size:9px;color:var(--fg-soft);line-height:1.8;min-height:18px;margin-bottom:6px}
 .ck-fr-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
-.ck-fr-opt{padding:7px 12px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-soft);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.ck-fr-opt{padding:7px 12px;border:1px solid var(--border);background:transparent;font-family:monospace;font-size:9px;color:var(--fg-soft);cursor:pointer;transition:all .2s;text-transform:uppercase}
 .ck-fr-opt.sel,.ck-fr-opt:hover{border-color:var(--fg);background:var(--fg);color:var(--bg)}
-.ck-pay{width:100%;padding:14px 18px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--fg-soft);cursor:pointer;text-align:left;transition:all .2s;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ck-pay{width:100%;padding:14px 18px;border:1px solid var(--border);background:transparent;font-family:monospace;font-size:10px;letter-spacing:.2em;color:var(--fg-soft);cursor:pointer;text-align:left;transition:all .2s;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .ck-pay:hover{border-color:var(--fg);color:var(--fg)}
 .ck-pay.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}.ck-pay.pri:hover{opacity:.85}
-.ck-err{font-family:'DM Mono',monospace;font-size:9px;color:#c0392b;display:none;margin-top:6px}.ck-err.show{display:block}
-.ck-note{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-align:center;opacity:.5;margin-top:10px}
+.ck-err{font-family:monospace;font-size:9px;color:#c0392b;display:none;margin-top:6px}.ck-err.show{display:block}
+.ck-note{font-family:monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-align:center;opacity:.5;margin-top:10px}
 /* CONTA FEEDBACK */
-.cf{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 0;margin-top:10px;display:none}
+.cf{font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 0;margin-top:10px;display:none}
 .cf.show{display:block}.cf.ok{color:#27ae60}.cf.er{color:#c0392b}
 .cu-badge{padding:14px;border:1px solid var(--border);margin-bottom:16px}
-.cu-out{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 18px;background:transparent;border:1px solid var(--border);color:var(--fg-muted);cursor:pointer;transition:all .2s;margin-top:12px}
+.cu-out{font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 18px;background:transparent;border:1px solid var(--border);color:var(--fg-muted);cursor:pointer;transition:all .2s;margin-top:12px}
 .cu-out:hover{border-color:var(--fg);color:var(--fg)}
 </style>
 
@@ -5243,17 +5250,17 @@ window.addEventListener('DOMContentLoaded', async () => {
 
       <!-- QR Code Pix inline -->
       <div id="ck-pix-panel" style="display:none;margin-top:16px;border:1px solid var(--border);padding:28px;text-align:center;animation:fadeUp .4s ease;">
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">Escaneie o QR Code</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">Escaneie o QR Code</p>
         <div id="ck-qr-wrap" style="width:180px;height:180px;margin:0 auto 20px;background:white;padding:8px;display:flex;align-items:center;justify-content:center;">
-          <p style="font-family:'DM Mono',monospace;font-size:8px;color:#999;text-align:center;" id="ck-qr-loading">Gerando QR Code...</p>
+          <p style="font-family:monospace;font-size:8px;color:#999;text-align:center;" id="ck-qr-loading">Gerando QR Code...</p>
         </div>
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:10px;">Ou copie o código</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:10px;">Ou copie o código</p>
         <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
-          <code id="ck-pix-code" style="font-family:'DM Mono',monospace;font-size:9px;color:var(--fg);background:var(--border);padding:10px 14px;word-break:break-all;text-align:left;max-width:240px;display:block;">Aguardando...</code>
-          <button onclick="ckCopyPix()" id="ck-copy-btn" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 16px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;white-space:nowrap;">Copiar</button>
+          <code id="ck-pix-code" style="font-family:monospace;font-size:9px;color:var(--fg);background:var(--border);padding:10px 14px;word-break:break-all;text-align:left;max-width:240px;display:block;">Aguardando...</code>
+          <button onclick="ckCopyPix()" id="ck-copy-btn" style="font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 16px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;white-space:nowrap;">Copiar</button>
         </div>
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-transform:uppercase;line-height:1.8;margin-bottom:16px;">Após pagar, clique abaixo para enviar o comprovante</p>
-        <a id="ck-wpp-link" href="https://wa.me/5515991375380" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:12px 20px;background:#25D366;color:#fff;text-decoration:none;">
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-transform:uppercase;line-height:1.8;margin-bottom:16px;">Após pagar, clique abaixo para enviar o comprovante</p>
+        <a id="ck-wpp-link" href="https://wa.me/5515991375380" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:12px 20px;background:#25D366;color:#fff;text-decoration:none;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.571a.75.75 0 00.921.921l5.696-1.481A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.933 0-3.742-.524-5.295-1.434l-.376-.221-3.896 1.013 1.04-3.799-.244-.392A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
           Enviar comprovante
         </a>
@@ -5273,7 +5280,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           </div>
           <h3 class="ck-aprovado-titulo">Pagamento<br>Aprovado!</h3>
           <p class="ck-aprovado-sub">Seu pedido foi confirmado.<br>Em breve entraremos em contato<br>pelo WhatsApp para acompanhar o envio.</p>
-          <a id="ck-wpp-aprovado" href="https://wa.me/5515991375380" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;background:#25D366;color:#fff;text-decoration:none;margin-bottom:16px;">Falar com a Raver Lab</a>
+          <a id="ck-wpp-aprovado" href="https://wa.me/5515991375380" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;background:#25D366;color:#fff;text-decoration:none;margin-bottom:16px;">Falar com a Raver Lab</a>
         </div>
         <p class="ck-note">Pagamento seguro · Pedido confirmado por WhatsApp</p>
     </div>
@@ -5341,7 +5348,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     openCart();
   };
 
-  window.removeFromCart = function (id) {
+  window.removeFromCart = function (elOrId) {
+    var id = typeof elOrId === 'object' ? parseInt(elOrId.dataset.id) : parseInt(elOrId);
     cart = cart.filter(function (i) { return i.id !== id; });
     saveCart();
     updateCartBadge();
@@ -5393,6 +5401,16 @@ window.addEventListener('DOMContentLoaded', async () => {
   ────────────────────────────────────────── */
   window.openCheckout = function () {
     if (!cart.length) { alert('Seu carrinho esta vazio.'); return; }
+    // Exige login
+    var sess = null;
+    try { sess = JSON.parse(localStorage.getItem('rl_session')); } catch(e) {}
+    if (!sess) {
+      alert('Faca login ou crie uma conta para finalizar a compra.');
+      closeCart();
+      showSection('conta');
+      window._pendingCheckout = true;
+      return;
+    }
     closeCart();
     buildCkSum();
     document.getElementById('ck-overlay').classList.add('open');
@@ -5492,6 +5510,27 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   function ckEnviarPedido(met) {
     var on   = 'RL.ORDER.' + (Math.floor(Math.random() * 9000) + 1000);
+    // Salvar pedido no histórico do cliente
+    try {
+      var sess = JSON.parse(localStorage.getItem('rl_session'));
+      if (sess) {
+        var key = 'rl_orders_' + sess.id;
+        var orders = JSON.parse(localStorage.getItem(key) || '[]');
+        var itens = cart.map(function(i){ return i.name + ' (' + i.size + ')'; }).join(', ');
+        var fv = _frSel ? _frSel.v : 0;
+        var tot = 0;
+        cart.forEach(function(i){ tot += parseFloat(i.price.replace('R$','').replace(/\./g,'').replace(',','.').trim())||0; });
+        orders.unshift({
+          id: on,
+          date: new Date().toLocaleDateString('pt-BR'),
+          items: itens,
+          total: 'R$ ' + (tot + fv).toLocaleString('pt-BR'),
+          status: 'Aguardando confirmação',
+          pagamento: met
+        });
+        localStorage.setItem(key, JSON.stringify(orders));
+      }
+    } catch(e) {}
     var itens = cart.map(function (i) { return i.name + ' (' + i.size + ') - ' + i.price; }).join(', ');
     var fr   = _frSel ? (_frSel.tipo + ' R$ ' + _frSel.v.toFixed(2)) : 'A definir';
     var comp = document.getElementById('ck-complemento') ? document.getElementById('ck-complemento').value.trim() : '';
@@ -5726,7 +5765,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (!user) { showFeedback('conta-login', 'E-mail ou senha incorretos.', 'er'); return; }
     setSess(user);
     showFeedback('conta-login', 'Bem-vindo, ' + user.nome + '!', 'ok');
-    setTimeout(function () { renderLoggedIn(user); }, 700);
+    setTimeout(function () {
+      renderLoggedIn(user);
+      if (window._pendingCheckout && cart.length) {
+        window._pendingCheckout = false;
+        setTimeout(openCheckout, 500);
+      }
+    }, 700);
   };
 
   window.doRegister = function () {
@@ -5745,7 +5790,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     showFeedback('conta-register', 'Conta criada! Bem-vindo, ' + nm + '.', 'ok');
     // Email de boas-vindas pro cliente
     enviarEmailBoasVindas(nm, em);
-    setTimeout(function () { renderLoggedIn(nu); }, 700);
+    setTimeout(function () {
+      renderLoggedIn(nu);
+      if (window._pendingCheckout && cart.length) {
+        window._pendingCheckout = false;
+        setTimeout(openCheckout, 500);
+      }
+    }, 700);
   };
 
   window.doLogout = function () { clrSess(); location.reload(); };
@@ -6149,6 +6200,39 @@ window.pvAddToCart = function() {
     if (success) success.appendChild(aprovado);
   };
 
+
+  /* ── ADMIN PEDIDOS ── */
+  window.adminLoadPedidos = function() {
+    var container = document.getElementById('admin-pedidos-list');
+    if (!container) return;
+    // Carregar todos os pedidos salvos no localStorage de todos os usuários
+    var users = [];
+    try { users = JSON.parse(localStorage.getItem('rl_users') || '[]'); } catch(e) {}
+    var allOrders = [];
+    users.forEach(function(u) {
+      var ords = [];
+      try { ords = JSON.parse(localStorage.getItem('rl_orders_' + u.id) || '[]'); } catch(e) {}
+      ords.forEach(function(o) {
+        allOrders.push(Object.assign({}, o, { cliente: u.nome, email: u.email }));
+      });
+    });
+    if (!allOrders.length) {
+      container.innerHTML = '<div class="admin-empty"><p class="admin-empty-text">Nenhum pedido encontrado ainda.</p></div>';
+      return;
+    }
+    // Ordenar por data (mais recente primeiro)
+    allOrders.sort(function(a, b) { return b.id > a.id ? 1 : -1; });
+    container.innerHTML = allOrders.map(function(o) {
+      return '<div class="admin-product-row" style="grid-template-columns:1fr 1fr 1fr 120px 100px">' +
+        '<div><div class="admin-product-name">' + (o.id || '—') + '</div><div class="admin-product-col" style="margin-top:4px">' + (o.date || '—') + '</div></div>' +
+        '<div><div class="admin-product-col">' + (o.cliente || '—') + '</div><div class="admin-product-col">' + (o.email || '—') + '</div></div>' +
+        '<div class="admin-product-col" style="color:#aaa">' + (o.items || '—') + '</div>' +
+        '<div class="admin-product-price">' + (o.total || '—') + '</div>' +
+        '<div><span style="font-family:monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:4px 10px;border:1px solid #333;color:#888">' + (o.status || 'Pendente') + '</span></div>' +
+      '</div>';
+    }).join('');
+  };
+
 }());
 
 </script>
@@ -6182,7 +6266,7 @@ window.pvAddToCart = function() {
         <p class="pv-info-sub" id="pv-sub"></p>
         <p class="pv-price" id="pv-price"></p>
 
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">Tamanho</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">Tamanho</p>
         <div class="pv-sizes" style="margin-bottom:28px;">
           <button class="pv-size-btn" onclick="pvSelSize(this)">P</button>
           <button class="pv-size-btn" onclick="pvSelSize(this)">M</button>
@@ -6190,14 +6274,14 @@ window.pvAddToCart = function() {
           <button class="pv-size-btn" onclick="pvSelSize(this)">GG</button>
         </div>
 
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">História da Peça</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">História da Peça</p>
         <p id="pv-desc" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);line-height:1.8;margin-bottom:28px;">Cada peça carrega uma frequência específica. Um objeto traduzido da experiência eletrônica para a matéria física.</p>
 
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:6px;">Essência de Aroma da Marca</p>
-        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;opacity:.6;">Escolha se deseja o aroma exclusivo da Raver Lab aplicado na peça</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:6px;">Essência de Aroma da Marca</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;opacity:.6;">Escolha se deseja o aroma exclusivo da Raver Lab aplicado na peça</p>
         <div style="display:flex;gap:8px;margin-bottom:28px;">
-          <button class="pv-essence-btn" onclick="pvSelEssence(this)" style="flex:1;padding:13px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .25s ease;">Com Essência</button>
-          <button class="pv-essence-btn" onclick="pvSelEssence(this)" style="flex:1;padding:13px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .25s ease;">Sem Essência</button>
+          <button class="pv-essence-btn" onclick="pvSelEssence(this)" style="flex:1;padding:13px;border:1px solid var(--border);background:transparent;font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .25s ease;">Com Essência</button>
+          <button class="pv-essence-btn" onclick="pvSelEssence(this)" style="flex:1;padding:13px;border:1px solid var(--border);background:transparent;font-family:monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .25s ease;">Sem Essência</button>
         </div>
       </div>
       <div>
