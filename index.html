@@ -4370,7 +4370,8 @@
   }
 
   // ── CART ──
-  let cart = [];
+  window.cart = window.cart || [];
+  var cart = window.cart;
 
   function openCart() {
     document.getElementById('cart-drawer').classList.add('open');
@@ -5289,6 +5290,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 <script>
 (function () {
   'use strict';
+
+  var cart = window.cart = window.cart || [];
 
   /* ──────────────────────────────────────────
      TABELA DE FRETE POR UF
