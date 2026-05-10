@@ -4374,8 +4374,10 @@
   var cart = window.cart;
 
   function openCart() {
-    document.getElementById('cart-drawer').classList.add('open');
-    document.getElementById('cart-overlay').classList.add('open');
+    var drawer = document.getElementById('cart-drawer');
+    var overlay = document.getElementById('cart-overlay');
+    if (drawer) drawer.classList.add('open');
+    if (overlay) overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     renderCart();
   }
@@ -4440,7 +4442,8 @@
         </div>
       `;
     }).join('');
-    document.getElementById('cartTotalValue').textContent = 'R$ ' + total.toLocaleString('pt-BR');
+    var tv = document.getElementById('cartTotalValue');
+    if (tv) tv.textContent = 'R$ ' + total.toLocaleString('pt-BR');
   }
 
 // ── SUPABASE CONFIG ──
