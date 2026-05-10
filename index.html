@@ -6038,13 +6038,22 @@ window.pvAddToCart = function() {
 
   /* ── LAB PAYMENT ── */
   window.labMostrarPix = function () {
-    // Mostrar o container do QR já existente
     var container = document.getElementById('pix-qr-container');
     if (!container) return;
-    // Pegar email do lab
-    var email = document.getElementById('labEmailInput') ? document.getElementById('labEmailInput').value.trim() : '';
-    var nome  = email ? email.split('@')[0] : 'Cliente';
-    if (!email) { alert('Preencha seu e-mail antes de gerar o Pix.'); return; }
+    // Tentar pegar email do campo do lab
+    var emailEl = document.getElementById('labEmailInput');
+    var email = emailEl ? emailEl.value.trim() : '';
+    // Se não tiver, pedir ao usuário
+    if (!email) {
+      email = prompt('Digite seu e-mail para gerar o Pix:') || '';
+      if (!email || email.indexOf('@') === -1) {
+        alert('E-mail inválido. Por favor tente novamente.');
+        return;
+      }
+      // Salvar no campo se existir
+      if (emailEl) emailEl.value = email;
+    }
+    var nome = email.split('@')[0] || 'Cliente';
     // Já foi gerado?
     if (window._labPixGerado) return;
     window._labPixGerado = true;
@@ -6077,9 +6086,17 @@ window.pvAddToCart = function() {
   };
 
   window.labPagarMP = function () {
-    var email = document.getElementById('labEmailInput') ? document.getElementById('labEmailInput').value.trim() : '';
-    var nome  = email ? email.split('@')[0] : 'Cliente';
-    if (!email) { alert('Preencha seu e-mail antes de continuar.'); return; }
+    var emailEl = document.getElementById('labEmailInput');
+    var email = emailEl ? emailEl.value.trim() : '';
+    if (!email) {
+      email = prompt('Digite seu e-mail para continuar:') || '';
+      if (!email || email.indexOf('@') === -1) {
+        alert('E-mail inválido. Por favor tente novamente.');
+        return;
+      }
+      if (emailEl) emailEl.value = email;
+    }
+    var nome = email.split('@')[0] || 'Cliente';
     fetch('/.netlify/functions/criar-preferencia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
