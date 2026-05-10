@@ -4373,14 +4373,14 @@
   window.cart = window.cart || [];
   var cart = window.cart;
 
-  function openCart() {
+  window.openCart = function openCart() {
     var drawer = document.getElementById('cart-drawer');
     var overlay = document.getElementById('cart-overlay');
     if (drawer) drawer.classList.add('open');
     if (overlay) overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     renderCart();
-  }
+  };
   function closeCart() {
     document.getElementById('cart-drawer').classList.remove('open');
     document.getElementById('cart-overlay').classList.remove('open');
@@ -4404,7 +4404,7 @@
     updateCartBadge();
     renderCart();
   }
-  function updateCartBadge() {
+  window.updateCartBadge = function updateCartBadge() {
     const badge = document.getElementById('cartBadge');
     if (cart.length > 0) {
       badge.textContent = cart.length;
@@ -4414,7 +4414,7 @@
     }
     document.getElementById('cartCountBadge').textContent = cart.length;
   }
-  function renderCart() {
+  window.renderCart = function renderCart() {
     var list = document.getElementById('cartItemsList');
     if (!list) return;
     var footer = document.getElementById('cartFooter');
