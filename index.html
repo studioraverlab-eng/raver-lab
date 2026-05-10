@@ -1543,37 +1543,224 @@
   }
   .nav-link:hover::after { width: 100%; }
 
-  /* product flip (frente/costas) */
-  .product-image-flip {
+  /* HOVER BLUR — frente/costas */
+  .product-image { position: relative; overflow: hidden; }
+  .product-img-front {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+    z-index: 2;
+  }
+  .product-img-back {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.4s ease, filter 0.4s ease;
+    z-index: 1;
+  }
+  .product-card:hover .product-img-front {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  .product-card:hover .product-img-back {
+    opacity: 1;
+    filter: blur(0px);
+  }
+
+  /* POPUP VIEWER — horizontal, suave */
+  #product-viewer {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0);
+    z-index: 800;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1),
+                visibility 0.5s,
+                background 0.5s;
+    backdrop-filter: blur(0px);
+    padding: 24px;
+  }
+  #product-viewer.open {
+    opacity: 1; visibility: visible;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(12px);
+  }
+  .pv-container {
     position: relative;
     width: 100%;
-    height: 100%;
-    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
-    transform-style: preserve-3d;
+    max-width: 860px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    transform: translateY(24px);
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    max-height: 90vh;
+    overflow: hidden;
   }
-  .product-card:hover .product-image-flip {
-    transform: rotateY(180deg);
+  #product-viewer.open .pv-container {
+    transform: translateY(0);
   }
-  .product-face, .product-back {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+
+  /* Lado esquerdo — imagem */
+  .pv-image-side {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    cursor: zoom-in;
+    background: var(--border);
   }
-  .product-back {
-    transform: rotateY(180deg);
-    background: var(--fg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .pv-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1),
+                opacity 0.4s ease;
+    transform-origin: center center;
   }
-  .product-back-label {
+  .pv-img.entering { opacity: 0; }
+  .pv-img.zoomed { transform: scale(2.2); cursor: zoom-out; }
+  .pv-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Setas de navegação */
+  .pv-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: white; width: 36px; height: 36px;
+    display: none; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 18px; z-index: 10;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+  .pv-arrow.visible { display: flex; }
+  .pv-arrow:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.5); }
+  .pv-arrow-left { left: 16px; }
+  .pv-arrow-right { right: 16px; }
+
+  /* Lupa */
+  .pv-zoom-btn {
+    position: absolute; bottom: 16px; right: 16px;
+    background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: white; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+  .pv-zoom-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.5); }
+
+  /* Dots */
+  .pv-side-indicator {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 10;
+  }
+  .pv-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .pv-dot.active { background: white; transform: scale(1.3); }
+
+  /* Label frente/costas */
+  .pv-side-label {
+    position: absolute; top: 16px; left: 16px;
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--bg);
-    opacity: 0.6;
+    font-size: 8px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+    z-index: 10;
+  }
+
+  /* Lado direito — info */
+  .pv-info-side {
+    padding: 48px 40px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+  }
+  .pv-close {
+    position: absolute; top: 20px; right: 20px;
+    background: transparent; border: none;
+    font-size: 20px; color: var(--fg-muted);
+    cursor: pointer; z-index: 20;
+    transition: color 0.3s, transform 0.3s;
+    line-height: 1;
+  }
+  .pv-close:hover { color: var(--fg); transform: rotate(90deg); }
+
+  .pv-info-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px; letter-spacing: 0.35em;
+    color: var(--fg-muted); text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .pv-info-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px; font-weight: 600;
+    letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--fg); margin-bottom: 8px; line-height: 1.2;
+  }
+  .pv-info-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--fg-muted); text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .pv-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px; font-weight: 300; color: var(--fg);
+    margin-bottom: 32px; line-height: 1;
+  }
+  .pv-sizes {
+    display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap;
+  }
+  .pv-size-btn {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--fg-soft); cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .pv-size-btn:hover, .pv-size-btn.sel {
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .pv-add-btn {
+    width: 100%; padding: 16px;
+    background: var(--fg); color: var(--bg);
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.25s ease;
+  }
+  .pv-add-btn:hover { opacity: 0.8; }
+  .pv-nav-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px; letter-spacing: 0.2em;
+    color: var(--fg-muted); text-transform: uppercase;
+    text-align: center; margin-top: 16px; opacity: 0.5;
+  }
+
+  .pv-essence-btn:hover, .pv-essence-btn.sel {
+    background: var(--fg) !important;
+    color: var(--bg) !important;
+    border-color: var(--fg) !important;
+  }
+  @media (max-width: 768px) {
+    .pv-container { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
+    .pv-info-side { border-left: none; border-top: 1px solid var(--border); padding: 32px 24px; }
+    .pv-image-side { aspect-ratio: 1/1; }
   }
 
   /* scroll fade-in — mais suave */
@@ -1586,9 +1773,9 @@
 
   /* staggered children */
   .products-grid .product-card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s, box-shadow 0.4s;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
   .products-grid .product-card.visible {
     opacity: 1;
@@ -2572,15 +2759,15 @@
 
   /* — Scroll reveal: cleaner stagger — */
   .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
     transition: opacity 0.7s ease, transform 0.7s ease !important;
   }
   .fade-in.visible { opacity: 1; transform: none; }
   .products-grid .product-card {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.18s ease !important;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.18s ease, box-shadow 0.18s ease !important;
   }
   .products-grid .product-card.visible { opacity: 1; transform: translateY(0); }
 
@@ -2924,137 +3111,81 @@
     </div>
 
     <div class="products-grid fade-in">
-      <!-- 6 products -->
-      <div class="product-card" onclick="openStaticProductDetail('Afterglow Tee','Coleção 01 — Organic','R$ 220')" style="cursor:pointer;">
+      <div class="product-card" onclick="openStaticProductDetail('Charlotte de Witte Shirt','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
         <div class="product-image">
-          <div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="120" height="160" viewBox="0 0 120 160" fill="none">
-              <rect x="20" y="10" width="80" height="95" rx="2" stroke="white" stroke-width="0.5"/>
-              <line x1="20" y1="50" x2="100" y2="50" stroke="white" stroke-width="0.3"/>
-              <circle cx="60" cy="75" r="12" stroke="white" stroke-width="0.5"/>
-              <line x1="40" y1="120" x2="80" y2="120" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 01</span>
+          <div class="product-image-bg" style="background:linear-gradient(160deg,#1e1a15 0%,#2e2820 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><path d="M10,65 L20,45 L20,85 L30,45 L30,85 L40,45 L40,85 L50,65 L60,45 L60,85 L70,45 L70,85 L80,65 L90,65" stroke="white" stroke-width="0.6" fill="none"/><line x1="10" y1="100" x2="90" y2="100" stroke="white" stroke-width="0.3"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">CDW</text></svg></div>
+          <span class="product-edition-tag">Techno</span>
         </div>
         <div class="product-info">
-          <p class="product-name">Afterglow Tee</p>
-          <p class="product-sub">Coleção 01 — Organic</p>
-          <p class="product-price">R$ 220</p>
+          <p class="product-name">Charlotte de Witte Shirt</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
         </div>
       </div>
-
-      <div class="product-card" onclick="openStaticProductDetail('Signal Hoodie','Coleção 01 — Atmospheric','R$ 420')" style="cursor:pointer;">
+      <div class="product-card" onclick="openStaticProductDetail('It\'s Time to Time Warp','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
         <div class="product-image">
-          <div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="120" height="160" viewBox="0 0 120 160" fill="none">
-              <rect x="15" y="5" width="90" height="110" rx="1" stroke="white" stroke-width="0.5"/>
-              <rect x="30" y="5" width="60" height="20" rx="1" stroke="white" stroke-width="0.5"/>
-              <line x1="35" y1="70" x2="85" y2="70" stroke="white" stroke-width="0.3"/>
-              <line x1="35" y1="80" x2="75" y2="80" stroke="white" stroke-width="0.3"/>
-              <line x1="35" y1="90" x2="65" y2="90" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 01</span>
+          <div class="product-image-bg" style="background:linear-gradient(200deg,#171410 0%,#302a22 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><path d="M50,65 m0,-30 a30,30 0 1,1 -0.1,0" stroke="white" stroke-width="0.5" fill="none"/><path d="M50,65 m0,-20 a20,20 0 1,1 -0.1,0" stroke="white" stroke-width="0.4" fill="none"/><path d="M50,65 m0,-10 a10,10 0 1,1 -0.1,0" stroke="white" stroke-width="0.3" fill="none"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">TIME WARP</text></svg></div>
+          <span class="product-edition-tag">Techno</span>
         </div>
         <div class="product-info">
-          <p class="product-name">Signal Hoodie</p>
-          <p class="product-sub">Coleção 01 — Atmospheric</p>
-          <p class="product-price">R$ 420</p>
+          <p class="product-name">It's Time to Time Warp</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
         </div>
       </div>
-
-      <div class="product-card" onclick="openStaticProductDetail('Archive Print 001','Coleção 01 — Archival','R$ 180')" style="cursor:pointer;">
+      <div class="product-card" onclick="openStaticProductDetail('Monolink Shirt','Coleção Melodic House — Oversized','R$ 130')" style="cursor:pointer;">
         <div class="product-image">
-          <div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="120" height="160" viewBox="0 0 120 160" fill="none">
-              <rect x="10" y="10" width="100" height="130" stroke="white" stroke-width="0.5"/>
-              <line x1="10" y1="40" x2="110" y2="40" stroke="white" stroke-width="0.3"/>
-              <circle cx="60" cy="90" r="24" stroke="white" stroke-width="0.5"/>
-              <circle cx="60" cy="90" r="6" stroke="white" stroke-width="0.3"/>
-              <line x1="60" y1="66" x2="60" y2="74" stroke="white" stroke-width="0.3"/>
-              <line x1="60" y1="106" x2="60" y2="114" stroke="white" stroke-width="0.3"/>
-              <line x1="36" y1="90" x2="44" y2="90" stroke="white" stroke-width="0.3"/>
-              <line x1="76" y1="90" x2="84" y2="90" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 01</span>
+          <div class="product-image-bg" style="background:linear-gradient(140deg,#241f18 0%,#1e1a14 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><path d="M10,80 Q25,40 50,60 Q75,80 90,40" stroke="white" stroke-width="0.6" fill="none"/><path d="M10,90 Q25,55 50,70 Q75,90 90,55" stroke="white" stroke-width="0.3" fill="none"/><circle cx="50" cy="40" r="8" stroke="white" stroke-width="0.4" fill="none"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">MONOLINK</text></svg></div>
+          <span class="product-edition-tag">Melodic</span>
         </div>
         <div class="product-info">
-          <p class="product-name">Archive Print 001</p>
-          <p class="product-sub">Coleção 01 — Archival</p>
-          <p class="product-price">R$ 180</p>
+          <p class="product-name">Monolink Shirt</p>
+          <p class="product-sub">Coleção Melodic House — Oversized</p>
+          <p class="product-price">R$ 130</p>
         </div>
       </div>
-
-      <div class="product-card" onclick="openStaticProductDetail('Frequency Tee','Coleção 02 — Pressure Unit','R$ 240')" style="cursor:pointer;">
+      <div class="product-card" onclick="openStaticProductDetail('Hot Girls Like Techno','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
         <div class="product-image">
-          <div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="120" height="160" viewBox="0 0 120 160" fill="none">
-              <rect x="20" y="10" width="80" height="95" rx="2" stroke="white" stroke-width="0.5"/>
-              <polyline points="20,60 35,45 50,55 65,35 80,50 100,30" stroke="white" stroke-width="0.5" fill="none"/>
-              <line x1="20" y1="120" x2="100" y2="120" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 02</span>
+          <div class="product-image-bg" style="background:linear-gradient(180deg,#1c1814 0%,#2a2418 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><rect x="10" y="10" width="80" height="90" stroke="white" stroke-width="0.4"/><polyline points="15,65 25,35 35,75 45,45 55,70 65,30 75,60 85,50" stroke="white" stroke-width="0.6" fill="none"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="5" fill="white" opacity="0.4">HGLT</text></svg></div>
+          <span class="product-edition-tag">Techno</span>
         </div>
         <div class="product-info">
-          <p class="product-name">Frequency Tee</p>
-          <p class="product-sub">Coleção 02 — Pressure Unit</p>
-          <p class="product-price">R$ 240</p>
+          <p class="product-name">Hot Girls Like Techno</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
         </div>
       </div>
-
-      <div class="product-card" onclick="openStaticProductDetail('Industrial Hoodie','Coleção 02 — Technical','R$ 460')" style="cursor:pointer;">
+      <div class="product-card" onclick="openStaticProductDetail('Rave The World','Coleção ALOK — Oversized','R$ 130')" style="cursor:pointer;">
         <div class="product-image">
-          <div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="120" height="160" viewBox="0 0 120 160" fill="none">
-              <rect x="15" y="5" width="90" height="110" rx="1" stroke="white" stroke-width="0.5"/>
-              <rect x="30" y="5" width="60" height="20" rx="1" stroke="white" stroke-width="0.5"/>
-              <rect x="35" y="45" width="50" height="50" stroke="white" stroke-width="0.5"/>
-              <line x1="35" y1="55" x2="85" y2="55" stroke="white" stroke-width="0.3"/>
-              <line x1="35" y1="65" x2="85" y2="65" stroke="white" stroke-width="0.3"/>
-              <line x1="35" y1="75" x2="85" y2="75" stroke="white" stroke-width="0.3"/>
-              <line x1="35" y1="85" x2="85" y2="85" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 02</span>
+          <div class="product-image-bg" style="background:linear-gradient(220deg,#19160f 0%,#2c2619 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><circle cx="50" cy="55" r="32" stroke="white" stroke-width="0.5" fill="none"/><ellipse cx="50" cy="55" rx="16" ry="32" stroke="white" stroke-width="0.3" fill="none"/><line x1="18" y1="55" x2="82" y2="55" stroke="white" stroke-width="0.3"/><line x1="24" y1="35" x2="76" y2="35" stroke="white" stroke-width="0.3"/><line x1="24" y1="75" x2="76" y2="75" stroke="white" stroke-width="0.3"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">RTW</text></svg></div>
+          <span class="product-edition-tag">ALOK</span>
         </div>
         <div class="product-info">
-          <p class="product-name">Industrial Hoodie</p>
-          <p class="product-sub">Coleção 02 — Technical</p>
-          <p class="product-price">R$ 460</p>
+          <p class="product-name">Rave The World</p>
+          <p class="product-sub">Coleção ALOK — Oversized</p>
+          <p class="product-price">R$ 130</p>
         </div>
       </div>
-
-      <div class="product-card" onclick="openStaticProductDetail('One-Off 002','Edição Especial — Única','R$ 890')" style="cursor:pointer;">
+      <div class="product-card" onclick="openStaticProductDetail('DisTorçÃO de TeMpO','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
         <div class="product-image">
-          <div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="120" height="160" viewBox="0 0 120 160" fill="none">
-              <rect x="10" y="10" width="100" height="130" stroke="white" stroke-width="0.5"/>
-              <text x="60" y="60" text-anchor="middle" font-family="monospace" font-size="8" fill="white" opacity="0.6">RL.002</text>
-              <text x="60" y="72" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">PROTOTYPE</text>
-              <line x1="25" y1="85" x2="95" y2="85" stroke="white" stroke-width="0.3"/>
-              <line x1="25" y1="95" x2="80" y2="95" stroke="white" stroke-width="0.3"/>
-              <line x1="25" y1="105" x2="60" y2="105" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Special</span>
+          <div class="product-image-bg" style="background:linear-gradient(170deg,#211d16 0%,#1c1813 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><text x="50" y="45" text-anchor="middle" font-family="monospace" font-size="11" fill="white" opacity="0.5" transform="skewX(-8)">DIS</text><text x="50" y="62" text-anchor="middle" font-family="monospace" font-size="11" fill="white" opacity="0.4" transform="skewX(6)">TOR</text><text x="50" y="79" text-anchor="middle" font-family="monospace" font-size="11" fill="white" opacity="0.5" transform="skewX(-10)">CAO</text><line x1="10" y1="90" x2="90" y2="90" stroke="white" stroke-width="0.3"/></svg></div>
+          <span class="product-edition-tag">Techno</span>
         </div>
         <div class="product-info">
-          <p class="product-name">One-Off 002</p>
-          <p class="product-sub">Edição Especial — Única</p>
-          <p class="product-price">R$ 890</p>
+          <p class="product-name">DisTorçÃO de TeMpO</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
         </div>
       </div>
     </div>
 
+    <!-- FOOTER -->
     <!-- FOOTER -->
     <footer class="fade-in">
       <div>
@@ -3119,117 +3250,77 @@
     </div>
 
     <div class="products-grid">
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="10" y="10" width="80" height="90" rx="2" stroke="white" stroke-width="0.5"/>
-              <line x1="10" y1="40" x2="90" y2="40" stroke="white" stroke-width="0.3"/>
-              <circle cx="50" cy="65" r="12" stroke="white" stroke-width="0.5"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 01</span></div>
-        <div class="product-info"><p class="product-name">Afterglow Tee</p><p class="product-sub">Coleção 01</p><p class="product-price">R$ 220</p></div>
+      <div class="product-card" onclick="openStaticProductDetail('Charlotte de Witte Shirt','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
+        <div class="product-image">
+          <div class="product-image-bg" style="background:linear-gradient(160deg,#1e1a15 0%,#2e2820 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><path d="M10,65 L20,45 L20,85 L30,45 L30,85 L40,45 L40,85 L50,65 L60,45 L60,85 L70,45 L70,85 L80,65 L90,65" stroke="white" stroke-width="0.6" fill="none"/><line x1="10" y1="100" x2="90" y2="100" stroke="white" stroke-width="0.3"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">CDW</text></svg></div>
+          <span class="product-edition-tag">Techno</span>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Charlotte de Witte Shirt</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
+        </div>
       </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="5" y="5" width="90" height="110" rx="1" stroke="white" stroke-width="0.5"/>
-              <rect x="25" y="5" width="50" height="18" rx="1" stroke="white" stroke-width="0.5"/>
-              <line x1="20" y1="65" x2="80" y2="65" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 01</span></div>
-        <div class="product-info"><p class="product-name">Signal Hoodie</p><p class="product-sub">Coleção 01</p><p class="product-price">R$ 420</p></div>
+      <div class="product-card" onclick="openStaticProductDetail('It\'s Time to Time Warp','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
+        <div class="product-image">
+          <div class="product-image-bg" style="background:linear-gradient(200deg,#171410 0%,#302a22 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><path d="M50,65 m0,-30 a30,30 0 1,1 -0.1,0" stroke="white" stroke-width="0.5" fill="none"/><path d="M50,65 m0,-20 a20,20 0 1,1 -0.1,0" stroke="white" stroke-width="0.4" fill="none"/><path d="M50,65 m0,-10 a10,10 0 1,1 -0.1,0" stroke="white" stroke-width="0.3" fill="none"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">TIME WARP</text></svg></div>
+          <span class="product-edition-tag">Techno</span>
+        </div>
+        <div class="product-info">
+          <p class="product-name">It's Time to Time Warp</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
+        </div>
       </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="5" y="5" width="90" height="120" stroke="white" stroke-width="0.5"/>
-              <circle cx="50" cy="65" r="22" stroke="white" stroke-width="0.5"/>
-              <circle cx="50" cy="65" r="5" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 01</span></div>
-        <div class="product-info"><p class="product-name">Archive Print 001</p><p class="product-sub">Coleção 01</p><p class="product-price">R$ 180</p></div>
+      <div class="product-card" onclick="openStaticProductDetail('Monolink Shirt','Coleção Melodic House — Oversized','R$ 130')" style="cursor:pointer;">
+        <div class="product-image">
+          <div class="product-image-bg" style="background:linear-gradient(140deg,#241f18 0%,#1e1a14 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><path d="M10,80 Q25,40 50,60 Q75,80 90,40" stroke="white" stroke-width="0.6" fill="none"/><path d="M10,90 Q25,55 50,70 Q75,90 90,55" stroke="white" stroke-width="0.3" fill="none"/><circle cx="50" cy="40" r="8" stroke="white" stroke-width="0.4" fill="none"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">MONOLINK</text></svg></div>
+          <span class="product-edition-tag">Melodic</span>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Monolink Shirt</p>
+          <p class="product-sub">Coleção Melodic House — Oversized</p>
+          <p class="product-price">R$ 130</p>
+        </div>
       </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="10" y="10" width="80" height="90" rx="2" stroke="white" stroke-width="0.5"/>
-              <polyline points="15,65 28,45 40,60 55,38 70,55 88,35" stroke="white" stroke-width="0.5" fill="none"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 02</span></div>
-        <div class="product-info"><p class="product-name">Frequency Tee</p><p class="product-sub">Coleção 02</p><p class="product-price">R$ 240</p></div>
+      <div class="product-card" onclick="openStaticProductDetail('Hot Girls Like Techno','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
+        <div class="product-image">
+          <div class="product-image-bg" style="background:linear-gradient(180deg,#1c1814 0%,#2a2418 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><rect x="10" y="10" width="80" height="90" stroke="white" stroke-width="0.4"/><polyline points="15,65 25,35 35,75 45,45 55,70 65,30 75,60 85,50" stroke="white" stroke-width="0.6" fill="none"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="5" fill="white" opacity="0.4">HGLT</text></svg></div>
+          <span class="product-edition-tag">Techno</span>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Hot Girls Like Techno</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
+        </div>
       </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="5" y="5" width="90" height="110" rx="1" stroke="white" stroke-width="0.5"/>
-              <rect x="25" y="5" width="50" height="18" rx="1" stroke="white" stroke-width="0.5"/>
-              <rect x="25" y="45" width="50" height="50" stroke="white" stroke-width="0.5"/>
-              <line x1="25" y1="58" x2="75" y2="58" stroke="white" stroke-width="0.3"/>
-              <line x1="25" y1="72" x2="75" y2="72" stroke="white" stroke-width="0.3"/>
-              <line x1="25" y1="82" x2="75" y2="82" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 02</span></div>
-        <div class="product-info"><p class="product-name">Industrial Hoodie</p><p class="product-sub">Coleção 02</p><p class="product-price">R$ 460</p></div>
+      <div class="product-card" onclick="openStaticProductDetail('Rave The World','Coleção ALOK — Oversized','R$ 130')" style="cursor:pointer;">
+        <div class="product-image">
+          <div class="product-image-bg" style="background:linear-gradient(220deg,#19160f 0%,#2c2619 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><circle cx="50" cy="55" r="32" stroke="white" stroke-width="0.5" fill="none"/><ellipse cx="50" cy="55" rx="16" ry="32" stroke="white" stroke-width="0.3" fill="none"/><line x1="18" y1="55" x2="82" y2="55" stroke="white" stroke-width="0.3"/><line x1="24" y1="35" x2="76" y2="35" stroke="white" stroke-width="0.3"/><line x1="24" y1="75" x2="76" y2="75" stroke="white" stroke-width="0.3"/><text x="50" y="115" text-anchor="middle" font-family="monospace" font-size="6" fill="white" opacity="0.4">RTW</text></svg></div>
+          <span class="product-edition-tag">ALOK</span>
+        </div>
+        <div class="product-info">
+          <p class="product-name">Rave The World</p>
+          <p class="product-sub">Coleção ALOK — Oversized</p>
+          <p class="product-price">R$ 130</p>
+        </div>
       </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="5" y="5" width="90" height="120" stroke="white" stroke-width="0.5"/>
-              <text x="50" y="55" text-anchor="middle" font-family="monospace" font-size="7" fill="white" opacity="0.5">RL.002</text>
-              <text x="50" y="67" text-anchor="middle" font-family="monospace" font-size="5" fill="white" opacity="0.3">ONE-OFF</text>
-              <line x1="15" y1="80" x2="85" y2="80" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Special</span></div>
-        <div class="product-info"><p class="product-name">One-Off 002</p><p class="product-sub">Edição Especial</p><p class="product-price">R$ 890</p></div>
-      </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="10" y="10" width="80" height="90" rx="2" stroke="white" stroke-width="0.5"/>
-              <path d="M30 65 Q50 35 70 65 Q50 95 30 65Z" stroke="white" stroke-width="0.5" fill="none"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 03</span></div>
-        <div class="product-info"><p class="product-name">Liminal Tee</p><p class="product-sub">Coleção 03</p><p class="product-price">R$ 230</p></div>
-      </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="5" y="5" width="90" height="120" stroke="white" stroke-width="0.5"/>
-              <line x1="5" y1="35" x2="95" y2="35" stroke="white" stroke-width="0.3"/>
-              <line x1="5" y1="65" x2="95" y2="65" stroke="white" stroke-width="0.3"/>
-              <line x1="5" y1="95" x2="95" y2="95" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 03</span></div>
-        <div class="product-info"><p class="product-name">Archive Print 003</p><p class="product-sub">Coleção 03</p><p class="product-price">R$ 190</p></div>
-      </div>
-      <div class="product-card">
-        <div class="product-image"><div class="product-image-bg"></div>
-          <div class="product-visual-overlay">
-            <svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none">
-              <rect x="5" y="5" width="90" height="110" rx="1" stroke="white" stroke-width="0.5"/>
-              <rect x="25" y="5" width="50" height="18" rx="1" stroke="white" stroke-width="0.5"/>
-              <circle cx="50" cy="75" r="18" stroke="white" stroke-width="0.5"/>
-              <circle cx="50" cy="75" r="4" stroke="white" stroke-width="0.3"/>
-            </svg>
-          </div>
-          <span class="product-edition-tag">Edição 04</span></div>
-        <div class="product-info"><p class="product-name">Dark Room Hoodie</p><p class="product-sub">Coleção 04</p><p class="product-price">R$ 440</p></div>
+      <div class="product-card" onclick="openStaticProductDetail('DisTorçÃO de TeMpO','Coleção Techno — Oversized','R$ 130')" style="cursor:pointer;">
+        <div class="product-image">
+          <div class="product-image-bg" style="background:linear-gradient(170deg,#211d16 0%,#1c1813 100%);position:absolute;inset:0;"></div>
+          <div class="product-visual-overlay"><svg class="product-icon-svg" width="100" height="130" viewBox="0 0 100 130" fill="none"><text x="50" y="45" text-anchor="middle" font-family="monospace" font-size="11" fill="white" opacity="0.5" transform="skewX(-8)">DIS</text><text x="50" y="62" text-anchor="middle" font-family="monospace" font-size="11" fill="white" opacity="0.4" transform="skewX(6)">TOR</text><text x="50" y="79" text-anchor="middle" font-family="monospace" font-size="11" fill="white" opacity="0.5" transform="skewX(-10)">CAO</text><line x1="10" y1="90" x2="90" y2="90" stroke="white" stroke-width="0.3"/></svg></div>
+          <span class="product-edition-tag">Techno</span>
+        </div>
+        <div class="product-info">
+          <p class="product-name">DisTorçÃO de TeMpO</p>
+          <p class="product-sub">Coleção Techno — Oversized</p>
+          <p class="product-price">R$ 130</p>
+        </div>
       </div>
     </div>
 
@@ -4153,7 +4244,13 @@
     document.getElementById('product-detail-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-  function openStaticProductDetail(name, sub, price) {
+  function openStaticProductDetail(name, sub, price, imgFront, imgBack, desc) {
+    // Abre o viewer novo com navegação e zoom
+    if (typeof openProductViewer === 'function') {
+      openProductViewer(name, sub, price, imgFront || null, imgBack || null, desc || null);
+      return;
+    }
+    // Fallback para o modal antigo
     document.getElementById('pdm-name').textContent = name;
     document.getElementById('pdm-sub').textContent = sub;
     document.getElementById('pdm-price').textContent = price;
@@ -4551,8 +4648,8 @@ async function sbFetch(path, options = {}) {
       </div>
 
       <div class="admin-field">
-        <label class="admin-label">Descrição curta (opcional)</label>
-        <input type="text" class="admin-input" id="pDesc" placeholder="Ex: Organic cotton, oversized fit">
+        <label class="admin-label">História da Peça</label>
+        <input type="text" class="admin-input" id="pDesc" placeholder="Cada peça carrega uma frequência específica...">
       </div>
 
     </div>
@@ -4614,22 +4711,30 @@ function adminLogout() {
 
 // ── STORAGE (Supabase) ──
 async function getProducts() {
-  const data = await sbFetch('/rest/v1/products?select=*&order=created_at.desc');
+  // Buscar só campos essenciais, sem imagem base64 (muito pesada)
+  const data = await sbFetch('/rest/v1/products?select=id,name,price,collection,edition,category,description,image_fit,image_back_fit,created_at&order=created_at.desc');
   if (!data) return [];
-  return data.map(p => ({
-    id: p.id,
-    name: p.name,
-    price: p.price,
-    collection: p.collection,
-    edition: p.edition,
-    category: p.category,
-    description: p.description,
-    image: p.image,
-    imageBack: p.image_back,
-    imageFit: p.image_fit,
-    imageBackFit: p.image_back_fit || 'cover',
-    createdAt: p.created_at
-  }));
+  // Buscar imagens separadamente para não causar timeout
+  const imgs = await sbFetch('/rest/v1/products?select=id,image,image_back&order=created_at.desc');
+  const imgMap = {};
+  if (imgs) imgs.forEach(function(p) { imgMap[p.id] = p; });
+  return data.map(function(p) {
+    var img = imgMap[p.id] || {};
+    return {
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      collection: p.collection,
+      edition: p.edition,
+      category: p.category,
+      description: p.description,
+      image: img.image || null,
+      imageBack: img.image_back || null,
+      imageFit: p.image_fit || 'cover',
+      imageBackFit: p.image_back_fit || 'cover',
+      createdAt: p.created_at
+    };
+  });
 }
 
 async function saveProduct_db(product) {
@@ -4890,24 +4995,22 @@ function importJSON(e) {
 // ── RENDER PUBLIC SHOP ──
 function renderPublicShop(products) {
   products = products || [];
+  // Só substitui se tiver produtos com imagem cadastrada no admin
+  var comImagem = products.filter(function(p) { return p.image; });
+  if (!comImagem.length) return;
+  products = comImagem;
   const grids = document.querySelectorAll('.products-grid');
 
   grids.forEach(grid => {
     if (!products.length) return;
     grid.innerHTML = products.map(p => `
-      <div class="product-card" onclick="openProductDetail('${p.id}')" style="cursor:pointer;">
+      <div class="product-card" onclick="openProductViewer('${p.name}','${p.collection||p.category}','R$ ${p.price}','${p.image||''}','${p.imageBack||''}','${p.description||''}')" style="cursor:pointer;">
         <div class="product-image" style="background:transparent;perspective:800px;">
           ${(p.image && p.imageBack) ? `
-            <div class="product-image-flip">
-              <div class="product-face">
-                <img src="${p.image}" style="width:100%;height:100%;object-fit:${p.imageFit||'cover'};display:block;position:absolute;inset:0;">
-              </div>
-              <div class="product-back">
-                <img src="${p.imageBack}" style="width:100%;height:100%;object-fit:${p.imageBackFit||'cover'};display:block;position:absolute;inset:0;">
-              </div>
-            </div>
+            <img class="product-img-front" src="${p.image}" style="object-fit:${p.imageFit||'cover'}">
+            <img class="product-img-back" src="${p.imageBack}" style="object-fit:${p.imageBackFit||'cover'}">
           ` : p.image ? `
-            <img src="${p.image}" style="width:100%;height:100%;object-fit:${p.imageFit||'cover'};display:block;position:absolute;inset:0;">
+            <img class="product-img-front" src="${p.image}" style="object-fit:${p.imageFit||'cover'}">
           ` : `
             <div class="product-image-bg"></div>
             <div class="product-visual-overlay">
@@ -5113,9 +5216,34 @@ window.addEventListener('DOMContentLoaded', async () => {
       <div class="ck-err" id="ck-err">Preencha todos os campos.</div>
 
       <span class="ck-lbl">Pagamento</span>
-      <button class="ck-pay pri" onclick="ckMP()">Pagar com Mercado Pago</button>
-      <button class="ck-pay" onclick="ckPix()">Pix - Copiar Chave</button>
-      <p class="ck-note">Pagamento seguro - Confirmacao por WhatsApp</p>
+      <button class="ck-pay pri" id="ck-btn-mp" onclick="ckMP()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
+        Pagar com Mercado Pago
+      </button>
+      <button class="ck-pay" id="ck-btn-pix" onclick="ckPixInline()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7z" stroke="currentColor" stroke-width="1.2"/><path d="M13 13h1v1h-1zM15 13h1v1h-1zM13 15h1v1h-1zM15 15h1v1h-1z" fill="currentColor" opacity=".6"/></svg>
+        Pagar com Pix
+      </button>
+
+      <!-- QR Code Pix inline -->
+      <div id="ck-pix-panel" style="display:none;margin-top:16px;border:1px solid var(--border);padding:28px;text-align:center;animation:fadeUp .4s ease;">
+        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">Escaneie o QR Code</p>
+        <div id="ck-qr-wrap" style="width:180px;height:180px;margin:0 auto 20px;background:white;padding:8px;display:flex;align-items:center;justify-content:center;">
+          <p style="font-family:'DM Mono',monospace;font-size:8px;color:#999;text-align:center;" id="ck-qr-loading">Gerando QR Code...</p>
+        </div>
+        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:10px;">Ou copie o código</p>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+          <code id="ck-pix-code" style="font-family:'DM Mono',monospace;font-size:9px;color:var(--fg);background:var(--border);padding:10px 14px;word-break:break-all;text-align:left;max-width:240px;display:block;">Aguardando...</code>
+          <button onclick="ckCopyPix()" id="ck-copy-btn" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 16px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;white-space:nowrap;">Copiar</button>
+        </div>
+        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-transform:uppercase;line-height:1.8;margin-bottom:16px;">Após pagar, clique abaixo para enviar o comprovante</p>
+        <a id="ck-wpp-link" href="https://wa.me/5515991375380" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:12px 20px;background:#25D366;color:#fff;text-decoration:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.571a.75.75 0 00.921.921l5.696-1.481A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.933 0-3.742-.524-5.295-1.434l-.376-.221-3.896 1.013 1.04-3.799-.244-.392A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Enviar comprovante
+        </a>
+      </div>
+
+      <p class="ck-note">Pagamento seguro · Pedido confirmado por WhatsApp</p>
     </div>
   </div>
 </div>
@@ -5362,27 +5490,96 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   window.ckMP = function () {
     if (!ckValidate()) return;
+    var total = 0;
+    cart.forEach(function(i) {
+      total += parseFloat(i.price.replace('R$','').replace(/[.]/g,'').replace(',','.').trim()) || 0;
+    });
+    var fv = _frSel ? _frSel.v : 0;
+    total = parseFloat((total + fv).toFixed(2));
+    var nome  = document.getElementById('ck-nome').value.trim();
+    var email = document.getElementById('ck-email').value.trim();
+    var itens = cart.map(function(i){ return i.name + ' (' + i.size + ')'; }).join(', ');
     ckEnviarPedido('Mercado Pago');
-    window.open('https://link.mercadopago.com.br/raverlab', '_blank');
-    setTimeout(function () {
-      if (confirm('Pedido registrado! Limpar carrinho?')) {
-        cart = []; saveCart(); updateCartBadge(); ckClose();
+    fetch('/.netlify/functions/criar-preferencia', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: nome, email: email, descricao: itens, valor: total })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.init_point) {
+        window.open(data.init_point, '_blank');
+      } else {
+        window.open('https://link.mercadopago.com.br/raverlab', '_blank');
       }
-    }, 600);
-  };
-
-  window.ckPix = function () {
-    if (!ckValidate()) return;
-    var k = 'studio@raverlab.com'; // Troque pela sua chave Pix
-    ckEnviarPedido('PIX - ' + k);
-    navigator.clipboard.writeText(k).then(function () {
-      alert('Chave Pix copiada:\n' + k + '\n\nEnvie o comprovante pelo WhatsApp!');
-    }).catch(function () {
-      alert('Chave Pix: ' + k);
+      setTimeout(function() {
+        if (confirm('Pedido registrado! Limpar carrinho?')) {
+          cart = []; saveCart(); updateCartBadge(); ckClose();
+        }
+      }, 800);
+    })
+    .catch(function() {
+      window.open('https://link.mercadopago.com.br/raverlab', '_blank');
     });
   };
 
-  /* ──────────────────────────────────────────
+  window.ckPixInline = function () {
+    if (!ckValidate()) return;
+    var total = 0;
+    cart.forEach(function(i) {
+      total += parseFloat(i.price.replace('R$','').replace(/[.]/g,'').replace(',','.').trim()) || 0;
+    });
+    var fv = _frSel ? _frSel.v : 0;
+    total = parseFloat((total + fv).toFixed(2));
+    var nome  = document.getElementById('ck-nome').value.trim();
+    var email = document.getElementById('ck-email').value.trim();
+    var itens = cart.map(function(i){ return i.name + ' (' + i.size + ')'; }).join(', ');
+    var panel = document.getElementById('ck-pix-panel');
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    var qrWrap  = document.getElementById('ck-qr-wrap');
+    var pixCode = document.getElementById('ck-pix-code');
+    var wppLink = document.getElementById('ck-wpp-link');
+    qrWrap.innerHTML = '<p style="font-family:monospace;font-size:9px;color:#999;text-align:center;padding:20px 0">Gerando QR Code...</p>';
+    pixCode.textContent = 'Aguardando...';
+    var msg = encodeURIComponent('Oi! Paguei R$ ' + total.toFixed(2).replace('.', ',') + ' via Pix no pedido Raver Lab. Segue o comprovante!');
+    wppLink.href = 'https://wa.me/5515991375380?text=' + msg;
+    fetch('/.netlify/functions/criar-pagamento', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: nome, email: email, descricao: itens, valor: total })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) {
+        qrWrap.innerHTML = '<p style="color:#c0392b;font-family:monospace;font-size:9px;padding:20px 0">Erro ao gerar Pix. Tente novamente.</p>';
+        return;
+      }
+      if (data.qr_code_base64) {
+        qrWrap.innerHTML = '<img src="data:image/png;base64,' + data.qr_code_base64 + '" style="width:164px;height:164px;display:block;" alt="QR Code Pix">';
+      }
+      if (data.qr_code) {
+        pixCode.textContent = data.qr_code;
+        window._ckPixCode = data.qr_code;
+      }
+      window._ckPaymentId = data.id;
+      ckEnviarPedido('PIX - R$ ' + total.toFixed(2));
+    })
+    .catch(function() {
+      qrWrap.innerHTML = '<p style="color:#c0392b;font-family:monospace;font-size:9px;padding:20px 0">Erro de conexao. Tente novamente.</p>';
+    });
+  };
+
+  window.ckCopyPix = function () {
+    var code = window._ckPixCode || document.getElementById('ck-pix-code').textContent;
+    if (!code || code === 'Aguardando...') return;
+    navigator.clipboard.writeText(code).then(function() {
+      var btn = document.getElementById('ck-copy-btn');
+      if (btn) { btn.textContent = 'Copiado!'; setTimeout(function(){ btn.textContent = 'Copiar'; }, 2000); }
+    }).catch(function() { alert('Codigo Pix: ' + code); });
+  };
+
+    /* ──────────────────────────────────────────
      CONTA — LOGIN / CADASTRO
   ────────────────────────────────────────── */
   var UK = 'rl_users', SK = 'rl_session';
@@ -5599,8 +5796,206 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+
+/* ── PRODUCT VIEWER ── */
+var _pvImages = [];
+var _pvLabels = ['Frente', 'Costas'];
+var _pvCurrent = 0;
+var _pvZoomed = false;
+var _pvName = '';
+var _pvSub = '';
+var _pvPrice = '';
+var _pvSelSize = '';
+var _pvEssence = '';
+
+window.openProductViewer = function(name, sub, price, imgFront, imgBack, desc) {
+  _pvName = name;
+  _pvSub = sub || '';
+  _pvPrice = price;
+  _pvImages = [];
+  _pvSelSize = '';
+  if (imgFront && imgFront !== 'null' && imgFront !== '') _pvImages.push(imgFront);
+  if (imgBack  && imgBack  !== 'null' && imgBack  !== '') _pvImages.push(imgBack);
+  _pvCurrent = 0;
+  _pvZoomed = false;
+
+  document.getElementById('pv-name').textContent  = name;
+  document.getElementById('pv-sub').textContent   = sub || '';
+  document.getElementById('pv-price').textContent = price;
+  var descEl = document.getElementById('pv-desc');
+  if (descEl) descEl.textContent = desc || 'Cada peça carrega uma frequência específica. Um objeto traduzido da experiência eletrônica para a matéria física.';
+  document.querySelectorAll('.pv-size-btn').forEach(function(b){ b.classList.remove('sel'); });
+  document.querySelectorAll('.pv-essence-btn').forEach(function(b){ b.classList.remove('sel'); });
+
+  pvRender();
+  document.getElementById('product-viewer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+function pvRender() {
+  var img         = document.getElementById('pv-img');
+  var placeholder = document.getElementById('pv-placeholder');
+  var arrowL      = document.getElementById('pv-arrow-left');
+  var arrowR      = document.getElementById('pv-arrow-right');
+  var dots        = document.getElementById('pv-dots');
+  var sideLabel   = document.getElementById('pv-side-label');
+  var navHint     = document.getElementById('pv-nav-hint');
+
+  img.classList.remove('zoomed');
+  _pvZoomed = false;
+  img.style.transformOrigin = 'center center';
+
+  if (_pvImages.length > 0) {
+    img.style.opacity = '0';
+    img.src = _pvImages[_pvCurrent];
+    img.onload = function() {
+      img.style.transition = 'opacity 0.4s ease';
+      img.style.opacity = '1';
+    };
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+  }
+
+  var hasTwo = _pvImages.length > 1;
+  arrowL.className = 'pv-arrow pv-arrow-left' + (hasTwo ? ' visible' : '');
+  arrowR.className = 'pv-arrow pv-arrow-right' + (hasTwo ? ' visible' : '');
+  if (sideLabel) sideLabel.textContent = _pvLabels[_pvCurrent] || 'Frente';
+  if (navHint) navHint.textContent = hasTwo ? 'Use as setas para ver frente e costas' : '';
+
+  dots.innerHTML = '';
+  if (hasTwo) {
+    _pvImages.forEach(function(_, i) {
+      var d = document.createElement('div');
+      d.className = 'pv-dot' + (i === _pvCurrent ? ' active' : '');
+      d.onclick = function(e) { e.stopPropagation(); _pvCurrent = i; pvRender(); };
+      dots.appendChild(d);
+    });
+  }
+}
+
+window.pvGo = function(e, dir) {
+  e.stopPropagation();
+  if (_pvImages.length < 2) return;
+  _pvCurrent = (_pvCurrent + dir + _pvImages.length) % _pvImages.length;
+  pvRender();
+};
+
+window.pvToggleZoom = function(e) {
+  e.stopPropagation();
+  var img = document.getElementById('pv-img');
+  if (!img.src || img.style.display === 'none') return;
+  _pvZoomed = !_pvZoomed;
+  if (_pvZoomed) {
+    var rect = img.getBoundingClientRect();
+    var x = ((e.clientX - rect.left) / rect.width) * 100;
+    var y = ((e.clientY - rect.top) / rect.height) * 100;
+    img.style.transformOrigin = x + '% ' + y + '%';
+  } else {
+    img.style.transformOrigin = 'center center';
+  }
+  img.style.transition = 'transform 0.5s cubic-bezier(0.4,0,0.2,1)';
+  img.classList.toggle('zoomed', _pvZoomed);
+};
+
+window.pvSelSize = function(el) {
+  document.querySelectorAll('.pv-size-btn').forEach(function(b){ b.classList.remove('sel'); });
+  document.querySelectorAll('.pv-essence-btn').forEach(function(b){ b.classList.remove('sel'); });
+  el.classList.add('sel');
+  _pvSelSize = el.textContent;
+};
+
+window.pvSelEssence = function(el) {
+  document.querySelectorAll('.pv-essence-btn').forEach(function(b){ b.classList.remove('sel'); });
+  el.classList.add('sel');
+  _pvEssence = el.textContent.trim();
+};
+
+window.pvClose = function() {
+  document.getElementById('product-viewer').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(function() {
+    var img = document.getElementById('pv-img');
+    img.classList.remove('zoomed');
+    img.style.transformOrigin = 'center center';
+    _pvZoomed = false;
+  }, 300);
+};
+
+window.pvAddToCart = function() {
+  cart.push({
+    id: Date.now(),
+    name: _pvName,
+    price: _pvPrice,
+    size: _pvSelSize || '—',
+    essence: _pvEssence || '—',
+    img: _pvImages[0] || null
+  });
+  if (typeof saveCart === 'function') saveCart();
+  updateCartBadge();
+  pvClose();
+  setTimeout(openCart, 350);
+};
+
 }());
 
 </script>
 
+
+<!-- PRODUCT VIEWER POPUP -->
+<div id="product-viewer" onclick="if(event.target===this)pvClose()">
+  <div class="pv-container">
+
+    <!-- Imagem (esquerda) -->
+    <div class="pv-image-side" onclick="pvToggleZoom(event)">
+      <span class="pv-side-label" id="pv-side-label">Frente</span>
+      <img class="pv-img" id="pv-img" src="" alt="">
+      <div class="pv-placeholder" id="pv-placeholder">
+        <svg width="60" height="80" viewBox="0 0 60 80" fill="none" opacity="0.15"><rect x="5" y="5" width="50" height="70" stroke="white" stroke-width="0.5"/></svg>
+      </div>
+      <button class="pv-arrow pv-arrow-left" id="pv-arrow-left" onclick="pvGo(event,-1)">&#8249;</button>
+      <button class="pv-arrow pv-arrow-right" id="pv-arrow-right" onclick="pvGo(event,1)">&#8250;</button>
+      <button class="pv-zoom-btn" onclick="pvToggleZoom(event)" title="Zoom">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </button>
+      <div class="pv-side-indicator" id="pv-dots"></div>
+    </div>
+
+    <!-- Info (direita) -->
+    <div class="pv-info-side">
+      <button class="pv-close" onclick="pvClose()">×</button>
+      <div>
+        <p class="pv-info-label">Raver Lab — Peça</p>
+        <h2 class="pv-info-name" id="pv-name"></h2>
+        <p class="pv-info-sub" id="pv-sub"></p>
+        <p class="pv-price" id="pv-price"></p>
+
+        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">Tamanho</p>
+        <div class="pv-sizes" style="margin-bottom:28px;">
+          <button class="pv-size-btn" onclick="pvSelSize(this)">P</button>
+          <button class="pv-size-btn" onclick="pvSelSize(this)">M</button>
+          <button class="pv-size-btn" onclick="pvSelSize(this)">G</button>
+          <button class="pv-size-btn" onclick="pvSelSize(this)">GG</button>
+        </div>
+
+        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">História da Peça</p>
+        <p id="pv-desc" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);line-height:1.8;margin-bottom:28px;">Cada peça carrega uma frequência específica. Um objeto traduzido da experiência eletrônica para a matéria física.</p>
+
+        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:6px;">Essência de Aroma da Marca</p>
+        <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;opacity:.6;">Escolha se deseja o aroma exclusivo da Raver Lab aplicado na peça</p>
+        <div style="display:flex;gap:8px;margin-bottom:28px;">
+          <button class="pv-essence-btn" onclick="pvSelEssence(this)" style="flex:1;padding:13px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .25s ease;">Com Essência</button>
+          <button class="pv-essence-btn" onclick="pvSelEssence(this)" style="flex:1;padding:13px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);cursor:pointer;transition:all .25s ease;">Sem Essência</button>
+        </div>
+      </div>
+      <div>
+        <button class="pv-add-btn" onclick="pvAddToCart()">Adicionar ao Carrinho →</button>
+        <p class="pv-nav-hint" id="pv-nav-hint"></p>
+      </div>
+    </div>
+
+  </div>
+</div>
 </body>
