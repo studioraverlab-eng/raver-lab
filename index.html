@@ -2790,6 +2790,7 @@
     .special-card { padding: 40px 24px !important; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body data-mode="light">
 
@@ -3479,8 +3480,37 @@
       <div class="transmission-success" id="transmission-success">
         <p class="success-id">RL.LAB — Signal received — <span id="protoId"></span></p>
         <h2 class="success-title">Signal<br>Transmitido.</h2>
-        <p class="success-sub">Seu signal criativo entrou no sistema. A Raver Lab processará sua referência e iniciará a tradução material. Aguarde contato em 48–72 horas.</p>
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:48px;">amostra extraída → protótipo registrado → teste de material</p>
+        <p class="success-sub">Seu signal criativo entrou no sistema. Agora finalize com o pagamento de R$15 para iniciarmos o desenvolvimento.</p>
+
+        <!-- PIX PAYMENT -->
+        <div style="margin:48px auto;max-width:400px;border:1px solid var(--border);padding:40px;text-align:center;">
+          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:24px;">Pagamento via Pix</p>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:var(--fg);line-height:1;margin-bottom:8px;">R$15</p>
+          <p style="font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-muted);margin-bottom:32px;">Ativação do Lab — desenvolvimento criativo</p>
+
+          <!-- QR Code via API gratuita -->
+          <div id="pix-qr-container" style="margin:0 auto 24px;width:180px;height:180px;background:white;padding:8px;display:flex;align-items:center;justify-content:center;">
+            <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;color:#999;text-align:center;text-transform:uppercase;">Aguardando<br>geração...</p>
+          </div>
+
+          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:10px;">Ou copie a chave Pix</p>
+          <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:32px;flex-wrap:wrap;">
+            <code id="pix-key" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--fg);background:var(--border);padding:10px 16px;letter-spacing:.03em;word-break:break-all;max-width:260px;text-align:left;">Gerando chave...</code>
+            <button onclick="copiarPix()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 16px;background:var(--fg);color:var(--bg);border:none;cursor:pointer;white-space:nowrap;" id="copy-pix-btn">Copiar</button>
+          </div>
+
+          <a id="btn-wpp-lab" href="https://wa.me/5515991375380?text=Ol%C3%A1%2C%20paguei%20o%20Lab%20da%20Raver%20Lab%21%20Segue%20o%20comprovante." target="_blank"
+            style="display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;background:#25D366;color:#fff;text-decoration:none;margin-bottom:20px;transition:opacity .2s;"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.571a.75.75 0 00.921.921l5.696-1.481A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.933 0-3.742-.524-5.295-1.434l-.376-.221-3.896 1.013 1.04-3.799-.244-.392A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Enviar comprovante no WhatsApp
+          </a>
+          <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--fg-muted);text-transform:uppercase;line-height:1.8;">
+            Clique acima para abrir o WhatsApp e enviar o comprovante
+          </p>
+        </div>
+
+        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:40px;opacity:.5;">amostra extraída → protótipo registrado → teste de material</p>
         <button class="btn-outline" onclick="resetLab()">Enviar outro signal</button>
       </div>
 
@@ -3773,6 +3803,17 @@
       </div>
     </div>
 
+    <div style="padding:64px 48px;border-top:1px solid var(--border);">
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">RL.STREAM — Set em Destaque</p>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,40px);font-weight:300;letter-spacing:-.02em;color:var(--fg);margin-bottom:28px;">Frequência Visual</h3>
+      <div style="width:100%;max-width:860px;aspect-ratio:16/9;background:var(--border);border:1px solid var(--border);position:relative;overflow:hidden;">
+        <!-- Cole aqui o iframe do YouTube/Vimeo quando tiver o vídeo -->
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="opacity:.15;margin-bottom:16px;"><circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width=".8"/><polygon points="20,16 36,24 20,32" fill="currentColor" opacity=".5"/></svg>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--fg-soft);margin-bottom:8px;">Vídeo em breve</p>
+        </div>
+      </div>
+    </div>
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">Frequências curadas.<br>Do som ao objeto.</p></div>
       <div><p class="footer-col-title">Navegar</p><div class="footer-links"><a href="#" class="footer-link" onclick="showSection('home')">Início</a><a href="#" class="footer-link" onclick="showSection('shop')">Coleção</a><a href="#" class="footer-link" onclick="showSection('archive')">Archive</a></div></div>
@@ -3790,33 +3831,10 @@
       </div>
       <span class="section-meta">edições únicas</span>
     </div>
-    <div class="editorial-phrase">
-      <p>Isto não é ruído. Isto é ritual.</p>
-    </div>
-    <div class="special-grid">
-      <div class="special-card">
-        <p class="special-sub">Projeto 001 — 2026</p>
-        <h3 class="special-title">Peça Única<br>Sob Encomenda</h3>
-        <p class="special-desc">Cada objeto parte de uma experiência real. Você traz a memória. A Raver Lab traduz em forma.</p>
-      </div>
-      <div class="special-card">
-        <p class="special-sub">Projeto 002 — Colaboração</p>
-        <h3 class="special-title">Collab<br>Artístico</h3>
-        <p class="special-desc">Projetos visuais com artistas da cena eletrônica. Objetos que documentam encontros sonoros.</p>
-      </div>
-      <div class="special-card">
-        <p class="special-sub">Projeto 003 — Série</p>
-        <h3 class="special-title">Edição<br>Numerada</h3>
-        <p class="special-desc">Séries de 10 a 50 peças. Cada uma com certificado e registro no arquivo da marca.</p>
-      </div>
-      <div class="special-card">
-        <p class="special-sub">Projeto 004 — Ritual</p>
-        <h3 class="special-title">Live<br>Process</h3>
-        <p class="special-desc">Peças produzidas ao vivo em eventos. A criação como performance. O objeto como artefato.</p>
-      </div>
-    </div>
-    <div style="padding:24px 48px;border-top:1px solid var(--border);text-align:center;">
-      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;">Para propostas: <a href="mailto:studio@raverlab.com" style="color:var(--fg);text-decoration:none;">studio@raverlab.com</a></p>
+    <div style="min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 48px;">
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:40px;opacity:.5;">RL.ESPECIAL — 2026</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,96px);font-weight:300;letter-spacing:-.02em;color:var(--fg);line-height:1;margin-bottom:24px;">Novidades<br>em breve.</h2>
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;opacity:.4;">signal pending</p>
     </div>
     <footer class="fade-in">
       <div><p class="footer-brand">Raver Lab</p><p class="footer-statement">Objetos fora do catálogo.<br>Criação sem formato fixo.</p></div>
@@ -3851,7 +3869,7 @@
           <label class="conta-label">Senha</label>
           <input type="password" class="conta-input" placeholder="· · · · · · · ·">
         </div>
-        <button class="conta-btn" onclick="alert('Funcionalidade em breve.')">Entrar →</button>
+        <button class="conta-btn" onclick="doLogin()">Entrar →</button>
         <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--fg-muted);text-transform:uppercase;margin-top:20px;text-align:center;cursor:pointer;" onclick="switchContaTab('register')">Não tem conta? Criar agora</p>
       </div>
 
@@ -3869,28 +3887,16 @@
           <label class="conta-label">Senha</label>
           <input type="password" class="conta-input" placeholder="· · · · · · · ·">
         </div>
-        <button class="conta-btn" onclick="alert('Funcionalidade em breve.')">Criar Conta →</button>
+        <button class="conta-btn" onclick="doRegister()">Criar Conta →</button>
       </div>
 
       <!-- ORDERS -->
       <div class="conta-tab-panel" id="conta-orders">
-        <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:32px;">Entre na sua conta para visualizar pedidos.</p>
-        <div class="conta-orders">
-          <div class="conta-order-row">
-            <div>
-              <p class="conta-order-id">RL.ORDER.001 — Abr 2026</p>
-              <p class="conta-order-name">Afterglow Tee — Tam. M</p>
-            </div>
-            <span class="conta-order-status">Em trânsito</span>
-          </div>
-          <div class="conta-order-row">
-            <div>
-              <p class="conta-order-id">RL.ORDER.002 — Mar 2026</p>
-              <p class="conta-order-name">Signal Hoodie — Tam. G</p>
-            </div>
-            <span class="conta-order-status">Entregue</span>
-          </div>
+        <div id="orders-guest-msg" style="padding:40px 0;text-align:center;">
+          <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:20px;">Faça login para ver seus pedidos.</p>
+          <button class="conta-btn" style="width:auto;padding:14px 32px;" onclick="switchContaTab('login')">Fazer login</button>
         </div>
+        <div class="conta-orders" id="orders-list" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -3917,7 +3923,7 @@
       <span class="cart-total-label">Total</span>
       <span class="cart-total-value" id="cartTotalValue">R$ 0</span>
     </div>
-    <button class="cart-checkout-btn" onclick="alert('Checkout em breve.')">Finalizar Pedido →</button>
+    <button class="cart-checkout-btn" onclick="openCheckout()">Finalizar Pedido →</button>
   </div>
 </div>
 
@@ -4079,6 +4085,7 @@
     const success = document.getElementById('transmission-success');
     success.classList.add('active');
     document.getElementById('protoId').textContent = protoId;
+    if (typeof carregarQRCode === 'function') carregarQRCode();
   }
 
   function resetLab() {
@@ -4502,6 +4509,11 @@ async function sbFetch(path, options = {}) {
         </div>
         <div class="img-preview-container" id="imgBackPreviewContainer">
           <img id="imgBackPreview" class="img-preview" src="" alt="costas preview">
+          <div class="fit-options">
+            <button class="fit-btn active" id="fitBackCover" onclick="setFitBack('cover')">Cover — preenche tudo</button>
+            <button class="fit-btn" id="fitBackContain" onclick="setFitBack('contain')">Contain — imagem inteira</button>
+            <button class="fit-btn" id="fitBackAuto" onclick="setFitBack('auto')">Auto — tamanho real</button>
+          </div>
         </div>
       </div>
 
@@ -4563,6 +4575,7 @@ let editingId = null;
 let currentImageData = null;
 let currentImageFit = 'cover';
 let currentImageBackData = null;
+let currentImageBackFit = 'cover';
 
 // ── HASH ROUTING ──
 window.addEventListener('hashchange', handleHash);
@@ -4614,6 +4627,7 @@ async function getProducts() {
     image: p.image,
     imageBack: p.image_back,
     imageFit: p.image_fit,
+    imageBackFit: p.image_back_fit || 'cover',
     createdAt: p.created_at
   }));
 }
@@ -4629,7 +4643,8 @@ async function saveProduct_db(product) {
     description: product.description || null,
     image: product.image || null,
     image_back: product.imageBack || null,
-    image_fit: product.imageFit || 'cover'
+    image_fit: product.imageFit || 'cover',
+    image_back_fit: product.imageBackFit || 'cover'
   };
   console.log('Salvando produto:', row.name);
   const result = await sbFetch('/rest/v1/products', {
@@ -4713,6 +4728,7 @@ async function openProductModal(id) {
   document.getElementById('productImageInput').value = '';
   document.getElementById('productImageBackInput').value = '';
   setFit('cover');
+  setFitBack('cover');
 
   if (id) {
     const products = await getProducts();
@@ -4734,9 +4750,12 @@ async function openProductModal(id) {
       }
       if (p.imageBack) {
         currentImageBackData = p.imageBack;
+        currentImageBackFit = p.imageBackFit || 'cover';
         document.getElementById('imgBackPreview').src = p.imageBack;
+        document.getElementById('imgBackPreview').style.objectFit = currentImageBackFit;
         document.getElementById('imgBackPreviewContainer').classList.add('show');
         document.getElementById('uploadAreaBackLabel').innerHTML = '<span style="color:#666;">Costas carregada — clique para trocar</span>';
+        setFitBack(currentImageBackFit);
       }
     }
   }
@@ -4768,6 +4787,16 @@ function setFit(fit) {
     document.getElementById('fit'+f.charAt(0).toUpperCase()+f.slice(1)).classList.toggle('active', f === fit);
   });
   const preview = document.getElementById('imgPreview');
+  if (preview) preview.style.objectFit = fit;
+}
+
+function setFitBack(fit) {
+  currentImageBackFit = fit;
+  ['cover','contain','auto'].forEach(f => {
+    const btn = document.getElementById('fitBack'+f.charAt(0).toUpperCase()+f.slice(1));
+    if (btn) btn.classList.toggle('active', f === fit);
+  });
+  const preview = document.getElementById('imgBackPreview');
   if (preview) preview.style.objectFit = fit;
 }
 
@@ -4803,7 +4832,8 @@ async function saveProduct() {
     description: document.getElementById('pDesc').value.trim(),
     image: currentImageData || null,
     imageBack: currentImageBackData || null,
-    imageFit: currentImageFit
+    imageFit: currentImageFit,
+    imageBackFit: currentImageBackFit
   };
 
   try {
@@ -4873,7 +4903,7 @@ function renderPublicShop(products) {
                 <img src="${p.image}" style="width:100%;height:100%;object-fit:${p.imageFit||'cover'};display:block;position:absolute;inset:0;">
               </div>
               <div class="product-back">
-                <img src="${p.imageBack}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;">
+                <img src="${p.imageBack}" style="width:100%;height:100%;object-fit:${p.imageBackFit||'cover'};display:block;position:absolute;inset:0;">
               </div>
             </div>
           ` : p.image ? `
@@ -4982,20 +5012,20 @@ async function calcularFrete() {
     const uf = data.uf;
     const frete = FRETE_TABELA[uf] || { pac: { valor: 38, prazo: 12 }, sedex: { valor: 55, prazo: 5 } };
 
-    result.innerHTML = \`
+    result.innerHTML = `
       <div style="margin-bottom:6px;color:var(--fg-muted);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px;">
-        \${data.localidade} — \${uf}
+        ${data.localidade} — ${uf}
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
         <span>PAC</span>
-        <span>R$ \${frete.pac.valor.toFixed(2).replace('.',',')} — até \${frete.pac.prazo} dias úteis</span>
+        <span>R$ ${frete.pac.valor.toFixed(2).replace('.',',')} — até ${frete.pac.prazo} dias úteis</span>
       </div>
       <div style="display:flex;justify-content:space-between;">
         <span>SEDEX</span>
-        <span>R$ \${frete.sedex.valor.toFixed(2).replace('.',',')} — até \${frete.sedex.prazo} dias úteis</span>
+        <span>R$ ${frete.sedex.valor.toFixed(2).replace('.',',')} — até ${frete.sedex.prazo} dias úteis</span>
       </div>
       <div style="margin-top:8px;font-size:8px;opacity:0.4;">Valores estimados. Frete exato confirmado no checkout.</div>
-    \`;
+    `;
   } catch(e) {
     result.innerHTML = '<span style="opacity:0.5;">Não foi possível consultar. Tente novamente.</span>';
   }
@@ -5008,4 +5038,569 @@ window.addEventListener('DOMContentLoaded', async () => {
   loadPlaylistLinksIntoAdmin();
 });
 </script>
+
+<!-- ═══ CSS EXTRA ═══ -->
+<style>
+/* CHECKOUT */
+#ck-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:700;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;padding:20px}
+#ck-overlay.open{opacity:1;visibility:visible}
+#ck-modal{background:var(--bg);border:1px solid var(--border);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+#ck-overlay.open #ck-modal{transform:translateY(0)}
+.ck-hd{padding:22px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ck-hd-t{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--fg)}
+.ck-x{background:transparent;border:none;font-size:22px;color:var(--fg-muted);cursor:pointer}.ck-x:hover{color:var(--fg)}
+.ck-bd{padding:24px 28px}
+.ck-lbl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;display:block;margin:20px 0 10px}
+.ck-lbl:first-child{margin-top:0}
+.ck-inp{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;font-family:'DM Mono',monospace;font-size:12px;color:var(--fg);outline:none;transition:border-color .2s;box-sizing:border-box;margin-bottom:8px}
+.ck-inp:focus{border-color:var(--fg)}
+.ck-g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ck-sum{border:1px solid var(--border);padding:14px;margin-bottom:4px}
+.ck-sum-row{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:10px;color:var(--fg-soft);margin-bottom:5px}
+.ck-tot{border-top:1px solid var(--border);padding-top:8px;margin-top:4px;color:var(--fg);font-weight:500}
+.ck-cep-row{display:flex;gap:8px;margin-bottom:8px}
+.ck-cep-i{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;font-family:'DM Mono',monospace;font-size:12px;color:var(--fg);outline:none}
+.ck-cep-b{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;background:var(--fg);color:var(--bg);border:none;cursor:pointer}
+.ck-fr-res{font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-soft);line-height:1.8;min-height:18px;margin-bottom:6px}
+.ck-fr-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.ck-fr-opt{padding:7px 12px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:9px;color:var(--fg-soft);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.ck-fr-opt.sel,.ck-fr-opt:hover{border-color:var(--fg);background:var(--fg);color:var(--bg)}
+.ck-pay{width:100%;padding:14px 18px;border:1px solid var(--border);background:transparent;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--fg-soft);cursor:pointer;text-align:left;transition:all .2s;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ck-pay:hover{border-color:var(--fg);color:var(--fg)}
+.ck-pay.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}.ck-pay.pri:hover{opacity:.85}
+.ck-err{font-family:'DM Mono',monospace;font-size:9px;color:#c0392b;display:none;margin-top:6px}.ck-err.show{display:block}
+.ck-note{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--fg-muted);text-align:center;opacity:.5;margin-top:10px}
+/* CONTA FEEDBACK */
+.cf{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 0;margin-top:10px;display:none}
+.cf.show{display:block}.cf.ok{color:#27ae60}.cf.er{color:#c0392b}
+.cu-badge{padding:14px;border:1px solid var(--border);margin-bottom:16px}
+.cu-out{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:10px 18px;background:transparent;border:1px solid var(--border);color:var(--fg-muted);cursor:pointer;transition:all .2s;margin-top:12px}
+.cu-out:hover{border-color:var(--fg);color:var(--fg)}
+</style>
+
+<!-- CHECKOUT MODAL -->
+<div id="ck-overlay" onclick="if(event.target===this)ckClose()">
+  <div id="ck-modal">
+    <div class="ck-hd">
+      <span class="ck-hd-t">Finalizar Pedido</span>
+      <button class="ck-x" onclick="ckClose()">x</button>
+    </div>
+    <div class="ck-bd">
+      <span class="ck-lbl">Resumo</span>
+      <div class="ck-sum" id="ck-sum"></div>
+
+      <span class="ck-lbl">Frete</span>
+      <div class="ck-cep-row">
+        <input class="ck-cep-i" id="ck-cep" maxlength="9" placeholder="00000-000" oninput="ckFmtCep(this)" onkeydown="if(event.key==='Enter')ckCalc()">
+        <button class="ck-cep-b" onclick="ckCalc()">Calcular</button>
+      </div>
+      <div class="ck-fr-res" id="ck-fr-res"></div>
+      <div class="ck-fr-opts" id="ck-fr-opts" style="display:none"></div>
+
+      <span class="ck-lbl">Dados de entrega</span>
+      <input class="ck-inp" id="ck-nome" placeholder="Nome completo">
+      <input class="ck-inp" id="ck-email" type="email" placeholder="E-mail">
+      <input class="ck-inp" id="ck-zap" type="tel" placeholder="WhatsApp (11) 99999-9999" oninput="maskWhatsapp(this)">
+      <div class="ck-g2" style="margin-bottom:8px">
+        <input class="ck-inp" id="ck-cep2" maxlength="9" placeholder="CEP" oninput="ckFmtCep(this);ckAutoEnd()" style="margin-bottom:0">
+        <input class="ck-inp" id="ck-num" placeholder="Numero" style="margin-bottom:0">
+      </div>
+      <input class="ck-inp" id="ck-rua" placeholder="Rua">
+      <div class="ck-g2">
+        <input class="ck-inp" id="ck-cidade" placeholder="Cidade" style="margin-bottom:0">
+        <input class="ck-inp" id="ck-uf" placeholder="UF" maxlength="2" style="margin-bottom:0">
+      </div>
+      <div class="ck-err" id="ck-err">Preencha todos os campos.</div>
+
+      <span class="ck-lbl">Pagamento</span>
+      <button class="ck-pay pri" onclick="ckMP()">Pagar com Mercado Pago</button>
+      <button class="ck-pay" onclick="ckPix()">Pix - Copiar Chave</button>
+      <p class="ck-note">Pagamento seguro - Confirmacao por WhatsApp</p>
+    </div>
+  </div>
+</div>
+
+<!-- JS FUNCIONAL -->
+<script>
+(function () {
+  'use strict';
+
+  /* ──────────────────────────────────────────
+     TABELA DE FRETE POR UF
+  ────────────────────────────────────────── */
+  var FT = {
+    SP:{pac:{v:18,p:3},sdx:{v:28,p:1}}, RJ:{pac:{v:22,p:5},sdx:{v:35,p:2}},
+    MG:{pac:{v:22,p:5},sdx:{v:35,p:2}}, ES:{pac:{v:24,p:6},sdx:{v:38,p:2}},
+    PR:{pac:{v:24,p:6},sdx:{v:38,p:2}}, SC:{pac:{v:24,p:6},sdx:{v:38,p:2}},
+    RS:{pac:{v:26,p:7},sdx:{v:40,p:3}}, BA:{pac:{v:28,p:8},sdx:{v:42,p:3}},
+    SE:{pac:{v:28,p:8},sdx:{v:42,p:3}}, AL:{pac:{v:30,p:9},sdx:{v:45,p:3}},
+    PE:{pac:{v:30,p:9},sdx:{v:45,p:3}}, PB:{pac:{v:30,p:9},sdx:{v:45,p:3}},
+    RN:{pac:{v:30,p:9},sdx:{v:45,p:3}}, CE:{pac:{v:32,p:10},sdx:{v:48,p:4}},
+    PI:{pac:{v:32,p:10},sdx:{v:48,p:4}},MA:{pac:{v:32,p:10},sdx:{v:48,p:4}},
+    GO:{pac:{v:28,p:7},sdx:{v:42,p:3}}, DF:{pac:{v:28,p:7},sdx:{v:42,p:3}},
+    MT:{pac:{v:32,p:9},sdx:{v:48,p:4}}, MS:{pac:{v:30,p:8},sdx:{v:45,p:3}},
+    TO:{pac:{v:34,p:11},sdx:{v:50,p:4}},PA:{pac:{v:36,p:12},sdx:{v:55,p:5}},
+    AP:{pac:{v:40,p:14},sdx:{v:60,p:6}},AM:{pac:{v:40,p:14},sdx:{v:60,p:6}},
+    RO:{pac:{v:38,p:13},sdx:{v:58,p:5}},RR:{pac:{v:42,p:15},sdx:{v:65,p:7}},
+    AC:{pac:{v:42,p:15},sdx:{v:65,p:7}}
+  };
+
+  var _frSel = null; // frete selecionado no checkout
+
+  /* ──────────────────────────────────────────
+     CART — LOCALSTORAGE
+  ────────────────────────────────────────── */
+  function saveCart() {
+    try { localStorage.setItem('rl_cart', JSON.stringify(cart)); } catch(e) {}
+  }
+
+  function loadCart() {
+    try {
+      var s = localStorage.getItem('rl_cart');
+      if (s) { cart = JSON.parse(s); updateCartBadge(); }
+    } catch(e) {}
+  }
+
+  window.addToCartFromModal = function () {
+    var name    = document.getElementById('pdm-name').textContent;
+    var price   = document.getElementById('pdm-price').textContent;
+    var szEl    = document.querySelector('.pdm-size-btn.selected');
+    var esEl    = document.querySelector('.pdm-essence-btn.selected');
+    var imgEl   = document.getElementById('pdm-img');
+    cart.push({
+      id      : Date.now(),
+      name    : name,
+      price   : price,
+      size    : szEl ? szEl.textContent : '-',
+      essence : esEl ? esEl.textContent : '-',
+      img     : (imgEl && imgEl.style.display !== 'none') ? imgEl.src : null
+    });
+    saveCart();
+    updateCartBadge();
+    closeProductDetail();
+    openCart();
+  };
+
+  window.removeFromCart = function (id) {
+    cart = cart.filter(function (i) { return i.id !== id; });
+    saveCart();
+    updateCartBadge();
+    renderCart();
+  };
+
+  /* ──────────────────────────────────────────
+     FRETE NO MODAL DO PRODUTO
+  ────────────────────────────────────────── */
+  window.formatCEP = function (input) {
+    var v = input.value.replace(/[^0-9]/g, '');
+    if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5, 8);
+    input.value = v;
+  };
+
+  window.calcularFrete = async function () {
+    var input  = document.getElementById('pdm-cep');
+    var result = document.getElementById('pdm-frete-result');
+    var cep    = input.value.replace(/[^0-9]/g, '');
+
+    if (cep.length !== 8) {
+      result.innerHTML = '<span style="color:#c0392b">CEP invalido - 8 digitos</span>';
+      return;
+    }
+    result.innerHTML = '<span style="opacity:.5">Consultando...</span>';
+
+    try {
+      var r = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+      var d = await r.json();
+      if (d.erro) { result.innerHTML = '<span style="color:#c0392b">CEP nao encontrado</span>'; return; }
+
+      var uf    = d.uf;
+      var frete = FT[uf] || { pac: {v:38,p:12}, sdx: {v:55,p:5} };
+      var pac   = 'R$ ' + frete.pac.v.toFixed(2).replace('.', ',') + ' - ate ' + frete.pac.p + ' dias uteis';
+      var sdx   = 'R$ ' + frete.sdx.v.toFixed(2).replace('.', ',') + ' - ate ' + frete.sdx.p + ' dia' + (frete.sdx.p > 1 ? 's' : '') + ' uteis';
+
+      result.innerHTML =
+        '<div style="margin-bottom:10px;color:var(--fg-muted);font-size:9px;letter-spacing:.2em;text-transform:uppercase">' + d.localidade + ' - ' + uf + '</div>' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>PAC</span><span>' + pac + '</span></div>' +
+        '<div style="display:flex;justify-content:space-between;"><span>SEDEX</span><span>' + sdx + '</span></div>' +
+        '<div style="margin-top:8px;font-size:8px;opacity:.4">Valores estimados. Frete exato no checkout.</div>';
+    } catch(e) {
+      result.innerHTML = '<span style="opacity:.5">Erro ao consultar. Tente novamente.</span>';
+    }
+  };
+
+  /* ──────────────────────────────────────────
+     CHECKOUT MODAL
+  ────────────────────────────────────────── */
+  window.openCheckout = function () {
+    if (!cart.length) { alert('Seu carrinho esta vazio.'); return; }
+    closeCart();
+    buildCkSum();
+    document.getElementById('ck-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.ckClose = function () {
+    document.getElementById('ck-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  function pn(s) {
+    return parseFloat(s.replace('R$','').replace(/\./g,'').replace(',','.').trim()) || 0;
+  }
+
+  function buildCkSum() {
+    var tot = 0;
+    var rows = cart.map(function (i) {
+      tot += pn(i.price);
+      return '<div class="ck-sum-row"><span>' + i.name + ' (' + i.size + ')</span><span>' + i.price + '</span></div>';
+    }).join('');
+    var fv = _frSel ? _frSel.v : 0;
+    var fl = _frSel ? ('R$ ' + fv.toFixed(2).replace('.', ',')) : '-';
+    document.getElementById('ck-sum').innerHTML =
+      rows +
+      '<div class="ck-sum-row"><span>Subtotal</span><span>R$ ' + tot.toLocaleString('pt-BR') + '</span></div>' +
+      '<div class="ck-sum-row"><span>Frete</span><span>' + fl + '</span></div>' +
+      '<div class="ck-sum-row ck-tot"><span>Total</span><span>R$ ' + (tot + fv).toLocaleString('pt-BR') + '</span></div>';
+  }
+
+  window.ckFmtCep = function (el) {
+    var v = el.value.replace(/[^0-9]/g, '');
+    if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5, 8);
+    el.value = v;
+  };
+
+  window.ckCalc = async function () {
+    var cep  = document.getElementById('ck-cep').value.replace(/[^0-9]/g, '');
+    var res  = document.getElementById('ck-fr-res');
+    var opts = document.getElementById('ck-fr-opts');
+    if (cep.length !== 8) { res.innerHTML = '<span style="color:#c0392b">CEP invalido</span>'; return; }
+    res.innerHTML = 'Consultando...';
+    opts.style.display = 'none';
+    try {
+      var r = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+      var d = await r.json();
+      if (d.erro) { res.innerHTML = '<span style="color:#c0392b">CEP nao encontrado</span>'; return; }
+      var tb = FT[d.uf] || { pac:{v:38,p:12}, sdx:{v:55,p:5} };
+      res.innerHTML = d.localidade + ' - ' + d.uf;
+      document.getElementById('ck-cep2').value    = document.getElementById('ck-cep').value;
+      document.getElementById('ck-rua').value     = d.logradouro || '';
+      document.getElementById('ck-cidade').value  = d.localidade || '';
+      document.getElementById('ck-uf').value      = d.uf || '';
+      var bpac  = 'PAC - R$ ' + tb.pac.v.toFixed(2).replace('.', ',') + ' - ' + tb.pac.p + ' dias';
+      var bsdx  = 'SEDEX - R$ ' + tb.sdx.v.toFixed(2).replace('.', ',') + ' - ' + tb.sdx.p + ' dia' + (tb.sdx.p > 1 ? 's' : '');
+      opts.style.display = 'flex';
+      opts.innerHTML =
+        '<button class="ck-fr-opt" data-tipo="PAC" data-v="' + tb.pac.v + '" data-p="' + tb.pac.p + '" onclick="ckSel(this)">' + bpac + '</button>' +
+        '<button class="ck-fr-opt" data-tipo="SEDEX" data-v="' + tb.sdx.v + '" data-p="' + tb.sdx.p + '" onclick="ckSel(this)">' + bsdx + '</button>';
+    } catch(e) { res.innerHTML = 'Erro. Tente novamente.'; }
+  };
+
+  window.ckSel = function (el) {
+    document.querySelectorAll('.ck-fr-opt').forEach(function (b) { b.classList.remove('sel'); });
+    el.classList.add('sel');
+    _frSel = { tipo: el.dataset.tipo, v: parseFloat(el.dataset.v), p: parseInt(el.dataset.p) };
+    buildCkSum();
+  };
+
+  window.ckAutoEnd = async function () {
+    var cep = document.getElementById('ck-cep2').value.replace(/[^0-9]/g, '');
+    if (cep.length !== 8) return;
+    try {
+      var r = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+      var d = await r.json();
+      if (!d.erro) {
+        document.getElementById('ck-rua').value    = d.logradouro || '';
+        document.getElementById('ck-cidade').value = d.localidade || '';
+        document.getElementById('ck-uf').value     = d.uf || '';
+      }
+    } catch(e) {}
+  };
+
+  function ckValidate() {
+    var ids = ['ck-nome','ck-email','ck-rua','ck-num','ck-cidade','ck-uf'];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (!el || !el.value.trim()) {
+        document.getElementById('ck-err').classList.add('show');
+        if (el) el.focus();
+        return false;
+      }
+    }
+    document.getElementById('ck-err').classList.remove('show');
+    return true;
+  }
+
+  function ckEnviarPedido(met) {
+    var on   = 'RL.ORDER.' + (Math.floor(Math.random() * 9000) + 1000);
+    var itens = cart.map(function (i) { return i.name + ' (' + i.size + ') - ' + i.price; }).join(', ');
+    var fr   = _frSel ? (_frSel.tipo + ' R$ ' + _frSel.v.toFixed(2)) : 'A definir';
+    var end  = document.getElementById('ck-rua').value + ', ' + document.getElementById('ck-num').value +
+               ' - ' + document.getElementById('ck-cidade').value + '/' + document.getElementById('ck-uf').value;
+    var clientEmail = document.getElementById('ck-email').value;
+    var clientNome  = document.getElementById('ck-nome').value;
+    // Notificação interna via Formspree
+    fetch('https://formspree.io/f/mdabzabk', {
+      method  : 'POST',
+      headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body    : JSON.stringify({
+        _subject   : '[Raver Lab] Novo Pedido - ' + on,
+        pedido_id  : on,
+        _replyto   : clientEmail,
+        nome       : clientNome,
+        email      : clientEmail,
+        whatsapp   : document.getElementById('ck-zap').value,
+        itens      : itens,
+        frete      : fr,
+        endereco   : end,
+        pagamento  : met
+      })
+    }).catch(function () {});
+    // Email bonito pro cliente
+    enviarEmailPedido(clientNome, clientEmail, on, itens, fr, end, met);
+    return on;
+  }
+
+  window.ckMP = function () {
+    if (!ckValidate()) return;
+    ckEnviarPedido('Mercado Pago');
+    window.open('https://link.mercadopago.com.br/raverlab', '_blank');
+    setTimeout(function () {
+      if (confirm('Pedido registrado! Limpar carrinho?')) {
+        cart = []; saveCart(); updateCartBadge(); ckClose();
+      }
+    }, 600);
+  };
+
+  window.ckPix = function () {
+    if (!ckValidate()) return;
+    var k = 'studio@raverlab.com'; // Troque pela sua chave Pix
+    ckEnviarPedido('PIX - ' + k);
+    navigator.clipboard.writeText(k).then(function () {
+      alert('Chave Pix copiada:\n' + k + '\n\nEnvie o comprovante pelo WhatsApp!');
+    }).catch(function () {
+      alert('Chave Pix: ' + k);
+    });
+  };
+
+  /* ──────────────────────────────────────────
+     CONTA — LOGIN / CADASTRO
+  ────────────────────────────────────────── */
+  var UK = 'rl_users', SK = 'rl_session';
+
+  function getUsers()  { try { return JSON.parse(localStorage.getItem(UK)) || []; } catch(e) { return []; } }
+  function setUsers(u) { try { localStorage.setItem(UK, JSON.stringify(u)); } catch(e) {} }
+  function getSess()   { try { return JSON.parse(localStorage.getItem(SK)); } catch(e) { return null; } }
+  function setSess(u)  { try { localStorage.setItem(SK, JSON.stringify(u)); } catch(e) {} }
+  function clrSess()   { try { localStorage.removeItem(SK); } catch(e) {} }
+
+  function showFeedback(panelId, msg, tipo) {
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+    var el = panel.querySelector('.cf');
+    if (!el) { el = document.createElement('p'); el.className = 'cf'; panel.appendChild(el); }
+    el.textContent = msg;
+    el.className = 'cf show ' + tipo;
+    if (tipo !== 'ok') setTimeout(function () { el.classList.remove('show'); }, 4000);
+  }
+
+  function renderLoggedIn(user) {
+    var lp = document.getElementById('conta-login');
+    var rp = document.getElementById('conta-register');
+    var badge =
+      '<div class="cu-badge">' +
+        '<p style="font-family:\'DM Mono\',monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:6px">Sessao ativa</p>' +
+        '<p style="font-family:\'Inter\',sans-serif;font-size:15px;font-weight:300;color:var(--fg)">' + user.nome + '</p>' +
+        '<p style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--fg-muted)">' + user.email + '</p>' +
+      '</div>' +
+      '<button class="cu-out" onclick="doLogout()">Encerrar sessao</button>';
+    if (lp) lp.innerHTML = badge;
+    if (rp) rp.innerHTML = '<p style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--fg-muted)">Conta ativa: ' + user.nome + '</p><button class="cu-out" style="margin-top:14px" onclick="doLogout()">Encerrar sessao</button>';
+    var gm = document.getElementById('orders-guest-msg');
+    var ol = document.getElementById('orders-list');
+    if (gm) gm.style.display = 'none';
+    if (ol) {
+      ol.style.display = 'block';
+      var ords = [];
+      try { ords = JSON.parse(localStorage.getItem('rl_orders_' + user.id) || '[]'); } catch(e) {}
+      ol.innerHTML = ords.length
+        ? ords.map(function (o) {
+            return '<div class="conta-order-row"><div><p class="conta-order-id">' + o.id + '</p><p class="conta-order-name">' + o.items + '</p></div><span class="conta-order-status">' + o.status + '</span></div>';
+          }).join('')
+        : '<p style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase">Nenhum pedido ainda.</p>';
+    }
+  }
+
+  window.doLogin = function () {
+    var ei = document.querySelector('#conta-login input[type="email"]');
+    var pi = document.querySelector('#conta-login input[type="password"]');
+    if (!ei || !pi) return;
+    var em = ei.value.trim(), pw = pi.value;
+    if (!em || !pw) { showFeedback('conta-login', 'Preencha e-mail e senha.', 'er'); return; }
+    var users = getUsers();
+    var user  = users.find(function (u) { return u.email === em && u.senha === btoa(pw); });
+    if (!user) { showFeedback('conta-login', 'E-mail ou senha incorretos.', 'er'); return; }
+    setSess(user);
+    showFeedback('conta-login', 'Bem-vindo, ' + user.nome + '!', 'ok');
+    setTimeout(function () { renderLoggedIn(user); }, 700);
+  };
+
+  window.doRegister = function () {
+    var ni = document.querySelector('#conta-register input[type="text"]');
+    var ei = document.querySelector('#conta-register input[type="email"]');
+    var pi = document.querySelector('#conta-register input[type="password"]');
+    if (!ni || !ei || !pi) return;
+    var nm = ni.value.trim(), em = ei.value.trim(), pw = pi.value;
+    if (!nm || !em || !pw) { showFeedback('conta-register', 'Preencha todos os campos.', 'er'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { showFeedback('conta-register', 'E-mail invalido.', 'er'); return; }
+    if (pw.length < 6) { showFeedback('conta-register', 'Senha: minimo 6 caracteres.', 'er'); return; }
+    var users = getUsers();
+    if (users.find(function (u) { return u.email === em; })) { showFeedback('conta-register', 'E-mail ja cadastrado.', 'er'); return; }
+    var nu = { id: Date.now(), nome: nm, email: em, senha: btoa(pw), createdAt: new Date().toISOString() };
+    users.push(nu); setUsers(users); setSess(nu);
+    showFeedback('conta-register', 'Conta criada! Bem-vindo, ' + nm + '.', 'ok');
+    // Email de boas-vindas pro cliente
+    enviarEmailBoasVindas(nm, em);
+    setTimeout(function () { renderLoggedIn(nu); }, 700);
+  };
+
+  window.doLogout = function () { clrSess(); location.reload(); };
+
+
+  /* ──────────────────────────────────────────
+     EMAILJS — EMAILS TRANSACIONAIS
+     
+     SETUP (5 min):
+     1. Crie conta em emailjs.com (grátis)
+     2. Add Service: Gmail com studioraverlab@gmail.com
+        → anote o SERVICE_ID (ex: service_abc123)
+     3. Crie Template "boas_vindas":
+        Subject: Bem-vindo à Raver Lab, {{nome}}!
+        Body: cole o HTML de boas-vindas
+        → anote o TEMPLATE_ID (ex: template_abc123)
+     4. Crie Template "confirmacao_pedido":
+        Subject: Pedido recebido — Raver Lab #{{pedido_id}}
+        Body: cole o HTML de confirmação
+        → anote o TEMPLATE_ID
+     5. Copie sua Public Key do dashboard
+        → substitua EMAILJS_PUBLIC_KEY abaixo
+     6. Substitua os IDs abaixo pelos seus
+  ────────────────────────────────────────── */
+  var EMAILJS_PUBLIC_KEY    = 'wzenITlJUqEnPE-JB';
+  var EMAILJS_SERVICE_ID    = 'service_j20zhfo';
+  var EMAILJS_TPL_BOAS_VINDAS = '1yof3hu';
+  var EMAILJS_TPL_PEDIDO      = 'aj713l4';
+
+  function ejsInit() {
+    if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'SEU_PUBLIC_KEY_AQUI') {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+      return true;
+    }
+    return false;
+  }
+
+  window.enviarEmailBoasVindas = function (nome, email) {
+    if (!ejsInit()) return;
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_BOAS_VINDAS, {
+      nome        : nome,
+      email       : email,
+      to_email    : email,
+      reply_to    : 'studioraverlab@gmail.com'
+    }).catch(function () {});
+  };
+
+  window.enviarEmailPedido = function (nome, email, pedidoId, itens, frete, endereco, pagamento) {
+    if (!ejsInit()) return;
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TPL_PEDIDO, {
+      nome        : nome,
+      email       : email,
+      to_email    : email,
+      pedido_id   : pedidoId,
+      itens       : itens,
+      frete       : frete,
+      endereco    : endereco,
+      pagamento   : pagamento,
+      reply_to    : 'studioraverlab@gmail.com'
+    }).catch(function () {});
+  };
+
+  /* ──────────────────────────────────────────
+     PIX LAB
+  ────────────────────────────────────────── */
+  var PIX_PAYLOAD = '00020126460014BR.GOV.BCB.PIX0124studioraverlab@gmail.com520400005303986540515.005802BR5909Raver Lab6008Sorocaba62150511RAVERLAB0016304EB6D';
+  var PIX_CHAVE   = 'studioraverlab@gmail.com';
+  var WHATSAPP    = '5515991375380';
+
+  window.copiarPix = function () {
+    var keyEl = document.getElementById('pix-key');
+    var chave = keyEl ? keyEl.textContent.trim() : PIX_CHAVE;
+    if (chave === 'Gerando chave...') { alert('Aguarde o QR Code ser gerado.'); return; }
+    navigator.clipboard.writeText(chave).then(function () {
+      var btn = document.getElementById('copy-pix-btn');
+      if (btn) { btn.textContent = 'Copiado!'; setTimeout(function () { btn.textContent = 'Copiar'; }, 2000); }
+    }).catch(function () {
+      alert('Chave Pix copiada: ' + chave);
+    });
+  };
+
+  window.carregarQRCode = function () {
+    var sess = null;
+    try { sess = JSON.parse(localStorage.getItem('rl_session')); } catch(e) {}
+    var nomeLab  = sess ? sess.nome  : '';
+    var emailLab = sess ? sess.email : '';
+    if (!emailLab) {
+      emailLab = prompt('Digite seu e-mail para gerar o Pix:') || '';
+      if (!emailLab) return;
+    }
+    if (!nomeLab) nomeLab = emailLab.split('@')[0];
+
+    var container = document.getElementById('pix-qr-container');
+    var loadMsg = '<p style="font-family:monospace;font-size:9px;color:#999;padding:60px 0">Gerando QR Code...</p>';
+    if (container) container.innerHTML = loadMsg;
+
+    fetch('/.netlify/functions/criar-pagamento', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: nomeLab, email: emailLab, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) {
+        var errMsg = '<p style="color:#c0392b;font-family:monospace;font-size:9px">Erro ao gerar Pix. Tente novamente.</p>';
+        if (container) container.innerHTML = errMsg;
+        return;
+      }
+      if (container && data.qr_code_base64) {
+        var qrImg = '<img src="data:image/png;base64,' + data.qr_code_base64 + '" style="width:180px;height:180px;display:block;margin:0 auto" alt="QR Code Pix">';
+        container.innerHTML = qrImg;
+      }
+      var keyEl = document.getElementById('pix-key');
+      if (keyEl && data.qr_code) keyEl.textContent = data.qr_code;
+      window._mpPaymentId = data.id;
+    })
+    .catch(function() {
+      var connErr = '<p style="color:#c0392b;font-family:monospace;font-size:9px">Erro de conexao. Tente novamente.</p>';
+      if (container) container.innerHTML = connErr;
+    });
+  };
+
+
+  /* ──────────────────────────────────────────
+     INIT
+  ────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function () {
+    loadCart();
+    var s = getSess();
+    if (s) renderLoggedIn(s);
+    // Carregar produtos do Supabase no grid público
+    if (typeof getProducts === 'function' && typeof renderPublicShop === 'function') {
+      getProducts().then(function(products) {
+        if (products && products.length) renderPublicShop(products);
+      }).catch(function() {});
+    }
+  });
+
+}());
+
+</script>
+
 </body>
