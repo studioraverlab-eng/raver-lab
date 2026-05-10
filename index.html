@@ -5593,7 +5593,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     ckEnviarPedido('Mercado Pago');
     fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-preferencia', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
       body: JSON.stringify({ nome: nome, email: email, descricao: itens, valor: total })
     })
     .then(function(r) { return r.json(); })
@@ -5637,7 +5637,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     wppLink.href = 'https://wa.me/5515991375380?text=' + msg;
     fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-pagamento', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
       body: JSON.stringify({ nome: nome, email: email, descricao: itens, valor: total })
     })
     .then(function(r) { return r.json(); })
@@ -5916,7 +5916,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-pagamento', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
       body: JSON.stringify({ nome: nomeLab, email: emailLab, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
     })
     .then(function(r) { return r.json(); })
@@ -6132,7 +6132,7 @@ window.pvAddToCart = function() {
     container.innerHTML = '<p style="font-family:monospace;font-size:9px;color:#999;padding:20px 0">Gerando QR Code...</p>';
     fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-pagamento', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
       body: JSON.stringify({ nome: nome, email: email, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
     })
     .then(function(r) { return r.json(); })
@@ -6171,7 +6171,7 @@ window.pvAddToCart = function() {
     var nome = email.split('@')[0] || 'Cliente';
     fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/criar-preferencia', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
       body: JSON.stringify({ nome: nome, email: email, descricao: 'Raver Lab - Ativacao do Lab', valor: 15 })
     })
     .then(function(r) { return r.json(); })
