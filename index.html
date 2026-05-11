@@ -3400,10 +3400,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
-  // Aplicar modo salvo ANTES do render para evitar flash branco
+  // Aplicar modo salvo — seta no html para CSS pegar antes do body carregar
   (function(){
     var m = localStorage.getItem('rl_mode') || 'dark';
     document.documentElement.setAttribute('data-mode', m);
+    // Quando body estiver disponível, sincronizar
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.setAttribute('data-mode', m);
+    });
   })();
 </script>
 </head>
@@ -4501,9 +4505,10 @@
 
   // ── MODE TOGGLE ──
   function toggleMode() {
-    const current = document.body.getAttribute('data-mode');
+    const current = document.body.getAttribute('data-mode') || document.documentElement.getAttribute('data-mode') || 'dark';
     const next = current === 'light' ? 'dark' : 'light';
     document.body.setAttribute('data-mode', next);
+    document.documentElement.setAttribute('data-mode', next);
     localStorage.setItem('rl_mode', next);
     updateModeToggle(next);
     updateFreqIndicator(next);
@@ -6588,6 +6593,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     // Aplicar modo salvo
     var savedMode = localStorage.getItem('rl_mode') || 'dark';
     document.body.setAttribute('data-mode', savedMode);
+    document.documentElement.setAttribute('data-mode', savedMode);
     updateModeToggle(savedMode);
     loadCart();
     var s = getSess();
