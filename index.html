@@ -7171,45 +7171,87 @@ window.ckPagarCartao = async function() {
     var tag   = document.getElementById('hero-tag-input').value.trim();
     var title = document.getElementById('hero-title-input').value.trim();
     var img   = window._heroImageData || null;
+    var btn   = document.querySelector('[onclick="adminSalvarHero()"]');
+    if (btn) { btn.textContent = 'Salvando...'; btn.disabled = true; }
 
     var hero = { tag: tag, title: title, img: img };
-    localStorage.setItem('rl_hero', JSON.stringify(hero));
 
-    // Atualizar hero na home em tempo real
-    heroCarregar();
-    alert('Banner salvo!');
+    // Salvar no Supabase
+    var saves = [
+      sbFetch('/rest/v1/settings', { method: 'POST', prefer: 'resolution=merge-duplicates', body: JSON.stringify({ key: 'hero_tag', value: tag }) }),
+      sbFetch('/rest/v1/settings', { method: 'POST', prefer: 'resolution=merge-duplicates', body: JSON.stringify({ key: 'hero_title', value: title }) })
+    ];
+    if (img) {
+      saves.push(sbFetch('/rest/v1/settings', { method: 'POST', prefer: 'resolution=merge-duplicates', body: JSON.stringify({ key: 'hero_img', value: img }) }));
+    }
+
+    Promise.all(saves).then(function() {
+      heroAplicar(hero);
+      if (btn) { btn.textContent = 'Salvo!'; setTimeout(function(){ btn.textContent = 'Salvar Banner'; btn.disabled = false; }, 2000); }
+    }).catch(function() {
+      // Fallback localStorage
+      localStorage.setItem('rl_hero', JSON.stringify(hero));
+      heroAplicar(hero);
+      if (btn) { btn.textContent = 'Salvar Banner'; btn.disabled = false; }
+      alert('Banner salvo localmente.');
+    });
   };
 
-  function heroCarregar() {
-    try {
-      var hero = JSON.parse(localStorage.getItem('rl_hero') || '{}');
-      var tagEl   = document.getElementById('hero-tag');
-      var titleEl = document.getElementById('hero-title');
-      var imgEl   = document.getElementById('hero-img');
-      var phEl    = document.getElementById('hero-placeholder');
+  function heroAplicar(hero) {
+    var tagEl   = document.getElementById('hero-tag');
+    var titleEl = document.getElementById('hero-title');
+    var imgEl   = document.getElementById('hero-img');
+    var phEl    = document.getElementById('hero-placeholder');
+    if (hero.tag   && tagEl)   tagEl.textContent   = hero.tag;
+    if (hero.title && titleEl) titleEl.textContent = hero.title;
+    if (hero.img   && imgEl) {
+      imgEl.src = hero.img;
+      imgEl.style.display = 'block';
+      if (phEl) phEl.style.display = 'none';
+    }
+  }
 
-      if (hero.tag   && tagEl)   tagEl.textContent   = hero.tag;
-      if (hero.title && titleEl) {
-        // Quebrar título por vírgula ou manter como está
-        titleEl.textContent = hero.title;
+  function heroCarregar() {
+    // Buscar do Supabase primeiro
+    sbFetch('/rest/v1/settings?key=in.(hero_tag,hero_title,hero_img)').then(function(data) {
+      if (!data || !data.length) {
+        // Fallback localStorage
+        try {
+          var hero = JSON.parse(localStorage.getItem('rl_hero') || '{}');
+          heroAplicar(hero);
+          heroPreencherAdmin(hero);
+        } catch(e) {}
+        return;
       }
-      if (hero.img && imgEl) {
-        imgEl.src = hero.img;
-        imgEl.style.display = 'block';
-        if (phEl) phEl.style.display = 'none';
-      }
-      // Preencher campos do admin
-      var tagInput   = document.getElementById('hero-tag-input');
-      var titleInput = document.getElementById('hero-title-input');
-      if (tagInput   && hero.tag)   tagInput.value   = hero.tag;
-      if (titleInput && hero.title) titleInput.value = hero.title;
-      if (hero.img) {
-        var prevWrap = document.getElementById('hero-preview-wrap');
-        var prevImg  = document.getElementById('hero-preview-admin');
-        if (prevWrap) prevWrap.style.display = 'block';
-        if (prevImg)  prevImg.src = hero.img;
-      }
-    } catch(e) {}
+      var hero = {};
+      data.forEach(function(r) {
+        if (r.key === 'hero_tag')   hero.tag   = r.value;
+        if (r.key === 'hero_title') hero.title = r.value;
+        if (r.key === 'hero_img')   hero.img   = r.value;
+      });
+      heroAplicar(hero);
+      heroPreencherAdmin(hero);
+    }).catch(function() {
+      try {
+        var hero = JSON.parse(localStorage.getItem('rl_hero') || '{}');
+        heroAplicar(hero);
+        heroPreencherAdmin(hero);
+      } catch(e) {}
+    });
+  }
+
+  function heroPreencherAdmin(hero) {
+    var tagInput   = document.getElementById('hero-tag-input');
+    var titleInput = document.getElementById('hero-title-input');
+    if (tagInput   && hero.tag)   tagInput.value   = hero.tag;
+    if (titleInput && hero.title) titleInput.value = hero.title;
+    if (hero.img) {
+      var prevWrap = document.getElementById('hero-preview-wrap');
+      var prevImg  = document.getElementById('hero-preview-admin');
+      if (prevWrap) prevWrap.style.display = 'block';
+      if (prevImg)  prevImg.src = hero.img;
+      window._heroImageData = hero.img;
+    }
   }
 
   // Carregar hero ao iniciar
