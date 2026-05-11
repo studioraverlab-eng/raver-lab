@@ -5625,7 +5625,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }).catch(function () {});
     // Email bonito pro cliente
     enviarEmailPedido(clientNome, clientEmail, on, itens, fr, end, met);
-    return on;
+    return on; // retorna orderId para atualizar status
   }
 
   window.ckMP = function () {
@@ -5703,7 +5703,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         window._ckPixCode = data.qr_code;
       }
       window._ckPaymentId = data.id;
-      ckEnviarPedido('PIX - R$ ' + total.toFixed(2));
+      window._ckCurrentOrderId = ckEnviarPedido('PIX - R$ ' + total.toFixed(2));
       // Iniciar polling de status
       ckStartPolling(data.id);
     })
@@ -5732,34 +5732,30 @@ window.addEventListener('DOMContentLoaded', async () => {
         .then(function(data) {
           if (data.status === 'approved') {
             clearInterval(_ckPollingTimer);
-            ckShowAprovado();
+            ckShowAprovado(window._ckCurrentOrderId);
           }
         })
         .catch(function() {});
     }, 5000);
   };
 
-  window.ckShowAprovado = function() {
-    // Esconder QR e botões
+  window.ckShowAprovado = function(orderId) {
     var pixPanel = document.getElementById('ck-pix-panel');
     if (pixPanel) {
       var children = pixPanel.children;
       for (var i = 0; i < children.length; i++) {
-        if (children[i].id !== 'ck-aprovado') {
-          children[i].style.display = 'none';
-        }
+        if (children[i].id !== 'ck-aprovado') children[i].style.display = 'none';
       }
     }
     var pollingEl = document.getElementById('ck-polling-status');
     if (pollingEl) pollingEl.style.display = 'none';
-    // Mostrar tela de aprovado
     var aprovado = document.getElementById('ck-aprovado');
     if (aprovado) aprovado.classList.add('show');
-    // Limpar carrinho
-    cart = [];
+    // Atualizar status do pedido para "Pagamento confirmado"
+    if (orderId) atualizarStatusPedido(orderId, 'Pagamento confirmado');
+    window.cart.length = 0;
     if (typeof saveCart === 'function') saveCart();
     updateCartBadge();
-    // Atualizar link WPP
     var wppEl = document.getElementById('ck-wpp-aprovado');
     var nome = document.getElementById('ck-nome') ? document.getElementById('ck-nome').value : '';
     var msg = encodeURIComponent('Oi! Sou ' + nome + ' e acabei de pagar meu pedido Raver Lab via Pix. Aguardo confirmacao!');
@@ -6273,7 +6269,7 @@ window.pvAddToCart = function() {
 
   /* ── ADMIN PEDIDOS ── */
   var STATUS_OPTIONS = [
-    'Aguardando confirmacao',
+    'Aguardando pagamento',
     'Pagamento confirmado',
     'Em producao',
     'Enviado',
@@ -6505,7 +6501,8 @@ window.ckPagarCartao = async function() {
     if (data.status === 'approved') {
       document.getElementById('card-form-wrap').style.display = 'none';
       document.getElementById('card-success').classList.add('show');
-      ckEnviarPedido('Cartao - R$ ' + total.toFixed(2));
+      var cardOrderId = ckEnviarPedido('Cartao - R$ ' + total.toFixed(2));
+      atualizarStatusPedido(cardOrderId, 'Pagamento confirmado');
       window.cart.length = 0;
       if (typeof saveCart === 'function') saveCart();
       updateCartBadge();
@@ -6528,6 +6525,23 @@ window.ckPagarCartao = async function() {
     btn.textContent = 'Pagar agora →';
   }
 };
+
+
+  function atualizarStatusPedido(orderId, novoStatus) {
+    try {
+      var users = JSON.parse(localStorage.getItem('rl_users') || '[]');
+      users.forEach(function(u) {
+        var key = 'rl_orders_' + u.id;
+        var orders = JSON.parse(localStorage.getItem(key) || '[]');
+        var changed = false;
+        orders = orders.map(function(o) {
+          if (o.id === orderId) { changed = true; return Object.assign({}, o, { status: novoStatus }); }
+          return o;
+        });
+        if (changed) localStorage.setItem(key, JSON.stringify(orders));
+      });
+    } catch(e) {}
+  }
 
 }());
 
