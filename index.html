@@ -3337,11 +3337,24 @@
     font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
     cursor: pointer;
   }
+
+  [data-mode="dark"] .product-name,
+  [data-mode="dark"] .nav-link,
+  [data-mode="dark"] .footer-link,
+  [data-mode="dark"] p,
+  [data-mode="dark"] .cart-item-name,
+  [data-mode="dark"] .admin-product-col {
+    font-weight: 400;
+  }
+  [data-mode="dark"] .product-sub,
+  [data-mode="dark"] .product-price {
+    font-weight: 300;
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
-<body data-mode="light">
+<body data-mode="dark">
 
 <!-- FREQUENCY GATE (hidden — acesso direto à home) -->
 <div id="frequency-gate" class="hidden" style="display:none;"></div>
@@ -3359,6 +3372,7 @@
     <a href="#" class="nav-link" onclick="showSection('special');closeMobileMenu()">Projetos Especiais</a>
     <a href="#" class="nav-link" onclick="showSection('playlists');closeMobileMenu()">Playlists</a>
     <a href="#" class="nav-link" onclick="showSection('faq');closeMobileMenu()">FAQ</a>
+    <a href="#" class="nav-link" onclick="showSection('prints');closeMobileMenu()">Prints</a>
   </nav>
   <a href="#" class="logo" onclick="showSection('home')">RAVER LAB</a>
   <div class="nav-right">
@@ -4932,6 +4946,16 @@ async function sbFetch(path, options = {}) {
           <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:var(--fg-soft);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .3s ease,margin .3s;margin-top:0;">Sim. Os dados de cartão são processados pelo Mercado Pago com criptografia SSL. Não armazenamos dados de cartão.</p>
         </div>
       </div>
+    </div>
+  </div>
+  <!-- PRINTS -->
+  <div class="page-section" id="section-prints">
+    <div style="min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 48px;">
+      <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.4em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:32px;">Raver Lab — Prints</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,96px);font-weight:300;color:var(--fg);letter-spacing:-0.02em;line-height:1;margin-bottom:24px;">Prints</h2>
+      <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">Em breve</p>
+      <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);max-width:400px;line-height:1.8;margin-bottom:48px;">Obras exclusivas da cultura eletrônica. Impressão em alta resolução, enquadradas e prontas para levar a frequência para o seu espaço.</p>
+      <a href="https://wa.me/5515991375380?text=Quero%20saber%20mais%20sobre%20os%20Prints%20da%20Raver%20Lab" target="_blank" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:14px 28px;border:1px solid var(--border);color:var(--fg-muted);text-decoration:none;transition:all .3s;" onmouseover="this.style.borderColor='var(--fg)';this.style.color='var(--fg)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--fg-muted)'">Avise-me quando lançar →</a>
     </div>
   </div>
 
