@@ -5623,6 +5623,22 @@ window.addEventListener('DOMContentLoaded', async () => {
         pagamento  : met
       })
     }).catch(function () {});
+    // Salvar pedido no Supabase (visível no admin)
+    sbFetch('/rest/v1/orders', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      body: JSON.stringify({
+        id: on,
+        user_name: clientNome,
+        user_email: clientEmail,
+        items: itens,
+        total: 'R$ ' + (tot + fv).toLocaleString('pt-BR'),
+        frete: fr,
+        endereco: end,
+        pagamento: met,
+        status: 'Aguardando pagamento'
+      })
+    }).catch(function() {});
     // Email bonito pro cliente
     enviarEmailPedido(clientNome, clientEmail, on, itens, fr, end, met);
     return on; // retorna orderId para atualizar status
@@ -6283,23 +6299,27 @@ window.pvAddToCart = function() {
   window.adminLoadPedidos = function() {
     var container = document.getElementById('admin-pedidos-list');
     if (!container) return;
-    var users = [];
-    try { users = JSON.parse(localStorage.getItem('rl_users') || '[]'); } catch(e) {}
-    var allOrders = [];
-    users.forEach(function(u) {
-      var ords = [];
-      try { ords = JSON.parse(localStorage.getItem('rl_orders_' + u.id) || '[]'); } catch(e) {}
-      ords.forEach(function(o) {
-        var order = Object.assign({}, o, { cliente: u.nome, email: u.email, userId: u.id });
-        allOrders.push(order);
-        window._allOrdersMap[o.id] = { order: order, userId: u.id };
+    container.innerHTML = '<div class="admin-empty"><p class="admin-empty-text">Carregando pedidos...</p></div>';
+
+    // Buscar do Supabase
+    sbFetch('/rest/v1/orders?select=*&order=created_at.desc').then(function(data) {
+      if (!data || !data.length) {
+        container.innerHTML = '<div class="admin-empty"><p class="admin-empty-text">Nenhum pedido encontrado ainda.</p></div>';
+        return;
+      }
+      var allOrders = data.map(function(o) {
+        window._allOrdersMap[o.id] = { order: o, userId: null, supabase: true };
+        return {
+          id: o.id,
+          date: o.created_at ? new Date(o.created_at).toLocaleString('pt-BR') : '-',
+          cliente: o.user_name,
+          email: o.user_email,
+          items: o.items,
+          total: o.total,
+          status: o.status,
+          userId: null
+        };
       });
-    });
-    if (!allOrders.length) {
-      container.innerHTML = '<div class="admin-empty"><p class="admin-empty-text">Nenhum pedido encontrado ainda.</p></div>';
-      return;
-    }
-    allOrders.sort(function(a, b) { return b.id > a.id ? 1 : -1; });
 
     var statusColors = {
       'Aguardando confirmacao': '#e67e22',
@@ -6333,32 +6353,25 @@ window.pvAddToCart = function() {
         '</div>'
       );
     }).join('');
+    }).catch(function() {
+      container.innerHTML = '<div class="admin-empty"><p class="admin-empty-text">Erro ao carregar pedidos.</p></div>';
+    });
   };
 
   window.adminAtualizarStatus = function(orderId, novoStatus) {
     var entry = window._allOrdersMap[orderId];
     if (!entry) return;
-    var userId = entry.userId;
-    var key = 'rl_orders_' + userId;
-    var orders = [];
-    try { orders = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
-    var updated = false;
-    var clientEmail = entry.order.email;
-    var clientNome = entry.order.cliente;
-    orders = orders.map(function(o) {
-      if (o.id === orderId) {
-        updated = true;
-        return Object.assign({}, o, { status: novoStatus });
-      }
-      return o;
-    });
-    if (updated) {
-      localStorage.setItem(key, JSON.stringify(orders));
-      // Atualizar mapa local
-      entry.order.status = novoStatus;
-      // Enviar email para o cliente
-      adminEnviarEmailStatus(clientNome, clientEmail, orderId, novoStatus, entry.order.items, entry.order.total);
-    }
+    var clientEmail = entry.order.user_email || entry.order.email;
+    var clientNome  = entry.order.user_name  || entry.order.cliente;
+    // Atualizar no Supabase
+    sbFetch('/rest/v1/orders?id=eq.' + orderId, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: novoStatus })
+    }).catch(function() {});
+    // Atualizar localmente no mapa
+    entry.order.status = novoStatus;
+    // Enviar email para o cliente
+    adminEnviarEmailStatus(clientNome, clientEmail, orderId, novoStatus, entry.order.items, entry.order.total);
   };
 
   window.adminEnviarEmailStatus = function(nome, email, pedidoId, status, items, total) {
@@ -6528,6 +6541,13 @@ window.ckPagarCartao = async function() {
 
 
   function atualizarStatusPedido(orderId, novoStatus) {
+    // Atualizar no Supabase
+    if (typeof sbFetch === 'function') {
+      sbFetch('/rest/v1/orders?id=eq.' + orderId, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: novoStatus })
+      }).catch(function() {});
+    }
     try {
       // Buscar no usuário logado primeiro
       var sess = null;
