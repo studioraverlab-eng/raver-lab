@@ -7157,6 +7157,7 @@ window.ckPagarCartao = async function() {
   window.adminUploadHero = function(e) {
     var file = e.target.files[0];
     if (!file) return;
+    window._heroFile = file;
     var reader = new FileReader();
     reader.onload = function(ev) {
       var data = ev.target.result;
@@ -7170,30 +7171,42 @@ window.ckPagarCartao = async function() {
   window.adminSalvarHero = function() {
     var tag   = document.getElementById('hero-tag-input').value.trim();
     var title = document.getElementById('hero-title-input').value.trim();
-    var img   = window._heroImageData || null;
     var btn   = document.querySelector('[onclick="adminSalvarHero()"]');
     if (btn) { btn.textContent = 'Salvando...'; btn.disabled = true; }
 
-    var hero = { tag: tag, title: title, img: img };
-
-    // Salvar no Supabase
     var saves = [
       sbFetch('/rest/v1/settings', { method: 'POST', prefer: 'resolution=merge-duplicates', body: JSON.stringify({ key: 'hero_tag', value: tag }) }),
       sbFetch('/rest/v1/settings', { method: 'POST', prefer: 'resolution=merge-duplicates', body: JSON.stringify({ key: 'hero_title', value: title }) })
     ];
-    if (img) {
-      saves.push(sbFetch('/rest/v1/settings', { method: 'POST', prefer: 'resolution=merge-duplicates', body: JSON.stringify({ key: 'hero_img', value: img }) }));
+
+    // Upload da imagem para Supabase Storage
+    var uploadPromise = Promise.resolve(null);
+    if (window._heroFile) {
+      uploadPromise = fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/storage/v1/object/hero/banner.jpg', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC',
+          'apikey': 'sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC',
+          'Content-Type': window._heroFile.type || 'image/jpeg',
+          'x-upsert': 'true'
+        },
+        body: window._heroFile
+      }).then(function(r) { return r.json(); }).then(function(data) {
+        var imgUrl = 'https://sxqdjwjowdsxzuwcktjt.supabase.co/storage/v1/object/public/hero/banner.jpg?t=' + Date.now();
+        saves.push(sbFetch('/rest/v1/settings', { method: 'POST', prefer: 'resolution=merge-duplicates', body: JSON.stringify({ key: 'hero_img', value: imgUrl }) }));
+        return imgUrl;
+      }).catch(function() { return null; });
     }
 
-    Promise.all(saves).then(function() {
+    uploadPromise.then(function(imgUrl) {
+      return Promise.all(saves).then(function() { return imgUrl; });
+    }).then(function(imgUrl) {
+      var hero = { tag: tag, title: title, img: imgUrl || window._heroImageData };
       heroAplicar(hero);
       if (btn) { btn.textContent = 'Salvo!'; setTimeout(function(){ btn.textContent = 'Salvar Banner'; btn.disabled = false; }, 2000); }
     }).catch(function() {
-      // Fallback localStorage
-      localStorage.setItem('rl_hero', JSON.stringify(hero));
-      heroAplicar(hero);
       if (btn) { btn.textContent = 'Salvar Banner'; btn.disabled = false; }
-      alert('Banner salvo localmente.');
+      alert('Erro ao salvar. Tente novamente.');
     });
   };
 
