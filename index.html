@@ -6449,6 +6449,15 @@ window.ckPagarCartao = async function() {
   try {
     if (!_mpSDK) _mpSDK = new MercadoPago('APP_USR-e2647c39-396e-42d5-8e20-d418544e137b');
 
+    // Detectar bandeira do cartão
+    var bin = num.slice(0,6);
+    var pmRes = await fetch('https://api.mercadopago.com/v1/payment_methods/search?public_key=APP_USR-e2647c39-396e-42d5-8e20-d418544e137b&bin=' + bin);
+    var pmData = await pmRes.json();
+    var paymentMethodId = 'visa';
+    if (pmData.results && pmData.results.length > 0) {
+      paymentMethodId = pmData.results[0].id;
+    }
+
     var cardToken = await _mpSDK.createCardToken({
       cardNumber   : num,
       cardholderName: name,
@@ -6482,7 +6491,7 @@ window.ckPagarCartao = async function() {
       },
       body: JSON.stringify({
         token: cardToken.id,
-        payment_method_id: cardToken.payment_method_id || 'visa',
+        payment_method_id: paymentMethodId,
         email: email,
         cpf: cpf,
         valor: total,
