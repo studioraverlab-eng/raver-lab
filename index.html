@@ -121,6 +121,10 @@
     transition: background 0.8s, border-color 0.8s;
     mix-blend-mode: normal;
   }
+  /* Logo sempre visível em qualquer modo */
+  .logo { color: var(--fg) !important; }
+  [data-mode="light"] .logo { color: #1A1714 !important; }
+  [data-mode="dark"]  .logo { color: #F5F2EE !important; }
   .nav-left { display: flex; gap: 36px; }
   .nav-link {
     font-family: 'DM Mono', monospace;
@@ -205,6 +209,11 @@
     color: var(--fg);
     margin-bottom: 48px;
   }
+  [data-mode="light"] .hero .hero-title { color: #1A1714 !important; }
+  [data-mode="dark"]  .hero .hero-title { color: #EDE9E2 !important; }
+  [data-mode="light"] .hero .hero-sub   { color: #4A4238 !important; }
+  [data-mode="dark"]  .hero .hero-sub   { color: #C8C0B4 !important; }
+  [data-mode="light"] .hero .hero-meta  { color: #6B6158 !important; }
   .hero-sub {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -1587,13 +1596,11 @@
 
   /* ─── MICROINTERAÇÕES ─── */
   .product-card {
-    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s cubic-bezier(0.4,0,0.2,1);
-    transform-style: preserve-3d;
-    perspective: 800px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
   .product-card:hover {
-    transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
     z-index: 2;
     position: relative;
   }
@@ -3396,6 +3403,10 @@
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Scroll reveal — primeiro conteúdo visível imediatamente */
+  .hero-banner, .system-bar, .hero { opacity: 1 !important; transform: none !important; }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -4500,8 +4511,9 @@
     setTimeout(initFadeIns, 100);
   }
 
-  // Entrar direto na home em modo claro
-  enterSite('light');
+  // Entrar no modo salvo (padrão: escuro)
+  var savedMode = localStorage.getItem('rl_mode') || 'dark';
+  enterSite(savedMode);
 
   // ── MODE TOGGLE ──
   function toggleMode() {
@@ -7540,65 +7552,43 @@ window.ckPagarCartao = async function() {
   };
 
 
-  /* ── SCROLL REVEAL ── */
+  /* ── SCROLL REVEAL — leve, só product-cards ── */
   function initScrollReveal() {
-    // Selecionar todos os elementos que devem animar
-    var selectors = [
-      '.product-card',
-      '.section-header',
-      '.footer-brand',
-      '.footer-statement',
-      '.admin-stat',
-      '.lab-intro > div',
-      '.playlist-card',
-      '.faq-list > div',
-    ];
-    var els = document.querySelectorAll(selectors.join(','));
-
+    if (!window.IntersectionObserver) return;
     var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry, i) {
+      entries.forEach(function(entry) {
         if (entry.isIntersecting) {
-          // Delay progressivo para elementos próximos
-          setTimeout(function() {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-          }, 60 * (i % 4));
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+    }, { threshold: 0.05 });
 
-    els.forEach(function(el) {
-      // Só animar se não foi visto ainda
+    document.querySelectorAll('.product-card').forEach(function(el) {
       if (!el._rlRevealed) {
         el._rlRevealed = true;
         el.style.opacity = '0';
-        el.style.transform = 'translateY(28px)';
-        el.style.transition = 'opacity 0.65s cubic-bezier(0.4,0,0.2,1), transform 0.65s cubic-bezier(0.4,0,0.2,1)';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         observer.observe(el);
       }
     });
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initScrollReveal, 200);
+    setTimeout(initScrollReveal, 300);
   });
 
-  // Re-rodar ao trocar de seção
-  var _rlOrigShow = window.showSection;
-  if (typeof _rlOrigShow === 'function') {
-    // será chamado após showSection definido no script 1
-  }
-  // Hook no showSection via polling
   setTimeout(function() {
     var origShow = window.showSection;
     if (origShow) {
       window.showSection = function(name) {
         origShow(name);
-        setTimeout(initScrollReveal, 300);
+        setTimeout(initScrollReveal, 400);
       };
     }
-  }, 500);
+  }, 600);
 
 }());
 
