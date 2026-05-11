@@ -3237,6 +3237,106 @@
     .hero-content { padding: 32px 24px; }
     .hero-banner { min-height: 500px; }
   }
+
+  /* ── TOAST NOTIFICATIONS ── */
+  #toast-container {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .toast {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    background: var(--fg);
+    color: var(--bg);
+    min-width: 260px;
+    max-width: 90vw;
+    text-align: center;
+    animation: toastIn 0.3s ease;
+    pointer-events: all;
+    line-height: 1.6;
+  }
+  .toast.success { background: #27ae60; color: #fff; }
+  .toast.error   { background: #c0392b; color: #fff; }
+  .toast.info    { background: #2980b9; color: #fff; }
+  .toast.warning { background: #e67e22; color: #fff; }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toastOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(16px); }
+  }
+
+  /* ── MODAL DE INPUT (substitui prompt) ── */
+  #input-modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 9998;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+  }
+  #input-modal-bg.open { display: flex; }
+  #input-modal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 32px;
+    width: 90%;
+    max-width: 380px;
+    animation: fadeUp .3s ease;
+  }
+  .input-modal-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 16px;
+  }
+  .input-modal-inp {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--fg);
+    background: transparent;
+    outline: none;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+  .input-modal-inp:focus { border-color: var(--fg); }
+  .input-modal-btns { display: flex; gap: 8px; }
+  .input-modal-ok {
+    flex: 1; padding: 12px;
+    background: var(--fg); color: var(--bg);
+    border: none; font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+    cursor: pointer;
+  }
+  .input-modal-cancel {
+    padding: 12px 16px;
+    background: transparent; color: var(--fg-muted);
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+    cursor: pointer;
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -4398,7 +4498,7 @@
     const whatsappEl = document.getElementById('labWhatsappInput');
     const whatsapp = whatsappEl ? whatsappEl.value.trim() : '';
     if (!email && !whatsapp) {
-      alert('Preencha seu e-mail ou WhatsApp para continuar.');
+      showToast('Preencha seu e-mail ou WhatsApp.', 'warning');
       return;
     }
     const protoId = 'RL.' + String(Math.floor(Math.random() * 900) + 100);
@@ -4732,7 +4832,7 @@ async function sbFetch(path, options = {}) {
   async function openPlaylistLink(key) {
     const links = await getPlaylistLinks();
     if (links[key]) { window.open(links[key], '_blank'); return false; }
-    alert('Link ainda não configurado. Acesse o Admin → Playlists para adicionar.');
+    showToast('Link não configurado. Acesse o Admin.', 'info');
     return false;
   }
   loadPlaylistLinks();
@@ -5322,7 +5422,7 @@ async function saveProduct() {
   const name = document.getElementById('pName').value.trim();
   const price = document.getElementById('pPrice').value.trim();
   if (!name || !price) {
-    alert('Preencha nome e preço.');
+    showToast('Preencha nome e preço.', 'warning');
     return;
   }
   const product = {
@@ -5345,10 +5445,10 @@ async function saveProduct() {
     await saveProduct_db(product);
     closeProductModal();
     await renderAdminDashboard();
-    alert('Produto salvo com sucesso!');
+    showToast('Produto salvo com sucesso!', 'success');
   } catch(e) {
     console.error('Erro ao salvar:', e);
-    alert('Erro ao salvar: ' + e.message);
+    showToast('Erro ao salvar: ' + e.message, 'error');
   }
 }
 
@@ -5380,10 +5480,10 @@ function importJSON(e) {
       if (confirm(`Importar ${data.length} produto(s)? Os produtos atuais serão substituídos.`)) {
         saveProducts(data);
         renderAdminDashboard();
-        alert('Importado com sucesso!');
+        showToast('Importado com sucesso!', 'success');
       }
     } catch {
-      alert('Arquivo JSON inválido.');
+      showToast('Arquivo JSON inválido.', 'error');
     }
     e.target.value = '';
   };
@@ -5440,7 +5540,7 @@ async function savePlaylistLinksAdmin() {
     }
   }
   await loadPlaylistLinks();
-  alert('Links das playlists salvos!');
+  showToast('Playlists salvas!', 'success');
 }
 
 async function loadPlaylistLinksIntoAdmin() {
@@ -5789,12 +5889,12 @@ window.addEventListener('DOMContentLoaded', async () => {
      CHECKOUT MODAL
   ────────────────────────────────────────── */
   window.openCheckout = function () {
-    if (!cart.length) { alert('Seu carrinho esta vazio.'); return; }
+    if (!cart.length) { showToast('Seu carrinho está vazio.', 'warning'); return; }
     // Exige login
     var sess = null;
     try { sess = JSON.parse(localStorage.getItem('rl_session')); } catch(e) {}
     if (!sess) {
-      alert('Faca login ou crie uma conta para finalizar a compra.');
+      showToast('Faça login para finalizar a compra.', 'warning');
       closeCart();
       showSection('conta');
       window._pendingCheckout = true;
@@ -6261,16 +6361,18 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.doLogout = function () { clrSess(); location.reload(); };
 
   window.doForgotPassword = function () {
-    var em = prompt('Digite seu e-mail para receber o link de recuperação:');
-    if (!em || em.indexOf('@') === -1) { alert('E-mail inválido.'); return; }
+    showInputModal('Recuperar senha', 'seu@email.com', 'email').then(function(em) {
+    if (!em) return;
+    if (em.indexOf('@') === -1) { showToast('E-mail inválido.', 'error'); return; }
     fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/auth/v1/recover', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': 'sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
       body: JSON.stringify({ email: em })
     }).then(function() {
-      alert('Se o e-mail estiver cadastrado, você receberá um link de recuperação em breve.');
+      showToast('Se o e-mail estiver cadastrado, você receberá o link em breve.', 'success', 5000);
     }).catch(function() {
-      alert('Erro ao enviar. Tente novamente.');
+        showToast('Erro ao enviar. Tente novamente.', 'error');
+      });
     });
   };
 
@@ -6343,12 +6445,12 @@ window.addEventListener('DOMContentLoaded', async () => {
   window.copiarPix = function () {
     var keyEl = document.getElementById('pix-key');
     var chave = keyEl ? keyEl.textContent.trim() : PIX_CHAVE;
-    if (chave === 'Gerando chave...') { alert('Aguarde o QR Code ser gerado.'); return; }
+    if (chave === 'Gerando chave...') { showToast('Aguarde o QR Code ser gerado.', 'info'); return; }
     navigator.clipboard.writeText(chave).then(function () {
       var btn = document.getElementById('copy-pix-btn');
       if (btn) { btn.textContent = 'Copiado!'; setTimeout(function () { btn.textContent = 'Copiar'; }, 2000); }
     }).catch(function () {
-      alert('Chave Pix copiada: ' + chave);
+      showToast('Chave Pix copiada!', 'success');
     });
   };
 
@@ -6358,8 +6460,15 @@ window.addEventListener('DOMContentLoaded', async () => {
     var nomeLab  = sess ? sess.nome  : '';
     var emailLab = sess ? sess.email : '';
     if (!emailLab) {
-      emailLab = prompt('Digite seu e-mail para gerar o Pix:') || '';
-      if (!emailLab) return;
+      // Pede email via modal
+      showInputModal('Seu e-mail para gerar o Pix', 'seu@email.com').then(function(em){
+        if (!em) return;
+        window._labPixGerado = false;
+        var emailEl2 = document.getElementById('labEmailInput');
+        if (emailEl2) emailEl2.value = em;
+        carregarQRCode();
+      });
+      return;
     }
     if (!nomeLab) nomeLab = emailLab.split('@')[0];
 
@@ -6552,11 +6661,11 @@ window.pvClose = function() {
 
 window.pvAddToCart = function() {
   if (!_pvSelSize) {
-    alert('Selecione um tamanho antes de continuar.');
+    showToast('Selecione um tamanho antes de continuar.', 'warning');
     return;
   }
   if (!_pvEssence) {
-    alert('Escolha a opção de essência antes de continuar.');
+    showToast('Escolha a opção de essência.', 'warning');
     return;
   }
   for (var q = 0; q < (_pvQtd || 1); q++) {
@@ -6585,9 +6694,9 @@ window.pvAddToCart = function() {
     var email = emailEl ? emailEl.value.trim() : '';
     // Se não tiver, pedir ao usuário
     if (!email) {
-      email = prompt('Digite seu e-mail para gerar o Pix:') || '';
+      email = null /* prompt removido */ || '';
       if (!email || email.indexOf('@') === -1) {
-        alert('E-mail inválido. Por favor tente novamente.');
+        showToast('E-mail inválido.', 'error');
         return;
       }
       // Salvar no campo se existir
@@ -6629,11 +6738,12 @@ window.pvAddToCart = function() {
     var emailEl = document.getElementById('labEmailInput');
     var email = emailEl ? emailEl.value.trim() : '';
     if (!email) {
-      email = prompt('Digite seu e-mail para continuar:') || '';
-      if (!email || email.indexOf('@') === -1) {
-        alert('E-mail inválido. Por favor tente novamente.');
-        return;
-      }
+      showInputModal('Seu e-mail para continuar', 'seu@email.com').then(function(em){
+        if (!em || em.indexOf('@') === -1) { showToast('E-mail inválido.', 'error'); return; }
+        if (emailEl) emailEl.value = em;
+        labPagarMP();
+      });
+      return;
       if (emailEl) emailEl.value = email;
     }
     var nome = email.split('@')[0] || 'Cliente';
@@ -7206,7 +7316,7 @@ window.ckPagarCartao = async function() {
       if (btn) { btn.textContent = 'Salvo!'; setTimeout(function(){ btn.textContent = 'Salvar Banner'; btn.disabled = false; }, 2000); }
     }).catch(function() {
       if (btn) { btn.textContent = 'Salvar Banner'; btn.disabled = false; }
-      alert('Erro ao salvar. Tente novamente.');
+      showToast('Erro ao salvar. Tente novamente.', 'error');
     });
   };
 
@@ -7287,6 +7397,58 @@ window.ckPagarCartao = async function() {
     if (btn) btn.classList.remove('open');
     if (nav) nav.classList.remove('open');
     document.body.style.overflow = '';
+  };
+
+
+  /* ── TOAST + INPUT MODAL ── */
+  window.showToast = function(msg, type, duration) {
+    var container = document.getElementById('toast-container');
+    if (!container) return;
+    var toast = document.createElement('div');
+    toast.className = 'toast ' + (type || '');
+    toast.textContent = msg;
+    container.appendChild(toast);
+    var d = duration || 3500;
+    setTimeout(function() {
+      toast.style.animation = 'toastOut .3s ease forwards';
+      setTimeout(function() { if (toast.parentNode) toast.remove(); }, 300);
+    }, d);
+  };
+
+  var _inputModalResolve = null;
+  window.showInputModal = function(title, placeholder, type) {
+    return new Promise(function(resolve) {
+      _inputModalResolve = resolve;
+      var bg    = document.getElementById('input-modal-bg');
+      var inp   = document.getElementById('input-modal-inp');
+      var label = document.getElementById('input-modal-title');
+      if (label) label.textContent = title || 'Digite seu e-mail';
+      if (inp) {
+        inp.placeholder = placeholder || 'seu@email.com';
+        inp.type = type || 'email';
+        inp.value = '';
+      }
+      if (bg) bg.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(function() { if (inp) inp.focus(); }, 100);
+      if (inp) {
+        inp.onkeydown = function(e) { if (e.key === 'Enter') inputModalConfirm(); };
+      }
+    });
+  };
+
+  window.inputModalConfirm = function() {
+    var inp = document.getElementById('input-modal-inp');
+    var val = inp ? inp.value.trim() : '';
+    document.getElementById('input-modal-bg').classList.remove('open');
+    document.body.style.overflow = '';
+    if (_inputModalResolve) { _inputModalResolve(val); _inputModalResolve = null; }
+  };
+
+  window.inputModalCancel = function() {
+    document.getElementById('input-modal-bg').classList.remove('open');
+    document.body.style.overflow = '';
+    if (_inputModalResolve) { _inputModalResolve(null); _inputModalResolve = null; }
   };
 
 }());
@@ -7415,6 +7577,21 @@ window.ckPagarCartao = async function() {
       </tbody>
     </table>
     <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--fg-muted);text-transform:uppercase;margin-top:16px;line-height:1.8;">Todas as peças são oversized. Meça a largura de ombro a ombro e o comprimento do ombro à barra.</p>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATIONS -->
+<div id="toast-container"></div>
+
+<!-- INPUT MODAL (substitui prompt) -->
+<div id="input-modal-bg">
+  <div id="input-modal">
+    <p class="input-modal-title" id="input-modal-title">Digite seu e-mail</p>
+    <input class="input-modal-inp" id="input-modal-inp" type="email" placeholder="seu@email.com">
+    <div class="input-modal-btns">
+      <button class="input-modal-cancel" onclick="inputModalCancel()">Cancelar</button>
+      <button class="input-modal-ok" onclick="inputModalConfirm()">Confirmar →</button>
+    </div>
   </div>
 </div>
 </body>
