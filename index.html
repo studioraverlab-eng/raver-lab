@@ -1461,25 +1461,102 @@
     text-transform: uppercase;
   }
 
-/* MOBILE */
+
+  /* ── HAMBURGUER ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--fg);
+    transition: all 0.3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+  /* ── MOBILE ── */
   @media (max-width: 768px) {
-    header { padding: 20px 24px; }
-    .nav-left { display: none; }
-    .hero { padding: 0 24px 40px; }
-    .section-header { padding: 48px 24px 32px; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); }
-    .archive-entry { grid-template-columns: 1fr; gap: 8px; padding: 24px; }
-    .arc-year, .arc-note { display: none; }
+    header {
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+    .hamburger { display: flex; }
+    .logo { text-align: center; font-size: 13px; letter-spacing: 0.3em; }
+    .nav-left {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      z-index: 150;
+    }
+    .nav-left.open { display: flex; }
+    .nav-left .nav-link {
+      font-size: 12px;
+      letter-spacing: 0.3em;
+    }
+    .nav-right {
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    .nav-right .nav-link { display: none; }
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 12px;
+    }
+    .product-card .product-info { padding: 12px; }
+    .product-name { font-size: 11px; }
+    .product-price { font-size: 18px; }
+    .hero-content { padding: 32px 20px; }
+    .hero-title { font-size: clamp(36px, 10vw, 64px); }
+    .section-header { padding: 40px 20px 24px; }
+    .pv-container {
+      grid-template-columns: 1fr;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    .pv-image-side { aspect-ratio: 1/1; min-height: 300px; }
+    .pv-info-side {
+      border-left: none;
+      border-top: 1px solid var(--border);
+      padding: 24px 20px;
+    }
+    #ck-modal { max-height: 100vh; border-radius: 0; }
+    .ck-g2 { grid-template-columns: 1fr; }
+    .cart-drawer { width: 100%; }
+    .lab-intro { flex-direction: column; padding: 40px 20px; gap: 24px; }
+    .admin-body { padding: 24px 20px; }
+    .admin-stats { grid-template-columns: repeat(2, 1fr); }
+    .admin-product-row { grid-template-columns: 60px 1fr; gap: 12px; }
+    .admin-header { padding: 16px 20px; }
+    #card-modal { padding: 24px 20px; }
+    .card-row { grid-template-columns: 1fr 1fr; }
     .playlists-grid { grid-template-columns: 1fr; }
     .signals-grid { grid-template-columns: 1fr; }
-    .atmosphere-grid { grid-template-columns: repeat(2, 1fr); }
-    .object-grid { grid-template-columns: repeat(3, 1fr); }
-    .intention-grid { grid-template-columns: 1fr; }
-    footer { grid-template-columns: 1fr; }
-    .lab-intro { grid-template-columns: 1fr; gap: 32px; padding: 48px 24px; }
-    .lab-form { padding: 48px 24px; }
-    .hero-cta-row { flex-direction: column; }
-    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .pv-sizes { flex-wrap: wrap; }
+  }
+
+  @media (max-width: 480px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .admin-stats { grid-template-columns: 1fr 1fr; }
+    .hero-title { font-size: 36px; }
   }
 
   /* ─── IMPROVED CONTRAST & LEGIBILITY ─── */
@@ -3074,6 +3151,92 @@
     text-align:center;padding:20px 0;display:none;
   }
   .card-success.show { display:block; }
+
+  /* HERO BANNER */
+  .hero-banner {
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: opacity 0.8s ease;
+  }
+  .hero-placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #1A1714 0%, #2C2520 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-placeholder-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 48px;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 300;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  .hero-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .hero-cta:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.6);
+  }
+  @media (max-width: 768px) {
+    .hero-content { padding: 32px 24px; }
+    .hero-banner { min-height: 500px; }
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -3085,13 +3248,17 @@
 
 <!-- HEADER -->
 <header id="site-header">
-  <nav class="nav-left">
-    <a href="#" class="nav-link" onclick="showSection('home')">Início</a>
-    <a href="#" class="nav-link" onclick="showSection('shop')">Coleção</a>
-    <a href="#" class="nav-link" onclick="showSection('lab')">Lab</a>
-    <a href="#" class="nav-link" onclick="showSection('special')">Projetos Especiais</a>
-    <a href="#" class="nav-link" onclick="showSection('playlists')">Playlists</a>
-    <a href="#" class="nav-link" onclick="showSection('faq')">FAQ</a>
+  <!-- Hamburguer mobile -->
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav-left" id="nav-left">
+    <a href="#" class="nav-link" onclick="showSection('home');closeMobileMenu()">Início</a>
+    <a href="#" class="nav-link" onclick="showSection('shop');closeMobileMenu()">Coleção</a>
+    <a href="#" class="nav-link" onclick="showSection('lab');closeMobileMenu()">Lab</a>
+    <a href="#" class="nav-link" onclick="showSection('special');closeMobileMenu()">Projetos Especiais</a>
+    <a href="#" class="nav-link" onclick="showSection('playlists');closeMobileMenu()">Playlists</a>
+    <a href="#" class="nav-link" onclick="showSection('faq');closeMobileMenu()">FAQ</a>
   </nav>
   <a href="#" class="logo" onclick="showSection('home')">RAVER LAB</a>
   <div class="nav-right">
@@ -3113,6 +3280,20 @@
 
   <!-- ── HOME ── -->
   <div class="page-section active" id="section-home">
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner" id="hero-banner">
+      <img class="hero-img" id="hero-img" src="" alt="Raver Lab" style="display:none;" onload="this.style.display='block';document.getElementById('hero-placeholder').style.display='none'">
+      <div class="hero-placeholder" id="hero-placeholder">
+        <p class="hero-placeholder-text">Raver Lab — Adicione uma foto no admin</p>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="hero-tag" id="hero-tag">Raver Lab — Nova Coleção</p>
+        <h1 class="hero-title" id="hero-title">Cultura<br>Eletrônica<br>em Forma</h1>
+        <a class="hero-cta" onclick="showSection('shop')">Ver Coleção →</a>
+      </div>
+    </div>
 
     <!-- SYSTEM BAR -->
     <div class="system-bar">
@@ -4696,6 +4877,36 @@ async function sbFetch(path, options = {}) {
         <button class="admin-btn" onclick="adminGerarRelatorio()">Gerar</button>
       </div>
       <div id="admin-relatorio" style="margin-bottom:40px;"></div>
+
+      <!-- HERO BANNER ADMIN -->
+      <div class="admin-section-title">
+        <span>Hero Banner — Foto Principal da Home</span>
+      </div>
+      <div style="background:#fff;border:1px solid #E8E3DB;padding:24px;margin-bottom:40px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+          <div>
+            <label class="admin-label">Foto do Banner (upload)</label>
+            <div class="img-upload-area" onclick="document.getElementById('hero-upload-input').click()" style="height:120px;display:flex;align-items:center;justify-content:center;">
+              <input type="file" id="hero-upload-input" accept="image/*" style="display:none" onchange="adminUploadHero(event)">
+              <p class="img-upload-label">Clique para selecionar a foto<br><span style="color:#666;font-size:8px;">Recomendado: 1920×1080px ou maior</span></p>
+            </div>
+            <div id="hero-preview-wrap" style="display:none;margin-top:12px;">
+              <img id="hero-preview-admin" style="width:100%;height:160px;object-fit:cover;display:block;" src="" alt="">
+            </div>
+          </div>
+          <div>
+            <div class="admin-field">
+              <label class="admin-label">Tag (linha pequena acima do título)</label>
+              <input type="text" class="admin-input" id="hero-tag-input" placeholder="Ex: Raver Lab — Nova Coleção">
+            </div>
+            <div class="admin-field">
+              <label class="admin-label">Título principal</label>
+              <input type="text" class="admin-input" id="hero-title-input" placeholder="Ex: Cultura Eletrônica em Forma">
+            </div>
+            <button class="admin-btn primary" onclick="adminSalvarHero()" style="width:100%;margin-top:8px;">Salvar Banner</button>
+          </div>
+        </div>
+      </div>
 
       <!-- BACKUP ROW -->
       <div class="admin-io-row">
@@ -6939,6 +7150,88 @@ window.ckPagarCartao = async function() {
         '</div>'
       );
     }).join('');
+  };
+
+
+  /* ── HERO BANNER ── */
+  window.adminUploadHero = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var data = ev.target.result;
+      document.getElementById('hero-preview-wrap').style.display = 'block';
+      document.getElementById('hero-preview-admin').src = data;
+      window._heroImageData = data;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.adminSalvarHero = function() {
+    var tag   = document.getElementById('hero-tag-input').value.trim();
+    var title = document.getElementById('hero-title-input').value.trim();
+    var img   = window._heroImageData || null;
+
+    var hero = { tag: tag, title: title, img: img };
+    localStorage.setItem('rl_hero', JSON.stringify(hero));
+
+    // Atualizar hero na home em tempo real
+    heroCarregar();
+    alert('Banner salvo!');
+  };
+
+  function heroCarregar() {
+    try {
+      var hero = JSON.parse(localStorage.getItem('rl_hero') || '{}');
+      var tagEl   = document.getElementById('hero-tag');
+      var titleEl = document.getElementById('hero-title');
+      var imgEl   = document.getElementById('hero-img');
+      var phEl    = document.getElementById('hero-placeholder');
+
+      if (hero.tag   && tagEl)   tagEl.textContent   = hero.tag;
+      if (hero.title && titleEl) {
+        // Quebrar título por vírgula ou manter como está
+        titleEl.textContent = hero.title;
+      }
+      if (hero.img && imgEl) {
+        imgEl.src = hero.img;
+        imgEl.style.display = 'block';
+        if (phEl) phEl.style.display = 'none';
+      }
+      // Preencher campos do admin
+      var tagInput   = document.getElementById('hero-tag-input');
+      var titleInput = document.getElementById('hero-title-input');
+      if (tagInput   && hero.tag)   tagInput.value   = hero.tag;
+      if (titleInput && hero.title) titleInput.value = hero.title;
+      if (hero.img) {
+        var prevWrap = document.getElementById('hero-preview-wrap');
+        var prevImg  = document.getElementById('hero-preview-admin');
+        if (prevWrap) prevWrap.style.display = 'block';
+        if (prevImg)  prevImg.src = hero.img;
+      }
+    } catch(e) {}
+  }
+
+  // Carregar hero ao iniciar
+  document.addEventListener('DOMContentLoaded', function() {
+    heroCarregar();
+  });
+
+
+  window.toggleMobileMenu = function() {
+    var btn = document.getElementById('hamburger-btn');
+    var nav = document.getElementById('nav-left');
+    if (!btn || !nav) return;
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+    document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
+  };
+  window.closeMobileMenu = function() {
+    var btn = document.getElementById('hamburger-btn');
+    var nav = document.getElementById('nav-left');
+    if (btn) btn.classList.remove('open');
+    if (nav) nav.classList.remove('open');
+    document.body.style.overflow = '';
   };
 
 }());
