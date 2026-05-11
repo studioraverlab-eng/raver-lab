@@ -3022,8 +3022,53 @@
   @keyframes blink {
     0%,100% { opacity: .2; } 50% { opacity: 1; }
   }
+
+  /* MODAL CARTÃO */
+  #card-modal-bg {
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);
+    z-index:900;align-items:center;justify-content:center;
+    backdrop-filter:blur(8px);
+  }
+  #card-modal-bg.open { display:flex; }
+  #card-modal {
+    background:var(--bg);border:1px solid var(--border);
+    width:100%;max-width:420px;padding:32px;
+    animation:fadeUp .3s ease;
+  }
+  .card-modal-title {
+    font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--fg-muted);margin-bottom:24px;
+  }
+  .card-inp {
+    width:100%;background:transparent;border:none;
+    border-bottom:1px solid var(--border);
+    padding:11px 0;font-family:'DM Mono',monospace;font-size:13px;
+    color:var(--fg);outline:none;margin-bottom:16px;
+    transition:border-color .2s;box-sizing:border-box;
+  }
+  .card-inp:focus { border-color:var(--fg); }
+  .card-inp::placeholder { color:var(--fg-muted);font-size:11px; }
+  .card-row { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+  .card-submit {
+    width:100%;padding:14px;background:var(--fg);color:var(--bg);
+    border:none;font-family:'DM Mono',monospace;font-size:9px;
+    letter-spacing:.3em;text-transform:uppercase;cursor:pointer;
+    margin-top:8px;transition:opacity .2s;
+  }
+  .card-submit:hover { opacity:.85; }
+  .card-submit:disabled { opacity:.5;cursor:not-allowed; }
+  .card-error {
+    font-family:'DM Mono',monospace;font-size:9px;color:#c0392b;
+    letter-spacing:.1em;margin-top:10px;display:none;
+  }
+  .card-error.show { display:block; }
+  .card-success {
+    text-align:center;padding:20px 0;display:none;
+  }
+  .card-success.show { display:block; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 <body data-mode="light">
 
@@ -5242,13 +5287,17 @@ window.addEventListener('DOMContentLoaded', async () => {
       <div class="ck-err" id="ck-err">Preencha todos os campos.</div>
 
       <span class="ck-lbl">Pagamento</span>
-      <button class="ck-pay pri" id="ck-btn-mp" onclick="ckMP()">
+      <button class="ck-pay pri" id="ck-btn-card" onclick="ckAbrirCartao()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" stroke-width="1.5"/></svg>
-        Pagar com Mercado Pago
+        Cartão de Crédito
+      </button>
+      <button class="ck-pay" id="ck-btn-mp" onclick="ckMP()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor" stroke-width="1.5" fill="none"/><text x="12" y="16" text-anchor="middle" font-size="8" fill="currentColor">MP</text></svg>
+        Mercado Pago
       </button>
       <button class="ck-pay" id="ck-btn-pix" onclick="ckPixInline()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7z" stroke="currentColor" stroke-width="1.2"/><path d="M13 13h1v1h-1zM15 13h1v1h-1zM13 15h1v1h-1zM15 15h1v1h-1z" fill="currentColor" opacity=".6"/></svg>
-        Pagar com Pix
+        Pix
       </button>
 
       <!-- QR Code Pix inline -->
@@ -6334,6 +6383,143 @@ window.pvAddToCart = function() {
     }
   };
 
+
+
+/* ── CARTÃO DE CRÉDITO DIRETO ── */
+var _mpSDK = null;
+
+window.ckAbrirCartao = function() {
+  if (!ckValidate()) return;
+  document.getElementById('card-modal-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Inicializar MP SDK
+  if (!_mpSDK && window.MercadoPago) {
+    _mpSDK = new MercadoPago('APP_USR-e2647c39-396e-42d5-8e20-d418544e137b');
+  }
+};
+
+window.fecharCartao = function() {
+  document.getElementById('card-modal-bg').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+window.fmtCard = function(el) {
+  var v = el.value.replace(/\D/g,'').slice(0,16);
+  el.value = v.replace(/(\d{4})/g,'$1 ').trim();
+};
+
+window.fmtExpiry = function(el) {
+  var v = el.value.replace(/\D/g,'');
+  if (v.length >= 2) v = v.slice(0,2) + '/' + v.slice(2,4);
+  el.value = v;
+};
+
+window.fmtCPF = function(el) {
+  var v = el.value.replace(/\D/g,'').slice(0,11);
+  v = v.replace(/(\d{3})(\d)/,'$1.$2');
+  v = v.replace(/(\d{3})(\d)/,'$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  el.value = v;
+};
+
+window.ckPagarCartao = async function() {
+  var btn = document.getElementById('card-submit-btn');
+  var errEl = document.getElementById('card-error');
+  errEl.classList.remove('show');
+
+  var num    = document.getElementById('card-number').value.replace(/\s/g,'');
+  var name   = document.getElementById('card-name').value.trim();
+  var expiry = document.getElementById('card-expiry').value;
+  var cvv    = document.getElementById('card-cvv').value.trim();
+  var cpf    = document.getElementById('card-cpf').value.replace(/\D/g,'');
+  var inst   = document.getElementById('card-installments').value;
+
+  if (!num || !name || !expiry || !cvv || !cpf) {
+    errEl.textContent = 'Preencha todos os campos.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  var parts = expiry.split('/');
+  var mm = parts[0], yy = parts[1];
+
+  btn.disabled = true;
+  btn.textContent = 'Processando...';
+
+  try {
+    if (!_mpSDK) _mpSDK = new MercadoPago('APP_USR-e2647c39-396e-42d5-8e20-d418544e137b');
+
+    var cardToken = await _mpSDK.createCardToken({
+      cardNumber   : num,
+      cardholderName: name,
+      cardExpirationMonth: mm,
+      cardExpirationYear : '20' + yy,
+      securityCode : cvv,
+      identificationType: 'CPF',
+      identificationNumber: cpf
+    });
+
+    if (!cardToken || !cardToken.id) {
+      throw new Error('Erro ao tokenizar cartão');
+    }
+
+    // Calcular total
+    var total = 0;
+    window.cart.forEach(function(i) {
+      total += parseFloat(i.price.replace('R$','').replace(/[.]/g,'').replace(',','.').trim()) || 0;
+    });
+    var fv = typeof _frSel !== 'undefined' && _frSel ? _frSel.v : 0;
+    total = parseFloat((total + fv).toFixed(2));
+
+    var email = document.getElementById('ck-email').value.trim();
+    var itens = window.cart.map(function(i){ return i.name + ' (' + i.size + ')'; }).join(', ');
+
+    var res = await fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/functions/v1/pagar-cartao', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC'
+      },
+      body: JSON.stringify({
+        token: cardToken.id,
+        payment_method_id: cardToken.payment_method_id || 'visa',
+        email: email,
+        cpf: cpf,
+        valor: total,
+        descricao: itens,
+        installments: inst
+      })
+    });
+
+    var data = await res.json();
+
+    if (data.status === 'approved') {
+      document.getElementById('card-form-wrap').style.display = 'none';
+      document.getElementById('card-success').classList.add('show');
+      ckEnviarPedido('Cartao - R$ ' + total.toFixed(2));
+      window.cart.length = 0;
+      if (typeof saveCart === 'function') saveCart();
+      updateCartBadge();
+    } else if (data.status === 'in_process') {
+      document.getElementById('card-form-wrap').style.display = 'none';
+      document.getElementById('card-success').classList.add('show');
+      document.querySelector('#card-success .ck-aprovado-titulo').textContent = 'Pagamento em análise';
+      document.querySelector('#card-success .ck-aprovado-sub').textContent = 'Seu pagamento está sendo analisado. Confirmaremos em breve.';
+    } else {
+      var msg = data.error || 'Pagamento recusado. Verifique os dados.';
+      errEl.textContent = msg;
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Pagar agora →';
+    }
+  } catch(e) {
+    errEl.textContent = e.message || 'Erro ao processar. Tente novamente.';
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Pagar agora →';
+  }
+};
+
 }());
 
 </script>
@@ -6391,6 +6577,37 @@ window.pvAddToCart = function() {
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- MODAL CARTÃO DE CRÉDITO -->
+<div id="card-modal-bg" onclick="if(event.target===this)fecharCartao()">
+  <div id="card-modal">
+    <p class="card-modal-title">Pagamento com Cartão</p>
+    <div id="card-form-wrap">
+      <input class="card-inp" id="card-number" placeholder="Número do cartão" maxlength="19" oninput="fmtCard(this)">
+      <input class="card-inp" id="card-name" placeholder="Nome impresso no cartão" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+      <div class="card-row">
+        <input class="card-inp" id="card-expiry" placeholder="MM/AA" maxlength="5" oninput="fmtExpiry(this)">
+        <input class="card-inp" id="card-cvv" placeholder="CVV" maxlength="4" type="password">
+      </div>
+      <input class="card-inp" id="card-cpf" placeholder="CPF do titular" maxlength="14" oninput="fmtCPF(this)">
+      <select id="card-installments" class="card-inp" style="cursor:pointer;appearance:none;">
+        <option value="1">1x sem juros</option>
+        <option value="2">2x sem juros</option>
+        <option value="3">3x sem juros</option>
+      </select>
+      <p class="card-error" id="card-error"></p>
+      <button class="card-submit" id="card-submit-btn" onclick="ckPagarCartao()">Pagar agora →</button>
+    </div>
+    <div class="card-success" id="card-success">
+      <div class="ck-check" style="margin:0 auto 16px">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 class="ck-aprovado-titulo" style="font-size:22px">Pagamento Aprovado!</h3>
+      <p class="ck-aprovado-sub">Pedido confirmado. Entraremos em contato pelo WhatsApp.</p>
+      <button class="card-submit" style="margin-top:16px" onclick="fecharCartao();ckClose()">Fechar</button>
+    </div>
   </div>
 </div>
 </body>
