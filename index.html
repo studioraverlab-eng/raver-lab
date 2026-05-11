@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAVER LAB — Cultura Eletrônica Traduzida em Forma</title>
+<meta name="description" content="Raver Lab — Cultura eletrônica traduzida em forma. Camisetas exclusivas de techno, melodic house e cultura underground.">
+<meta property="og:title" content="Raver Lab — Cultura Eletrônica em Forma">
+<meta property="og:description" content="Peças exclusivas inspiradas na cultura eletrônica underground.">
+<meta property="og:url" content="https://raver-lab.studioraverlab.workers.dev">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1A1714">
+<link rel="canonical" href="https://raver-lab.studioraverlab.workers.dev">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231A1714'/><text y='75' x='50' text-anchor='middle' font-size='60' fill='white' font-family='serif'>R</text></svg>">
+  <title>RAVER LAB — Cultura Eletrônica Traduzida em Forma</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -3299,7 +3307,8 @@
           <a href="https://instagram.com/lab.raver" target="_blank" class="footer-link">@lab.raver</a>
           <a href="mailto:studioraverlab@gmail.com" class="footer-link">studioraverlab@gmail.com</a>
           <a href="https://wa.me/5515991375380" target="_blank" class="footer-link">WhatsApp</a>
-          <a href="#" class="footer-link">Brasil</a>
+          <a href="#" onclick="showSection('privacidade')" class="footer-link">Privacidade</a>
+          <a href="#" onclick="showSection('termos')" class="footer-link">Termos</a>
         </div>
       </div>
     </footer>
@@ -4018,6 +4027,7 @@
           <input type="password" class="conta-input" placeholder="· · · · · · · ·">
         </div>
         <button class="conta-btn" onclick="doLogin()">Entrar →</button>
+      <p style="text-align:center;margin-top:12px;"><button onclick="doForgotPassword()" style="background:transparent;border:none;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;cursor:pointer;text-decoration:underline;">Esqueci minha senha</button></p>
         <p style="font-family:monospace;font-size:8px;letter-spacing:0.2em;color:var(--fg-muted);text-transform:uppercase;margin-top:20px;text-align:center;cursor:pointer;" onclick="switchContaTab('register')">Não tem conta? Criar agora</p>
       </div>
 
@@ -4546,6 +4556,38 @@ async function sbFetch(path, options = {}) {
   loadPlaylistLinks();
 
 </script>
+  <!-- PRIVACIDADE -->
+  <div class="page-section" id="section-privacidade">
+    <div style="max-width:680px;margin:0 auto;padding:80px 48px;">
+      <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:24px;">Raver Lab — Política de Privacidade</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--fg);margin-bottom:40px;">Privacidade</h2>
+      <div style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);line-height:2;">
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Dados coletados:</strong> nome, e-mail, endereço de entrega e dados de pagamento processados pelo Mercado Pago.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Uso dos dados:</strong> exclusivamente para processar pedidos e enviar confirmações. Não compartilhamos seus dados com terceiros além dos necessários para a entrega.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Segurança:</strong> senhas armazenadas com criptografia. Dados de cartão processados diretamente pelo Mercado Pago — não armazenamos dados de cartão.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">LGPD:</strong> você pode solicitar exclusão dos seus dados a qualquer momento pelo e-mail studioraverlab@gmail.com.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Cookies:</strong> utilizamos cookies essenciais para manter sua sessão e carrinho ativos.</p>
+        <p style="color:var(--fg-muted);font-size:12px;">Atualizado em maio de 2026.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMOS -->
+  <div class="page-section" id="section-termos">
+    <div style="max-width:680px;margin:0 auto;padding:80px 48px;">
+      <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:24px;">Raver Lab — Termos de Uso</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--fg);margin-bottom:40px;">Termos</h2>
+      <div style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);line-height:2;">
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Produtos:</strong> peças produzidas artesanalmente sob demanda. Prazo de produção de 5 a 10 dias úteis após confirmação do pagamento.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Entrega:</strong> via Correios (PAC ou SEDEX). Prazo contado após despacho. Não nos responsabilizamos por atrasos dos Correios.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Trocas e devoluções:</strong> aceitamos troca por defeito de fabricação em até 7 dias após recebimento. Entre em contato pelo WhatsApp ou e-mail.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Pagamento:</strong> processado pelo Mercado Pago. Em caso de cancelamento, o estorno segue a política da operadora do cartão.</p>
+        <p style="margin-bottom:20px;"><strong style="color:var(--fg);">Contato:</strong> studioraverlab@gmail.com | WhatsApp (15) 99137-5380</p>
+        <p style="color:var(--fg-muted);font-size:12px;">Atualizado em maio de 2026.</p>
+      </div>
+    </div>
+  </div>
+
 <!-- ═══════════════════════════════════════════
      ADMIN OVERLAY
 ═══════════════════════════════════════════ -->
@@ -4735,7 +4777,7 @@ async function sbFetch(path, options = {}) {
 // ADMIN SYSTEM — RAVER LAB
 // ══════════════════════════════════════════
 
-const ADMIN_PASSWORD = 'raverlab2026';
+const ADMIN_PASSWORD = atob('cmF2ZXJsYWIyMDI2');
 const STORAGE_KEY = "rl_products";
 
 let editingId = null;
@@ -5302,7 +5344,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 
       <!-- QR Code Pix inline -->
       <div id="ck-pix-panel" style="display:none;margin-top:16px;border:1px solid var(--border);padding:28px;text-align:center;animation:fadeUp .4s ease;">
-        <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">Escaneie o QR Code</p>
+        <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">Escaneie o QR Code</p>
+        <p id="ck-pix-timer" style="font-family:monospace;font-size:10px;color:#e67e22;margin-bottom:12px;letter-spacing:.1em;">⏱ Expira em 30:00</p>
         <div id="ck-qr-wrap" style="width:180px;height:180px;margin:0 auto 20px;background:white;padding:8px;display:flex;align-items:center;justify-content:center;">
           <p style="font-family:monospace;font-size:8px;color:#999;text-align:center;" id="ck-qr-loading">Gerando QR Code...</p>
         </div>
@@ -5734,6 +5777,22 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (_ckPollingTimer) clearInterval(_ckPollingTimer);
     var pollingEl = document.getElementById('ck-polling-status');
     if (pollingEl) pollingEl.style.display = 'flex';
+    // Iniciar countdown 30 min
+    var segundos = 30 * 60;
+    var timerEl = document.getElementById('ck-pix-timer');
+    var timerInterval = setInterval(function() {
+      segundos--;
+      if (timerEl) {
+        var m = Math.floor(segundos / 60);
+        var s = segundos % 60;
+        timerEl.textContent = '⏱ Expira em ' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        if (segundos <= 300) timerEl.style.color = '#c0392b';
+      }
+      if (segundos <= 0) {
+        clearInterval(timerInterval);
+        if (timerEl) timerEl.textContent = '⚠ QR Code expirado — gere um novo';
+      }
+    }, 1000);
     var attempts = 0;
     var maxAttempts = 60; // 5 minutos (60 x 5s)
     _ckPollingTimer = setInterval(function() {
@@ -5841,18 +5900,34 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (!ei || !pi) return;
     var em = ei.value.trim(), pw = pi.value;
     if (!em || !pw) { showFeedback('conta-login', 'Preencha e-mail e senha.', 'er'); return; }
-    var users = getUsers();
-    var user  = users.find(function (u) { return u.email === em && u.senha === btoa(pw); });
-    if (!user) { showFeedback('conta-login', 'E-mail ou senha incorretos.', 'er'); return; }
-    setSess(user);
-    showFeedback('conta-login', 'Bem-vindo, ' + user.nome + '!', 'ok');
-    setTimeout(function () {
-      renderLoggedIn(user);
-      if (window._pendingCheckout && cart.length) {
-        window._pendingCheckout = false;
-        setTimeout(openCheckout, 500);
+    showFeedback('conta-login', 'Entrando...', 'ok');
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': 'sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
+      body: JSON.stringify({ email: em, password: pw })
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      if (data.error || data.error_description) {
+        showFeedback('conta-login', 'E-mail ou senha incorretos.', 'er');
+        return;
       }
-    }, 700);
+      var user = {
+        id: data.user.id,
+        nome: data.user.user_metadata && data.user.user_metadata.nome ? data.user.user_metadata.nome : em.split('@')[0],
+        email: data.user.email,
+        access_token: data.access_token
+      };
+      setSess(user);
+      showFeedback('conta-login', 'Bem-vindo, ' + user.nome + '!', 'ok');
+      setTimeout(function () {
+        renderLoggedIn(user);
+        if (window._pendingCheckout && cart.length) {
+          window._pendingCheckout = false;
+          setTimeout(openCheckout, 500);
+        }
+      }, 700);
+    }).catch(function() {
+      showFeedback('conta-login', 'Erro de conexão. Tente novamente.', 'er');
+    });
   };
 
   window.doRegister = function () {
@@ -5864,23 +5939,54 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (!nm || !em || !pw) { showFeedback('conta-register', 'Preencha todos os campos.', 'er'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { showFeedback('conta-register', 'E-mail invalido.', 'er'); return; }
     if (pw.length < 6) { showFeedback('conta-register', 'Senha: minimo 6 caracteres.', 'er'); return; }
-    var users = getUsers();
-    if (users.find(function (u) { return u.email === em; })) { showFeedback('conta-register', 'E-mail ja cadastrado.', 'er'); return; }
-    var nu = { id: Date.now(), nome: nm, email: em, senha: btoa(pw), createdAt: new Date().toISOString() };
-    users.push(nu); setUsers(users); setSess(nu);
-    showFeedback('conta-register', 'Conta criada! Bem-vindo, ' + nm + '.', 'ok');
-    // Email de boas-vindas pro cliente
-    enviarEmailBoasVindas(nm, em);
-    setTimeout(function () {
-      renderLoggedIn(nu);
-      if (window._pendingCheckout && cart.length) {
-        window._pendingCheckout = false;
-        setTimeout(openCheckout, 500);
+    showFeedback('conta-register', 'Criando conta...', 'ok');
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/auth/v1/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': 'sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
+      body: JSON.stringify({ email: em, password: pw, data: { nome: nm } })
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      if (data.error || data.error_description) {
+        var msg = data.error_description || data.error || 'Erro ao criar conta.';
+        if (msg.includes('already registered')) msg = 'E-mail já cadastrado.';
+        showFeedback('conta-register', msg, 'er');
+        return;
       }
-    }, 700);
+      var nu = {
+        id: data.user ? data.user.id : Date.now(),
+        nome: nm,
+        email: em,
+        access_token: data.access_token || null
+      };
+      setSess(nu);
+      showFeedback('conta-register', 'Conta criada! Bem-vindo, ' + nm + '.', 'ok');
+      enviarEmailBoasVindas(nm, em);
+      setTimeout(function () {
+        renderLoggedIn(nu);
+        if (window._pendingCheckout && cart.length) {
+          window._pendingCheckout = false;
+          setTimeout(openCheckout, 500);
+        }
+      }, 700);
+    }).catch(function() {
+      showFeedback('conta-register', 'Erro de conexão. Tente novamente.', 'er');
+    });
   };
 
   window.doLogout = function () { clrSess(); location.reload(); };
+
+  window.doForgotPassword = function () {
+    var em = prompt('Digite seu e-mail para receber o link de recuperação:');
+    if (!em || em.indexOf('@') === -1) { alert('E-mail inválido.'); return; }
+    fetch('https://sxqdjwjowdsxzuwcktjt.supabase.co/auth/v1/recover', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': 'sb_publishable_JiZTl9jRN1CnUpHTW8CGMQ_NgXydDhC' },
+      body: JSON.stringify({ email: em })
+    }).then(function() {
+      alert('Se o e-mail estiver cadastrado, você receberá um link de recuperação em breve.');
+    }).catch(function() {
+      alert('Erro ao enviar. Tente novamente.');
+    });
+  };
 
 
   /* ──────────────────────────────────────────
@@ -6577,6 +6683,16 @@ window.ckPagarCartao = async function() {
     } catch(e) {}
   }
 
+
+  window.mostrarGuiaTamanho = function() {
+    var el = document.getElementById('guia-tamanho-bg');
+    if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  };
+  window.fecharGuia = function() {
+    var el = document.getElementById('guia-tamanho-bg');
+    if (el) { el.style.display = 'none'; document.body.style.overflow = ''; }
+  };
+
 }());
 
 </script>
@@ -6610,7 +6726,10 @@ window.ckPagarCartao = async function() {
         <p class="pv-info-sub" id="pv-sub"></p>
         <p class="pv-price" id="pv-price"></p>
 
-        <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:12px;">Tamanho</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <p style="font-family:monospace;font-size:8px;letter-spacing:.3em;color:var(--fg-muted);text-transform:uppercase;">Tamanho</p>
+          <button onclick="mostrarGuiaTamanho()" style="font-family:monospace;font-size:8px;letter-spacing:.15em;color:var(--fg-muted);text-transform:uppercase;background:transparent;border:none;cursor:pointer;text-decoration:underline;">Guia de tamanho</button>
+        </div>
         <div class="pv-sizes" style="margin-bottom:28px;">
           <button class="pv-size-btn" onclick="pvSelSize(this)">P</button>
           <button class="pv-size-btn" onclick="pvSelSize(this)">M</button>
@@ -6665,6 +6784,32 @@ window.ckPagarCartao = async function() {
       <p class="ck-aprovado-sub">Pedido confirmado. Entraremos em contato pelo WhatsApp.</p>
       <button class="card-submit" style="margin-top:16px" onclick="fecharCartao();ckClose()">Fechar</button>
     </div>
+  </div>
+</div>
+
+<!-- GUIA DE TAMANHO -->
+<div id="guia-tamanho-bg" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(6px);" onclick="if(event.target===this)fecharGuia()">
+  <div style="background:var(--bg);border:1px solid var(--border);width:90%;max-width:480px;padding:32px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--fg-muted);">Guia de Tamanho</p>
+      <button onclick="fecharGuia()" style="background:transparent;border:none;font-size:20px;color:var(--fg-muted);cursor:pointer;">×</button>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:10px;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="padding:10px 8px;text-align:left;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;font-weight:400;">Tam.</th>
+          <th style="padding:10px 8px;text-align:center;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;font-weight:400;">Largura</th>
+          <th style="padding:10px 8px;text-align:center;letter-spacing:.2em;color:var(--fg-muted);text-transform:uppercase;font-weight:400;">Comprimento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 8px;color:var(--fg);">P</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">50 cm</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">68 cm</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 8px;color:var(--fg);">M</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">54 cm</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">71 cm</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 8px;color:var(--fg);">G</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">58 cm</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">74 cm</td></tr>
+        <tr><td style="padding:10px 8px;color:var(--fg);">GG</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">62 cm</td><td style="padding:10px 8px;text-align:center;color:var(--fg-soft);">77 cm</td></tr>
+      </tbody>
+    </table>
+    <p style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--fg-muted);text-transform:uppercase;margin-top:16px;line-height:1.8;">Todas as peças são oversized. Meça a largura de ombro a ombro e o comprimento do ombro à barra.</p>
   </div>
 </div>
 </body>
