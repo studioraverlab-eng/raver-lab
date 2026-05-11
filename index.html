@@ -3350,9 +3350,62 @@
   [data-mode="dark"] .product-price {
     font-weight: 300;
   }
+
+  /* ── DARK MODE LEGIBILIDADE ── */
+  [data-mode="dark"] .product-name { font-size: 13px; font-weight: 500; color: #F5F2EE; }
+  [data-mode="dark"] .product-sub  { font-size: 10px; color: #9B9189; letter-spacing: .15em; }
+  [data-mode="dark"] .product-price { color: #F5F2EE; }
+  [data-mode="dark"] .nav-link { color: #C8C2BA; font-weight: 400; }
+  [data-mode="dark"] .nav-link:hover { color: #F5F2EE; }
+  [data-mode="dark"] .footer-link { color: #9B9189; }
+  [data-mode="dark"] .footer-link:hover { color: #F5F2EE; }
+  [data-mode="dark"] .cart-item-name { color: #F5F2EE; font-weight: 500; }
+  [data-mode="dark"] .cart-item-meta { color: #9B9189; }
+  [data-mode="dark"] .ck-lbl { color: #9B9189; font-weight: 500; letter-spacing: .25em; }
+  [data-mode="dark"] .ck-inp { color: #F5F2EE; border-color: #2E2A26; background: #1A1714; }
+  [data-mode="dark"] .ck-inp::placeholder { color: #4A4238; }
+  [data-mode="dark"] p { color: #C8C2BA; }
+  [data-mode="dark"] h1, [data-mode="dark"] h2, [data-mode="dark"] h3 { color: #F5F2EE; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1),
+                transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1),
+                transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(32px);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1),
+                transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+  // Aplicar modo salvo ANTES do render para evitar flash branco
+  (function(){
+    var m = localStorage.getItem('rl_mode') || 'dark';
+    document.documentElement.setAttribute('data-mode', m);
+  })();
+</script>
 </head>
 <body data-mode="dark">
 
@@ -4451,6 +4504,7 @@
     const current = document.body.getAttribute('data-mode');
     const next = current === 'light' ? 'dark' : 'light';
     document.body.setAttribute('data-mode', next);
+    localStorage.setItem('rl_mode', next);
     updateModeToggle(next);
     updateFreqIndicator(next);
   }
@@ -6531,6 +6585,10 @@ window.addEventListener('DOMContentLoaded', async () => {
      INIT
   ────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', function () {
+    // Aplicar modo salvo
+    var savedMode = localStorage.getItem('rl_mode') || 'dark';
+    document.body.setAttribute('data-mode', savedMode);
+    updateModeToggle(savedMode);
     loadCart();
     var s = getSess();
     if (s) renderLoggedIn(s);
@@ -7474,6 +7532,67 @@ window.ckPagarCartao = async function() {
     document.body.style.overflow = '';
     if (_inputModalResolve) { _inputModalResolve(null); _inputModalResolve = null; }
   };
+
+
+  /* ── SCROLL REVEAL ── */
+  function initScrollReveal() {
+    // Selecionar todos os elementos que devem animar
+    var selectors = [
+      '.product-card',
+      '.section-header',
+      '.footer-brand',
+      '.footer-statement',
+      '.admin-stat',
+      '.lab-intro > div',
+      '.playlist-card',
+      '.faq-list > div',
+    ];
+    var els = document.querySelectorAll(selectors.join(','));
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry, i) {
+        if (entry.isIntersecting) {
+          // Delay progressivo para elementos próximos
+          setTimeout(function() {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, 60 * (i % 4));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+    els.forEach(function(el) {
+      // Só animar se não foi visto ainda
+      if (!el._rlRevealed) {
+        el._rlRevealed = true;
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(28px)';
+        el.style.transition = 'opacity 0.65s cubic-bezier(0.4,0,0.2,1), transform 0.65s cubic-bezier(0.4,0,0.2,1)';
+        observer.observe(el);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initScrollReveal, 200);
+  });
+
+  // Re-rodar ao trocar de seção
+  var _rlOrigShow = window.showSection;
+  if (typeof _rlOrigShow === 'function') {
+    // será chamado após showSection definido no script 1
+  }
+  // Hook no showSection via polling
+  setTimeout(function() {
+    var origShow = window.showSection;
+    if (origShow) {
+      window.showSection = function(name) {
+        origShow(name);
+        setTimeout(initScrollReveal, 300);
+      };
+    }
+  }, 500);
 
 }());
 
