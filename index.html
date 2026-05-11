@@ -5591,7 +5591,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         cart.forEach(function(i){ tot += parseFloat(i.price.replace('R$','').replace(/\./g,'').replace(',','.').trim())||0; });
         orders.unshift({
           id: on,
-          date: new Date().toLocaleDateString('pt-BR'),
+          date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}),
           items: itens,
           total: 'R$ ' + (tot + fv).toLocaleString('pt-BR'),
           status: 'Aguardando confirmação',
@@ -6529,16 +6529,30 @@ window.ckPagarCartao = async function() {
 
   function atualizarStatusPedido(orderId, novoStatus) {
     try {
-      var users = JSON.parse(localStorage.getItem('rl_users') || '[]');
-      users.forEach(function(u) {
-        var key = 'rl_orders_' + u.id;
+      // Buscar no usuário logado primeiro
+      var sess = null;
+      try { sess = JSON.parse(localStorage.getItem('rl_session')); } catch(e2) {}
+      if (sess) {
+        var key = 'rl_orders_' + sess.id;
         var orders = JSON.parse(localStorage.getItem(key) || '[]');
         var changed = false;
         orders = orders.map(function(o) {
           if (o.id === orderId) { changed = true; return Object.assign({}, o, { status: novoStatus }); }
           return o;
         });
-        if (changed) localStorage.setItem(key, JSON.stringify(orders));
+        if (changed) { localStorage.setItem(key, JSON.stringify(orders)); return; }
+      }
+      // Fallback: buscar em todos os usuários
+      var users = JSON.parse(localStorage.getItem('rl_users') || '[]');
+      users.forEach(function(u) {
+        var key2 = 'rl_orders_' + u.id;
+        var orders2 = JSON.parse(localStorage.getItem(key2) || '[]');
+        var changed2 = false;
+        orders2 = orders2.map(function(o) {
+          if (o.id === orderId) { changed2 = true; return Object.assign({}, o, { status: novoStatus }); }
+          return o;
+        });
+        if (changed2) localStorage.setItem(key2, JSON.stringify(orders2));
       });
     } catch(e) {}
   }
