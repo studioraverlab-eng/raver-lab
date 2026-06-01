@@ -786,6 +786,459 @@
     line-height: 1.8;
   }
 
+  /* ─── LAB ENTRY PAGE ─── */
+
+  #lab-entry {
+    background: var(--lab-bg);
+    color: var(--lab-fg);
+  }
+
+  /* ENTRY HERO */
+  .lbe-hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 72px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--lab-border);
+  }
+
+  /* Animated concentric borders — the "frequency" visual */
+  .lbe-radar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+  }
+  .lbe-radar__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--lab-fg);
+    border-radius: 0;
+    animation: lbe-ring-expand 5s ease-out infinite;
+    opacity: 0;
+  }
+  .lbe-radar__ring:nth-child(1) { animation-delay: 0s;    width: 120px; height: 120px; }
+  .lbe-radar__ring:nth-child(2) { animation-delay: 0.8s;  width: 240px; height: 240px; }
+  .lbe-radar__ring:nth-child(3) { animation-delay: 1.6s;  width: 380px; height: 380px; }
+  .lbe-radar__ring:nth-child(4) { animation-delay: 2.4s;  width: 540px; height: 540px; }
+  .lbe-radar__ring:nth-child(5) { animation-delay: 3.2s;  width: 720px; height: 720px; }
+
+  @keyframes lbe-ring-expand {
+    0%   { opacity: 0;    transform: translate(-50%,-50%) scale(0.4); }
+    15%  { opacity: 0.06; }
+    80%  { opacity: 0.015; }
+    100% { opacity: 0;    transform: translate(-50%,-50%) scale(1); }
+  }
+
+  /* Scanlines */
+  .lbe-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      rgba(232,227,218,0.007) 3px, rgba(232,227,218,0.007) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .lbe-hero__inner { position: relative; z-index: 1; }
+
+  .lbe-hero__badge {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .lbe-hero__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--lab-fg-muted);
+    animation: lab-dot 2.4s ease-in-out infinite;
+  }
+  .lbe-hero__label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+    opacity: 0.5;
+  }
+
+  .lbe-hero__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(112px, 19vw, 272px);
+    font-weight: 300;
+    letter-spacing: -0.045em;
+    color: var(--lab-fg);
+    line-height: 0.80;
+    margin-bottom: 52px;
+  }
+
+  .lbe-hero__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .lbe-hero__sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--lab-fg-soft);
+    line-height: 1.75;
+    letter-spacing: -0.01em;
+    max-width: 320px;
+  }
+
+  .lbe-hero__scroll {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0.35;
+  }
+  .lbe-hero__scroll-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+    writing-mode: vertical-rl;
+  }
+  .lbe-hero__scroll-line {
+    width: 1px;
+    height: 48px;
+    background: var(--lab-fg-muted);
+    position: relative;
+    overflow: hidden;
+  }
+  .lbe-hero__scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--lab-fg);
+    animation: rl-scan 2s ease-in-out infinite;
+  }
+  @keyframes lbe-scroll-drop {
+    0%   { top: -100%; }
+    100% { top: 100%; }
+  }
+
+  /* CONCEPT */
+  .lbe-concept {
+    padding: 120px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    border-bottom: 1px solid var(--lab-border);
+  }
+
+  .lbe-concept__eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+    margin-bottom: 40px;
+    opacity: 0.4;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .lbe-concept__eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--lab-fg-muted);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  .lbe-concept__statement {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 68px);
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    color: var(--lab-fg);
+    line-height: 1.0;
+    max-width: 480px;
+  }
+
+  .lbe-concept__right {
+    padding-top: 80px;
+  }
+
+  .lbe-concept__body {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--lab-fg-soft);
+    line-height: 1.9;
+    max-width: 440px;
+    margin-bottom: 40px;
+  }
+
+  .lbe-concept__body + .lbe-concept__body {
+    color: var(--lab-fg-muted);
+    font-size: 13px;
+  }
+
+  /* PILLARS */
+  .lbe-pillars {
+    border-bottom: 1px solid var(--lab-border);
+  }
+
+  .lbe-pillars__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 48px;
+    border-bottom: 1px solid var(--lab-border);
+  }
+
+  .lbe-pillars__label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+  }
+
+  .lbe-pillars__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .lbe-pillar {
+    padding: 64px 48px 72px;
+    border-right: 1px solid var(--lab-border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .lbe-pillar:last-child { border-right: none; }
+  .lbe-pillar:hover { background: rgba(232,227,218,0.02); }
+
+  .lbe-pillar__num {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+    display: block;
+    margin-bottom: 64px;
+    opacity: 0.3;
+  }
+
+  .lbe-pillar__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--lab-fg);
+    letter-spacing: -0.025em;
+    line-height: 1.0;
+    margin-bottom: 24px;
+  }
+
+  .lbe-pillar__text {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--lab-fg-muted);
+    line-height: 1.85;
+    max-width: 260px;
+  }
+
+  .lbe-pillar__ghost {
+    position: absolute;
+    bottom: -20px;
+    right: -8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 160px;
+    font-weight: 300;
+    color: var(--lab-fg);
+    opacity: 0.018;
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+
+  /* MANIFESTO */
+  .lbe-manifesto {
+    padding: 140px 48px;
+    border-bottom: 1px solid var(--lab-border);
+    position: relative;
+  }
+
+  .lbe-manifesto__eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+    margin-bottom: 72px;
+    opacity: 0.35;
+  }
+
+  .lbe-manifesto__line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3.5vw, 48px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--lab-fg);
+    line-height: 1.15;
+    max-width: 820px;
+    margin-bottom: 0;
+  }
+
+  .lbe-manifesto__line--muted {
+    color: var(--lab-fg-soft);
+    font-style: italic;
+  }
+
+  .lbe-manifesto__line--small {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(13px, 1.4vw, 16px);
+    font-weight: 300;
+    color: var(--lab-fg-muted);
+    line-height: 1.9;
+    margin-top: 48px;
+    max-width: 560px;
+    font-style: normal;
+    letter-spacing: 0;
+  }
+
+  /* ACCESS CTA */
+  .lbe-access {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 48px;
+    position: relative;
+  }
+
+  .lbe-access__eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+    margin-bottom: 56px;
+    opacity: 0.4;
+  }
+
+  .lbe-access__headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 11vw, 156px);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--lab-fg);
+    line-height: 0.85;
+    margin-bottom: 48px;
+  }
+
+  .lbe-access__body {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--lab-fg-muted);
+    max-width: 400px;
+    line-height: 1.85;
+    margin-bottom: 72px;
+    opacity: 0.7;
+  }
+
+  .lbe-access__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 64px;
+    border: 1px solid var(--lab-fg);
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--lab-fg);
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .lbe-access__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--lab-fg);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .lbe-access__cta span, .lbe-access__cta svg { position: relative; z-index: 1; }
+  .lbe-access__cta:hover::before { transform: scaleX(1); }
+  .lbe-access__cta:hover { color: var(--lab-bg); }
+
+  .lbe-access__note {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--lab-fg-muted);
+    opacity: 0.25;
+  }
+
+  /* SCROLL REVEAL for entry page sections */
+  .lbe-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+                transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .lbe-reveal.lbe-visible { opacity: 1; transform: translateY(0); }
+  .lbe-reveal-d1 { transition-delay: 0.1s; }
+  .lbe-reveal-d2 { transition-delay: 0.2s; }
+  .lbe-reveal-d3 { transition-delay: 0.3s; }
+
+  /* RESPONSIVE ENTRY */
+  @media (max-width: 768px) {
+    .lbe-hero { padding: 0 20px 60px; }
+    .lbe-hero__badge { left: 0; top: 28px; }
+    .lbe-hero__bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .lbe-hero__scroll { display: none; }
+    .lbe-concept { grid-template-columns: 1fr; gap: 40px; padding: 80px 20px; }
+    .lbe-concept__right { padding-top: 0; }
+    .lbe-pillars__header { padding: 18px 20px; }
+    .lbe-pillars__grid { grid-template-columns: 1fr; }
+    .lbe-pillar { border-right: none; border-bottom: 1px solid var(--lab-border); padding: 48px 20px; }
+    .lbe-pillar:last-child { border-bottom: none; }
+    .lbe-manifesto { padding: 80px 20px; }
+    .lbe-access { padding: 80px 20px; min-height: auto; }
+    .lbe-access__cta { width: 100%; justify-content: center; padding: 20px 32px; }
+  }
+
   /* ─── LAB PREMIUM ZONE ─── */
   /* LAB is a separate world — always dark, always immersive */
 
@@ -4053,6 +4506,31 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
+  // LAB Entry — scroll reveal via IntersectionObserver
+  (function() {
+    function initLbeReveal() {
+      const els = document.querySelectorAll('.lbe-reveal');
+      if (!els.length || !('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('lbe-visible'));
+        return;
+      }
+      const io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('lbe-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(function(el) { io.observe(el); });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLbeReveal);
+    } else {
+      initLbeReveal();
+    }
+  })();
+
   // Aplicar modo salvo — seta no html para CSS pegar antes do body carregar
   (function(){
     var m = localStorage.getItem('rl_mode') || 'dark';
@@ -4456,6 +4934,118 @@
     <!-- LANDING -->
     <div id="labLanding">
 
+      <!-- ░░░ ENTRY PAGE — antecâmara do LAB ░░░ -->
+      <div id="lab-entry">
+
+        <!-- HERO -->
+        <section class="lbe-hero">
+          <div class="lbe-radar" aria-hidden="true">
+            <div class="lbe-radar__ring"></div>
+            <div class="lbe-radar__ring"></div>
+            <div class="lbe-radar__ring"></div>
+            <div class="lbe-radar__ring"></div>
+            <div class="lbe-radar__ring"></div>
+          </div>
+          <div class="lbe-hero__badge">
+            <div class="lbe-hero__dot" aria-hidden="true"></div>
+            <span class="lbe-hero__label">RL.LAB — Divisão de Pesquisa</span>
+          </div>
+          <div class="lbe-hero__inner">
+            <h1 class="lbe-hero__title">LABORA<br>TÓRIO</h1>
+            <div class="lbe-hero__bottom">
+              <p class="lbe-hero__sub">Um arquivo vivo<br>da cultura underground.</p>
+              <div class="lbe-hero__scroll" aria-hidden="true">
+                <span class="lbe-hero__scroll-text">Rolar</span>
+                <div class="lbe-hero__scroll-line"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT -->
+        <section class="lbe-concept">
+          <div>
+            <p class="lbe-concept__eyebrow lbe-reveal">O que é o Lab</p>
+            <h2 class="lbe-concept__statement lbe-reveal lbe-reveal-d1">
+              Não é uma loja.<br>
+              É um processo.
+            </h2>
+          </div>
+          <div class="lbe-concept__right">
+            <p class="lbe-concept__body lbe-reveal lbe-reveal-d2">
+              O LAB é a divisão criativa da Raver Lab. Um espaço onde música eletrônica, moda, tecnologia, inteligência artificial e cultura underground se encontram.
+            </p>
+            <p class="lbe-concept__body lbe-reveal lbe-reveal-d3">
+              Não é apenas sobre roupa.<br>É sobre documentar uma cultura.
+            </p>
+          </div>
+        </section>
+
+        <!-- PILLARS -->
+        <section class="lbe-pillars">
+          <div class="lbe-pillars__header">
+            <span class="lbe-pillars__label">Três Frequências</span>
+            <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--lab-fg-muted);opacity:0.3;">Arquivo ativo</span>
+          </div>
+          <div class="lbe-pillars__grid">
+            <div class="lbe-pillar lbe-reveal">
+              <span class="lbe-pillar__num">01</span>
+              <h3 class="lbe-pillar__title">Som</h3>
+              <p class="lbe-pillar__text">A frequência que move a comunidade. Sets, artistas, momentos e memórias sonoras que alimentam cada criação.</p>
+              <span class="lbe-pillar__ghost" aria-hidden="true">Som</span>
+            </div>
+            <div class="lbe-pillar lbe-reveal lbe-reveal-d1">
+              <span class="lbe-pillar__num">02</span>
+              <h3 class="lbe-pillar__title">Visual</h3>
+              <p class="lbe-pillar__text">Experimentos gráficos, referências estéticas e identidade visual em construção permanente.</p>
+              <span class="lbe-pillar__ghost" aria-hidden="true">Visual</span>
+            </div>
+            <div class="lbe-pillar lbe-reveal lbe-reveal-d2">
+              <span class="lbe-pillar__num">03</span>
+              <h3 class="lbe-pillar__title">Cultura</h3>
+              <p class="lbe-pillar__text">Arquivos, bastidores e movimentos do underground. O que acontece antes do produto chegar.</p>
+              <span class="lbe-pillar__ghost" aria-hidden="true">Cultura</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- MANIFESTO -->
+        <section class="lbe-manifesto">
+          <p class="lbe-manifesto__eyebrow lbe-reveal">Manifesto — RL.LAB</p>
+          <p class="lbe-manifesto__line lbe-reveal lbe-reveal-d1">
+            Antes de qualquer peça,<br>existe uma frequência.
+          </p>
+          <p class="lbe-manifesto__line lbe-manifesto__line--muted lbe-reveal lbe-reveal-d2" style="margin-top:32px;">
+            Antes de qualquer coleção,<br>existe uma cena.
+          </p>
+          <p class="lbe-manifesto__line--small lbe-reveal lbe-reveal-d3">
+            O LAB nasce para registrar o que acontece antes do produto:<br>
+            as referências, os sons, os testes, os erros, os encontros<br>
+            e os sinais de uma cultura em movimento.
+          </p>
+        </section>
+
+        <!-- ACCESS -->
+        <section class="lbe-access">
+          <p class="lbe-access__eyebrow lbe-reveal">Acesso ao Arquivo</p>
+          <h2 class="lbe-access__headline lbe-reveal lbe-reveal-d1">
+            Entre no<br>arquivo.
+          </h2>
+          <p class="lbe-access__body lbe-reveal lbe-reveal-d2">
+            Explore frequências, experimentos visuais, protocolos de drops e arquivos da cultura underground.
+          </p>
+          <button onclick="enterLab()" class="lbe-access__cta lbe-reveal lbe-reveal-d3">
+            <span>Entrar no Lab</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="0" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="1"/><polyline points="8,4 11,7 8,10" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          </button>
+          <p class="lbe-access__note lbe-reveal">Arquivo vivo — Divisão Criativa — São Paulo</p>
+        </section>
+
+      </div><!-- /lab-entry -->
+
+      <!-- ░░░ LAB PRINCIPAL (visível após entrar) ░░░ -->
+      <div id="lab-main" style="display:none">
+
       <!-- HERO -->
       <section class="lab-px-hero">
         <div class="lab-px-hero__badge">
@@ -4587,6 +5177,8 @@
           <p>Cada um carrega uma memória</p>
         </div>
       </footer>
+
+      </div><!-- /lab-main -->
 
     </div><!-- /labLanding -->
 
@@ -5310,6 +5902,17 @@
     if (target) {
       target.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' });
+      // Reset LAB to entry page on each visit
+      if (name === 'lab') {
+        const entry = document.getElementById('lab-entry');
+        const main = document.getElementById('lab-main');
+        const form = document.getElementById('labFormContainer');
+        const landing = document.getElementById('labLanding');
+        if (entry) entry.style.display = '';
+        if (main) main.style.display = 'none';
+        if (form) form.style.display = 'none';
+        if (landing) landing.style.display = '';
+      }
       if (pushState !== false && history.pushState) {
         history.pushState({ section: name }, '', '#' + name);
       }
@@ -5339,10 +5942,16 @@
     el.classList.add('selected');
   }
 
+  function enterLab() {
+    document.getElementById('lab-entry').style.display = 'none';
+    document.getElementById('lab-main').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
   function unlockLab() {
     document.getElementById('labLanding').style.display = 'none';
     document.getElementById('labFormContainer').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   (function() {
