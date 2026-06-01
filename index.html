@@ -131,12 +131,13 @@
     font-size: 10px;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--fg-soft);
+    color: var(--fg-muted);
     text-decoration: none;
-    transition: color 0.3s;
-    
+    transition: color 0.25s;
+    cursor: pointer;
   }
   .nav-link:hover { color: var(--fg); }
+  .nav-link--active { color: var(--fg) !important; }
   .logo {
     font-family: 'Inter', sans-serif;
     font-size: 13px;
@@ -162,11 +163,58 @@
     background: transparent;
     border: 1px solid var(--border);
     padding: 6px 12px;
-    
+    cursor: pointer;
     transition: all 0.3s;
     text-transform: uppercase;
   }
   .freq-toggle:hover { color: var(--fg); border-color: var(--fg); }
+
+  /* MODE TOGGLE (replaces freq-toggle) */
+  .mode-toggle {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    color: var(--fg-muted);
+    transition: all 0.25s;
+    flex-shrink: 0;
+  }
+  .mode-toggle:hover { color: var(--fg); border-color: var(--fg); }
+  .mode-icon { display: none; }
+  [data-mode="light"] .mode-icon--moon { display: block; }
+  [data-mode="dark"] .mode-icon--sun { display: block; }
+
+  /* SKIP TO MAIN (accessibility) */
+  .skip-to-main {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    z-index: 9999;
+    padding: 8px 16px;
+    background: var(--fg);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-to-main:focus { top: 16px; }
+
+  /* SECTION EYEBROW (replaces inline monospace labels) */
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
 
   /* MAIN */
   main { padding-top: 80px; }
@@ -367,17 +415,23 @@
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     padding: 0;
-    
-    transition: all 0.4s;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-out);
     overflow: hidden;
+    position: relative;
   }
+  .product-card:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: -2px;
+  }
+  .product-card:hover { transform: translateY(-2px); }
+  .product-card:hover .product-image-bg { opacity: 0.85; }
   .product-image {
     width: 100%;
     aspect-ratio: 3/4;
     position: relative;
     overflow: hidden;
     background: var(--fg);
-    opacity: 1;
   }
   [data-mode="dark"] .product-image { opacity: 1; }
   .product-image-inner {
@@ -2155,6 +2209,9 @@
     --card-bg: #EDE9E2;
     --surface: #E8E3DB;
     --mode: light;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-h: 56px;
   }
   [data-mode="dark"] {
     --bg: #0F0E0C;
@@ -2968,8 +3025,18 @@
   }
 
   /* section visibility */
-  .page-section { display: none; }
-  .page-section.active { display: block; }
+  .page-section {
+    display: none;
+    opacity: 0;
+  }
+  .page-section.active {
+    display: block;
+    animation: sectionIn 0.45s var(--ease-out) forwards;
+  }
+  @keyframes sectionIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
   /* ═══ PREMIUM OVERHAUL ═══ */
 
@@ -3998,6 +4065,7 @@
 </script>
 </head>
 <body data-mode="dark">
+<a href="#site-main" class="skip-to-main">Ir para o conteúdo principal</a>
 
 <!-- FREQUENCY GATE (hidden — acesso direto à home) -->
 <div id="frequency-gate" class="hidden" style="display:none;"></div>
@@ -4009,13 +4077,10 @@
     <span></span><span></span><span></span>
   </button>
   <nav class="nav-left" id="nav-left">
-    <a href="#" class="nav-link" onclick="showSection('home');closeMobileMenu()">Início</a>
     <a href="#" class="nav-link" onclick="showSection('shop');closeMobileMenu()">Coleção</a>
     <a href="#" class="nav-link" onclick="showSection('lab');closeMobileMenu()">Lab</a>
-    <a href="#" class="nav-link" onclick="showSection('special');closeMobileMenu()">Projetos Especiais</a>
-    <a href="#" class="nav-link" onclick="showSection('playlists');closeMobileMenu()">Playlists</a>
-    <a href="#" class="nav-link" onclick="showSection('faq');closeMobileMenu()">FAQ</a>
-    <a href="#" class="nav-link" onclick="showSection('prints');closeMobileMenu()">Prints</a>
+    <a href="#" class="nav-link" onclick="showSection('archive');closeMobileMenu()">Arquivo</a>
+    <a href="#" class="nav-link" onclick="showSection('special');closeMobileMenu()">Projetos</a>
   </nav>
   <a href="#" class="logo" onclick="showSection('home')">RAVER LAB</a>
   <div class="nav-right">
@@ -4026,9 +4091,12 @@
         <line x1="3" y1="6" x2="21" y2="6"/>
         <path d="M16 10a4 4 0 01-8 0"/>
       </svg>
-      <span class="cart-badge" id="cartBadge">0</span>
+      <span class="cart-badge" id="cartBadge" style="display:none">0</span>
     </button>
-    <button class="freq-toggle" onclick="toggleMode()" id="modeToggle">TECHNO</button>
+    <button class="mode-toggle" onclick="toggleMode()" id="modeToggle" aria-label="Alternar modo escuro/claro">
+      <svg class="mode-icon mode-icon--sun" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1"/><line x1="7" y1="0.5" x2="7" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="12" x2="7" y2="13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="0.5" y1="7" x2="2" y2="7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="12" y1="7" x2="13.5" y2="7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="2.4" y1="2.4" x2="3.4" y2="3.4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="10.6" y1="10.6" x2="11.6" y2="11.6" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="10.6" y1="2.4" x2="11.6" y2="1.4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="2.4" y1="11.6" x2="3.4" y2="10.6" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      <svg class="mode-icon mode-icon--moon" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M11 8.5A5.5 5.5 0 014.5 2a5.5 5.5 0 100 9 5.5 5.5 0 006.5-2.5z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 </header>
 
@@ -4038,12 +4106,10 @@
   <!-- ── HOME ── -->
   <div class="page-section active" id="section-home">
 
-    <!-- HERO BANNER -->
-    <div class="hero-banner" id="hero-banner">
+    <!-- HERO BANNER (ativa quando imagem for adicionada no admin) -->
+    <div class="hero-banner" id="hero-banner" style="display:none;">
       <img class="hero-img" id="hero-img" src="" alt="Raver Lab" style="display:none;" onload="this.style.display='block';document.getElementById('hero-placeholder').style.display='none'">
-      <div class="hero-placeholder" id="hero-placeholder">
-        <p class="hero-placeholder-text">Raver Lab — Adicione uma foto no admin</p>
-      </div>
+      <div class="hero-placeholder" id="hero-placeholder"></div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <p class="hero-tag" id="hero-tag">Raver Lab — Nova Coleção</p>
@@ -4263,8 +4329,8 @@
   <div class="page-section" id="section-shop">
     <div class="section-header">
       <div>
-        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:8px;">RL — Coleção</p>
-        <h2 class="section-title">Raver Lab — Peças</h2>
+        <p class="section-eyebrow">RL — Coleção 01</p>
+        <h2 class="section-title">Acervo</h2>
       </div>
       <span class="section-meta">4 edições ativas</span>
     </div>
@@ -5243,14 +5309,25 @@
   }
 
   // ── SECTIONS ──
-  function showSection(name) {
+  function showSection(name, pushState) {
     document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
     const target = document.getElementById('section-' + name);
     if (target) {
       target.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (pushState !== false && history.pushState) {
+        history.pushState({ section: name }, '', '#' + name);
+      }
+      // Update active nav link
+      document.querySelectorAll('.nav-link').forEach(a => {
+        a.classList.toggle('nav-link--active', a.getAttribute('onclick') && a.getAttribute('onclick').includes("'" + name + "'"));
+      });
     }
   }
+  window.addEventListener('popstate', function(e) {
+    var sec = (e.state && e.state.section) || 'home';
+    showSection(sec, false);
+  });
 
   // ── LAB STEPS ──
   function nextStep(n) {
@@ -5543,11 +5620,12 @@
     const badge = document.getElementById('cartBadge');
     if (cart.length > 0) {
       badge.textContent = cart.length;
-      badge.classList.add('show');
+      badge.style.display = '';
     } else {
-      badge.classList.remove('show');
+      badge.style.display = 'none';
     }
-    document.getElementById('cartCountBadge').textContent = cart.length;
+    const countBadge = document.getElementById('cartCountBadge');
+    if (countBadge) countBadge.textContent = cart.length;
   }
   window.renderCart = function renderCart() {
     var list = document.getElementById('cartItemsList');
