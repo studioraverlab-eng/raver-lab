@@ -3479,14 +3479,7 @@
 
   /* section visibility */
   .page-section { display: none; }
-  .page-section.active {
-    display: block;
-    animation: sectionIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  @keyframes sectionIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  .page-section.active { display: block; }
 
   /* ═══ PREMIUM OVERHAUL ═══ */
 
@@ -4919,14 +4912,14 @@
   <div class="page-section" id="section-lab">
 
     <!-- STICKY LAB HEADER -->
-    <header class="lab-premium-header">
+    <div class="lab-premium-header" role="banner">
       <span class="lab-premium-header__id">RL.LAB — Divisão de Pesquisa</span>
       <span class="lab-premium-header__clock" id="lab-clock"></span>
       <button class="lab-premium-header__back" onclick="showSection('home')">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><polyline points="7,2 3,6 7,10" stroke="currentColor" stroke-width="1" fill="none"/><line x1="3" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1"/></svg>
         Sair do Lab
       </button>
-    </header>
+    </div>
 
     <!-- LANDING -->
     <div id="labLanding">
