@@ -732,6 +732,403 @@
     line-height: 1.8;
   }
 
+  /* ─── LAB REDESIGN ─── */
+
+  .rl-mono {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  /* HERO */
+  .rl-lab-hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 60px 48px 80px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .rl-lab-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.012) 2px,
+      rgba(255,255,255,0.012) 4px
+    );
+    pointer-events: none;
+  }
+  .rl-lab-hero__content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+  .rl-lab-hero__meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+  @keyframes rl-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .rl-blink { animation: rl-blink 1.2s step-end infinite; }
+  .rl-lab-hero__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(88px, 16vw, 220px);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--fg);
+    line-height: 0.82;
+    margin-bottom: 48px;
+  }
+  .rl-lab-hero__sub {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(14px, 1.6vw, 18px);
+    font-weight: 300;
+    color: var(--fg-soft);
+    line-height: 1.7;
+    max-width: 360px;
+    margin-bottom: 72px;
+  }
+  .rl-lab-hero__scroll {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .rl-scroll-line {
+    width: 60px;
+    height: 1px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .rl-scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--fg-muted);
+    animation: rl-scan 2.4s ease-in-out infinite;
+  }
+  @keyframes rl-scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+  .rl-lab-hero__freq {
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 240px;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+  .rl-freq-bar {
+    width: 3px;
+    height: var(--h);
+    background: var(--fg);
+    border-radius: 2px 2px 0 0;
+    animation: rl-freq calc(1.8s + var(--d, 0s)) ease-in-out infinite alternate;
+  }
+  @keyframes rl-freq {
+    0% { transform: scaleY(1); }
+    100% { transform: scaleY(0.2); }
+  }
+
+  /* MANIFESTO */
+  .rl-manifesto {
+    padding: 120px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rl-manifesto__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 80px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rl-manifesto__statement {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 6vw, 92px);
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    color: var(--fg);
+    line-height: 1.0;
+    margin-bottom: 56px;
+    max-width: 760px;
+  }
+  .rl-manifesto__text {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--fg-soft);
+    line-height: 1.9;
+    max-width: 580px;
+    margin-bottom: 88px;
+  }
+  .rl-manifesto__pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .rl-pillar {
+    background: var(--bg);
+    padding: 48px 36px;
+  }
+  .rl-pillar__num {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 24px;
+    opacity: 0.5;
+  }
+  .rl-pillar__name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+  .rl-pillar__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--fg-muted);
+    line-height: 1.75;
+  }
+
+  /* SOUND ARCHIVE */
+  .rl-sound-archive {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rl-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 48px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rl-sound-entry {
+    display: grid;
+    grid-template-columns: 72px 1fr 140px 110px;
+    align-items: center;
+    gap: 32px;
+    padding: 22px 48px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .rl-sound-entry:hover { background: rgba(255,255,255,0.018); }
+  .rl-sound-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--fg-muted);
+    opacity: 0.45;
+  }
+  .rl-sound-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+  }
+  .rl-sound-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--fg-muted);
+    line-height: 1.5;
+  }
+  .rl-sound-place {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--fg-muted);
+    font-weight: 300;
+  }
+  .rl-sound-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: right;
+    color: var(--fg-muted);
+    opacity: 0.4;
+  }
+
+  /* PROCESS */
+  .rl-process {
+    padding: 120px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rl-process .rl-section-header {
+    padding: 0 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 88px;
+  }
+  .rl-process__steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .rl-pstep {
+    background: var(--bg);
+    padding: 48px 32px;
+  }
+  .rl-pstep__num {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 48px;
+    opacity: 0.4;
+  }
+  .rl-pstep__line {
+    width: 32px;
+    height: 1px;
+    background: var(--fg-muted);
+    margin-bottom: 24px;
+    opacity: 0.3;
+  }
+  .rl-pstep__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .rl-pstep__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--fg-muted);
+    line-height: 1.85;
+  }
+
+  /* ACTIVATION */
+  .rl-activation {
+    padding: 160px 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .rl-activation__inner { max-width: 640px; margin: 0 auto; }
+  .rl-activation__statement {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 108px);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    color: var(--fg);
+    line-height: 0.88;
+    margin-bottom: 44px;
+  }
+  .rl-activation__meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 60px;
+  }
+  .rl-activate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 56px;
+    border: 1px solid var(--fg);
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--fg);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    margin-bottom: 28px;
+  }
+  .rl-activate-btn:hover {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .rl-activation__note {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    opacity: 0.4;
+  }
+
+  /* PROTOCOL FORM HEADER */
+  .rl-protocol-header {
+    margin-bottom: 72px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rl-protocol-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 68px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    line-height: 0.98;
+    margin: 20px 0 24px;
+  }
+  .rl-protocol-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--fg-soft);
+    max-width: 520px;
+    line-height: 1.8;
+  }
+
+  /* LAB RESPONSIVE */
+  @media (max-width: 1024px) {
+    .rl-lab-hero__freq { display: none; }
+  }
+  @media (max-width: 768px) {
+    .rl-lab-hero { padding: 40px 20px 60px; min-height: 92vh; }
+    .rl-manifesto { padding: 80px 20px; }
+    .rl-manifesto__header { flex-direction: column; gap: 8px; }
+    .rl-manifesto__pillars { grid-template-columns: 1fr; }
+    .rl-section-header { padding: 0 20px 20px; flex-direction: column; align-items: flex-start; gap: 8px; }
+    .rl-sound-entry { grid-template-columns: 56px 1fr; padding: 18px 20px; gap: 16px; }
+    .rl-sound-place, .rl-sound-tag { display: none; }
+    .rl-process { padding: 80px 20px; }
+    .rl-process .rl-section-header { padding: 0 0 20px; }
+    .rl-process__steps { grid-template-columns: 1fr 1fr; }
+    .rl-pstep { padding: 32px 24px; }
+    .rl-activation { padding: 100px 20px; }
+    .rl-activate-btn { width: 100%; justify-content: center; }
+  }
+  @media (max-width: 480px) {
+    .rl-process__steps { grid-template-columns: 1fr; }
+  }
+
   /* ─── ARCHIVE ─── */
   .archive-list {
     border-top: 1px solid var(--border);
@@ -3802,32 +4199,209 @@
   <!-- ── LAB ── -->
   <div class="page-section" id="section-lab">
 
-    <!-- LAB LANDING PAGE (página intermediária) -->
+    <!-- LAB LANDING REDESENHADO -->
     <div id="labLanding">
-      <div class="lab-intro">
-        <div>
-          <p class="lab-system-id">RL.LAB — Processo Criativo</p>
-          <h2 class="lab-intro-title">LAB</h2>
+
+      <!-- HERO: DIVISÃO DE PESQUISA -->
+      <div class="rl-lab-hero">
+        <div class="rl-lab-hero__content">
+          <div class="rl-lab-hero__meta">
+            <span class="rl-mono">RL.LAB — Divisão de Pesquisa</span>
+            <span class="rl-mono rl-blink">█</span>
+          </div>
+          <h1 class="rl-lab-hero__title">LABORA<br>TÓRIO</h1>
+          <p class="rl-lab-hero__sub">Cultura eletrônica<br>traduzida em matéria.</p>
+          <div class="rl-lab-hero__scroll">
+            <span class="rl-mono">Rolar para entrar</span>
+            <div class="rl-scroll-line"></div>
+          </div>
         </div>
-        <div>
-          <p style="font-family:monospace;font-size:10px;letter-spacing:0.25em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:20px;">Do som ao objeto</p>
-          <p class="lab-intro-text">Você nos envia suas referências — musicais, visuais e emocionais. Nós desenvolvemos uma arte exclusiva para sua camiseta em até 48–72 horas. Para iniciar, é necessário o pagamento de R$15.</p>
+        <div class="rl-lab-hero__freq" aria-hidden="true">
+          <div class="rl-freq-bar" style="--h:20%;--d:0s"></div>
+          <div class="rl-freq-bar" style="--h:45%;--d:.07s"></div>
+          <div class="rl-freq-bar" style="--h:70%;--d:.14s"></div>
+          <div class="rl-freq-bar" style="--h:30%;--d:.21s"></div>
+          <div class="rl-freq-bar" style="--h:85%;--d:.05s"></div>
+          <div class="rl-freq-bar" style="--h:55%;--d:.12s"></div>
+          <div class="rl-freq-bar" style="--h:40%;--d:.19s"></div>
+          <div class="rl-freq-bar" style="--h:90%;--d:.03s"></div>
+          <div class="rl-freq-bar" style="--h:60%;--d:.16s"></div>
+          <div class="rl-freq-bar" style="--h:75%;--d:.08s"></div>
+          <div class="rl-freq-bar" style="--h:35%;--d:.23s"></div>
+          <div class="rl-freq-bar" style="--h:50%;--d:.11s"></div>
+          <div class="rl-freq-bar" style="--h:80%;--d:.06s"></div>
+          <div class="rl-freq-bar" style="--h:25%;--d:.18s"></div>
+          <div class="rl-freq-bar" style="--h:65%;--d:.02s"></div>
+          <div class="rl-freq-bar" style="--h:45%;--d:.15s"></div>
+          <div class="rl-freq-bar" style="--h:95%;--d:.09s"></div>
+          <div class="rl-freq-bar" style="--h:40%;--d:.22s"></div>
+          <div class="rl-freq-bar" style="--h:70%;--d:.04s"></div>
+          <div class="rl-freq-bar" style="--h:55%;--d:.17s"></div>
+          <div class="rl-freq-bar" style="--h:30%;--d:.10s"></div>
+          <div class="rl-freq-bar" style="--h:80%;--d:.24s"></div>
+          <div class="rl-freq-bar" style="--h:50%;--d:.13s"></div>
+          <div class="rl-freq-bar" style="--h:65%;--d:.01s"></div>
+          <div class="rl-freq-bar" style="--h:42%;--d:.20s"></div>
+          <div class="rl-freq-bar" style="--h:75%;--d:.07s"></div>
+          <div class="rl-freq-bar" style="--h:88%;--d:.14s"></div>
+          <div class="rl-freq-bar" style="--h:33%;--d:.21s"></div>
+          <div class="rl-freq-bar" style="--h:60%;--d:.05s"></div>
+          <div class="rl-freq-bar" style="--h:92%;--d:.18s"></div>
+          <div class="rl-freq-bar" style="--h:48%;--d:.11s"></div>
+          <div class="rl-freq-bar" style="--h:72%;--d:.03s"></div>
+          <div class="rl-freq-bar" style="--h:27%;--d:.16s"></div>
+          <div class="rl-freq-bar" style="--h:58%;--d:.09s"></div>
+          <div class="rl-freq-bar" style="--h:83%;--d:.23s"></div>
+          <div class="rl-freq-bar" style="--h:52%;--d:.06s"></div>
+          <div class="rl-freq-bar" style="--h:67%;--d:.19s"></div>
+          <div class="rl-freq-bar" style="--h:38%;--d:.12s"></div>
+          <div class="rl-freq-bar" style="--h:73%;--d:.02s"></div>
+          <div class="rl-freq-bar" style="--h:28%;--d:.15s"></div>
         </div>
       </div>
-      <div style="padding:80px 48px;text-align:center;border-top:1px solid var(--border);">
-        <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:32px;">R$15 para enviar sua proposta de arte</p>
-        <button onclick="unlockLab()" class="btn-primary" style="cursor:pointer;font-size:10px;letter-spacing:0.3em;">Iniciar Lab →</button>
+
+      <!-- MANIFESTO -->
+      <div class="rl-manifesto">
+        <div class="rl-manifesto__header">
+          <span class="rl-mono">Protocolo — 001</span>
+          <span class="rl-mono">O Lab</span>
+        </div>
+        <p class="rl-manifesto__statement">
+          O Lab não é uma loja.<br>É um processo.
+        </p>
+        <p class="rl-manifesto__text">Cada peça nasce de uma frequência — um set que mudou algo, um momento que ficou gravado no corpo, uma memória sonora que nenhuma foto consegue capturar. Você nos traz essa memória. Nós a traduzimos em forma.</p>
+        <div class="rl-manifesto__pillars">
+          <div class="rl-pillar">
+            <span class="rl-pillar__num">01 — Referência</span>
+            <p class="rl-pillar__name">Sua memória</p>
+            <p class="rl-pillar__desc">Sonora, visual e emocional como matéria-prima do processo criativo.</p>
+          </div>
+          <div class="rl-pillar">
+            <span class="rl-pillar__num">02 — Pesquisa</span>
+            <p class="rl-pillar__name">Desenvolvimento</p>
+            <p class="rl-pillar__desc">Processo editorial rigoroso em 48–72h. Sem templates. Sem atalhos.</p>
+          </div>
+          <div class="rl-pillar">
+            <span class="rl-pillar__num">03 — Objeto</span>
+            <p class="rl-pillar__name">Arte exclusiva</p>
+            <p class="rl-pillar__desc">Uma peça materializada que só pode ser sua. Nenhuma igual à outra.</p>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <!-- ARQUIVO SONORO -->
+      <div class="rl-sound-archive">
+        <div class="rl-section-header">
+          <span class="rl-mono">Arquivo Sonoro — RL.LAB</span>
+          <span class="rl-mono" style="opacity:0.35">18 frequências registradas</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.018</span>
+          <div><p class="rl-sound-title">Time Warp Sunrise</p><p class="rl-sound-meta">7h contínuas — ápice emocional — primeira luz</p></div>
+          <span class="rl-sound-place">São Paulo</span>
+          <span class="rl-sound-tag">Afterglow</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.017</span>
+          <div><p class="rl-sound-title">Berghain — Floor 1</p><p class="rl-sound-meta">Espaço industrial, 138 BPM, ressonância de concreto</p></div>
+          <span class="rl-sound-place">Berlin</span>
+          <span class="rl-sound-tag">Pressure Unit</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.016</span>
+          <div><p class="rl-sound-title">Ben Böhmer — Live Set</p><p class="rl-sound-meta">Ascensão melódica, arquitetura emocional, frequência das 4h</p></div>
+          <span class="rl-sound-place">Amsterdam</span>
+          <span class="rl-sound-tag">Poetic</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.015</span>
+          <div><p class="rl-sound-title">Warung Praia Brava</p><p class="rl-sound-meta">Ao ar livre, primeiro amanhecer, resolução harmônica</p></div>
+          <span class="rl-sound-place">Itajaí</span>
+          <span class="rl-sound-tag">Liminal</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.014</span>
+          <div><p class="rl-sound-title">Monolink — Live</p><p class="rl-sound-meta">Topologia de deserto, diálogo humano-máquina, entardecer</p></div>
+          <span class="rl-sound-place">Barcelona</span>
+          <span class="rl-sound-tag">Abstract</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.013</span>
+          <div><p class="rl-sound-title">D-Edge — Dark Room</p><p class="rl-sound-meta">Ressonância de sub grave, desorientação espacial, loop hipnótico</p></div>
+          <span class="rl-sound-place">São Paulo</span>
+          <span class="rl-sound-tag">Dark Room</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.012</span>
+          <div><p class="rl-sound-title">Tribal Gathering</p><p class="rl-sound-meta">Arquitetura percussiva, consciência coletiva, ritual do amanhecer</p></div>
+          <span class="rl-sound-place">Ibiza</span>
+          <span class="rl-sound-tag">Tribal</span>
+        </div>
+        <div class="rl-sound-entry">
+          <span class="rl-sound-id">RL.011</span>
+          <div><p class="rl-sound-title">Sara Landry — Melodic</p><p class="rl-sound-meta">Sequências harmônicas, texturas orgânicas, profundidade emocional</p></div>
+          <span class="rl-sound-place">Remote</span>
+          <span class="rl-sound-tag">Minimal</span>
+        </div>
+      </div>
+
+      <!-- O PROCESSO -->
+      <div class="rl-process">
+        <div class="rl-section-header">
+          <span class="rl-mono">O Processo</span>
+        </div>
+        <div class="rl-process__steps">
+          <div class="rl-pstep">
+            <span class="rl-pstep__num">01</span>
+            <div class="rl-pstep__line"></div>
+            <h3 class="rl-pstep__title">Transmissão</h3>
+            <p class="rl-pstep__desc">Você envia suas referências sonoras, visuais e emocionais. O signal entra no sistema.</p>
+          </div>
+          <div class="rl-pstep">
+            <span class="rl-pstep__num">02</span>
+            <div class="rl-pstep__line"></div>
+            <h3 class="rl-pstep__title">Pesquisa</h3>
+            <p class="rl-pstep__desc">Pesquisa editorial intensiva. Mapeamento de referências. Construção do universo visual.</p>
+          </div>
+          <div class="rl-pstep">
+            <span class="rl-pstep__num">03</span>
+            <div class="rl-pstep__line"></div>
+            <h3 class="rl-pstep__title">Desenvolvimento</h3>
+            <p class="rl-pstep__desc">Arte desenvolvida em 48–72h. Processo rigoroso. Nenhum template. Cada peça é única.</p>
+          </div>
+          <div class="rl-pstep">
+            <span class="rl-pstep__num">04</span>
+            <div class="rl-pstep__line" style="opacity:0"></div>
+            <h3 class="rl-pstep__title">Objeto</h3>
+            <p class="rl-pstep__desc">A arte chega por WhatsApp. Você aprova. O objeto é produzido com qualidade de edição limitada.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATIVAÇÃO -->
+      <div class="rl-activation">
+        <div class="rl-activation__inner">
+          <span class="rl-mono" style="display:block;margin-bottom:28px;">Iniciar Protocolo</span>
+          <p class="rl-activation__statement">Sua memória<br>merece um objeto.</p>
+          <p class="rl-activation__meta">R$15 de ativação — desenvolvimento criativo exclusivo em até 72h</p>
+          <button onclick="unlockLab()" class="rl-activate-btn">
+            Ativar Lab
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="0" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="1"/><polyline points="8,4 11,7 8,10" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          </button>
+          <p class="rl-activation__note">Arte exclusiva — sem templates — processo editorial rigoroso</p>
+        </div>
+      </div>
+
+    </div><!-- /labLanding -->
 
     <!-- FORM (aparece após confirmação de pagamento) -->
     <div class="lab-form" id="labFormContainer" style="display:none;">
 
-      <!-- Cabeçalho -->
-      <div style="margin-bottom:64px;padding-bottom:32px;border-bottom:1px solid var(--border);">
-        <p style="font-family:monospace;font-size:9px;letter-spacing:0.35em;color:var(--fg-muted);text-transform:uppercase;margin-bottom:16px;">RL.LAB — Criação Ativa</p>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:300;letter-spacing:-0.02em;color:var(--fg);line-height:1.05;margin-bottom:20px;">Iniciar criação</h2>
-        <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:var(--fg-soft);max-width:520px;line-height:1.8;">Envie suas referências — sonoras, visuais e emocionais — para desenvolvermos sua arte exclusiva.</p>
+      <!-- Cabeçalho do Protocolo -->
+      <div class="rl-protocol-header">
+        <span class="rl-mono">RL.LAB — Protocolo Ativo</span>
+        <h2 class="rl-protocol-title">Iniciar<br>criação.</h2>
+        <p class="rl-protocol-sub">Envie suas referências — sonoras, visuais e emocionais — para desenvolvermos sua arte exclusiva.</p>
       </div>
 
       <!-- ETAPA 01 — Referência Sonora -->
