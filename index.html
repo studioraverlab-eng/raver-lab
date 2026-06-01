@@ -3478,16 +3478,13 @@
   }
 
   /* section visibility */
-  .page-section {
-    display: none;
-    opacity: 0;
-  }
+  .page-section { display: none; }
   .page-section.active {
     display: block;
-    animation: sectionIn 0.45s var(--ease-out) forwards;
+    animation: sectionIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   @keyframes sectionIn {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
